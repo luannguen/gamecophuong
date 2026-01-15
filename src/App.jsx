@@ -18,6 +18,7 @@ import {
 import {
     GamePlayPage,
     GameSelectionPage,
+    GameDetailPage,
     GameRankingPage,
     ListenClickGamePage,
     WordMatchGamePage,
@@ -42,6 +43,7 @@ function App() {
                 <Route element={<StudentLayout />}>
                     <Route path="/student/home" element={<StudentHomePage />} />
                     <Route path="/student/games" element={<GameSelectionPage />} />
+                    <Route path="/student/game/:gameId/detail" element={<GameDetailPage />} />
                     <Route path="/student/game/:gameId" element={<GamePlayPage />} />
                     <Route path="/student/game/listen-click" element={<ListenClickGamePage />} />
                     <Route path="/student/game/word-match" element={<WordMatchGamePage />} />

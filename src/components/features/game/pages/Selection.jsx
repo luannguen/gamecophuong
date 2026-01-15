@@ -1,11 +1,101 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { IMAGES, GAME_CATEGORIES } from '../../../../data/designAssets'
 import './Selection.css'
 
-export default function MinigameSelection() {
-    const [searchQuery, setSearchQuery] = useState('')
+// Animal mini-games - each is a separate game with its own skill type
+const ANIMAL_GAMES = [
+    {
+        id: 'elephant',
+        name: 'Elephant',
+        subtitle: 'Trumpet Sound',
+        skill: 'LISTENING',
+        skillIcon: 'hearing',
+        color: 'purple',
+        stars: 180,
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC9qfvP-s5D03U6yTCv7V3tecRTxBjPSGMOlSj7RnzUM7gtGZ4d0i8gIZppNzNkYOtWpt8SPAU3OTSqv8BB9BGNbQrg_In1bEyVtmAUStSVxG8u5F8lMteCI7fuk_vxi0pPK7iDzpFXkzG_KmhaI6JwR3dGOsVt4geJXRrvKofipMp1gt3vclRavn_Yk5z8OEuXUUuhVz2XyMASXnvtL-83UEJdA98m5dPNz0vUiOyGZhd_33UtfPbO74IZNNHB1qG4LZ1NiSJVZO4',
+        gameType: 'listen-click'
+    },
+    {
+        id: 'lion-king',
+        name: 'Lion King',
+        subtitle: 'Roar Challenge',
+        skill: 'SPEAKING',
+        skillIcon: 'record_voice_over',
+        color: 'orange',
+        stars: 250,
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAQ2_7s6grA6ry3ml6FnypYXXQskL_MTgbfc_G5aKTAO0Cw26yPGdVmcLp_Ia201A1XwhGhSw1qNRLNMPxPRY_b4DeeIxN6ZREo7AELuC5ROGbqcbm87nOPiHhBJ7KSi5dkgS-RdMhu510MJVyfOWXO5p3FHBolD_eSFwld6sX-fcQg0brGjTJs_xwnxxxXbZRMhEfFxrt0B8qGgborb3-qITl7PtM7yzSHdonHLKUiOg2jqQYMlz7i4SY0uX0jNeSzMLDwgIwZroY',
+        gameType: 'speak-match'
+    },
+    {
+        id: 'cat',
+        name: 'Cat & Kitten',
+        subtitle: 'Word Puzzle',
+        skill: 'VOCABULARY',
+        skillIcon: 'menu_book',
+        color: 'pink',
+        stars: 320,
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAKidgnAxowO1QfYZ_dDe-FTxUQxWbic6eQVAjb-hGsy8Ab_Lx-63cpjYAels3ZRAvOFkh9yx59g_Y8zA_ZgUpbcXcmdRNyS537yMAeAqbZPP9zbvQbXo_ePu3OuigQ-PXsFkWswOi6my0ZkFTRHB6iHJlbK3vDv07bVVBJnTZb1aWVP-_rRPy5cVbPOeujI3nRLZD_yW5zdA559Y514NVAoj7Qm_1vFmgCwuA_scDi888loFnxxgXrx1v221ZCa5e-IpyCfjPlJCk',
+        gameType: 'word-match'
+    },
+    {
+        id: 'bunny',
+        name: 'Bunny Hop',
+        subtitle: 'Listen & Click',
+        skill: 'LISTENING',
+        skillIcon: 'hearing',
+        color: 'primary',
+        stars: 120,
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD_2kT-byY3bM7YlgtQjXq7QjY_QgOGNpewACSIyNodDLsgiWghaKsnA8soJV91nS1HwFAf9W6QSJGhfC_T5M4MKkajXzDVdXvvkSiNy5G2tlyIUcB1HjQmesCP5ycdgAW_25gKcTawX-LtkD1SWkEQegDLv270KoeR7OUzSRuWp4yQGj0CHRq4XnDst1-xJxx71u6Ruij6spd1vrm89uDU_hqF48SKUCC3DHhFqBmf873h8a4uhbLtkzCoUuzjy_vUXdQ4GGOe3I0',
+        gameType: 'listen-click'
+    }
+]
+
+// More topics - other vocabulary categories
+const MORE_TOPICS = [
+    {
+        id: 'family',
+        name: 'My Family',
+        subtitle: 'Word Match',
+        skill: 'VOCABULARY',
+        skillIcon: 'menu_book',
+        color: 'pink',
+        stars: 85,
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAa-D_16tkmmLlQK6de_4ARj0fGpfsFTEKg2dgMX2f9V42cOaGhpMwslqMo1JALBSiuZfokKVhPLe9Vlz-5lcXH9qBL9deTI7MLwg3AHw_C2aYEOnagdLvmDdn7X34riT023UnkNp6vIe44m7yodoFQrXvOXvqhxyrUxL9fD1EUZ_3z2liM1xP-Q87W-KDf66sa-MyC2MmVMCY-V7Rp7I1FCosQob6vpHCCuB14_tlqlZEA0-gtnR7YTkaCMjB3JXlAjgajaNiexpQ',
+        gameType: 'word-match'
+    },
+    {
+        id: 'routines',
+        name: 'Daily Routines',
+        subtitle: 'Sentence Builder',
+        skill: 'GRAMMAR',
+        skillIcon: 'edit',
+        color: 'yellow',
+        stars: 40,
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAqEAi1c6fc-n4BsihOb3lE-Pbe8MKVixuHLe2-KXzSIL-Fu5fHX_lIOxu_31rtLqyN5vyaR_KaUEPUBiLKo7VuzNJvfd11YsbaDAb_Mxe2dLxUH1bJCHn-AiSHCOkIeNX5tkzgxuoJjUUO44cgBwFanp5rRjY5am68IkRmHo0wx64RhPgiLoOthjjaWIgADnAEc4hOxlqmGYTi9-zliEWfUW8PyZrGvQKlZ3szoMKSvptneh-SdpIXZq0AbtsI0GuMciU5tfOwGtA',
+        gameType: 'sentence-builder'
+    },
+    {
+        id: 'house',
+        name: 'My House',
+        subtitle: 'Speak Match',
+        skill: 'SPEAKING',
+        skillIcon: 'record_voice_over',
+        color: 'primary',
+        stars: 210,
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCxmRMVM5Til8HoSOgyoa7DZJBTMXAEr6-7Cjy8w8QAIE9X6pIq50Wti7FmqnO8cnGPoNN8P4z0LzZZ5xE5IJmw5DV3nTxBA4Cf-nlLJVkOGAW-Xnecdqd73fAqfjEeeIVN0zXELpKcz5cAU2O0lFv5NIsW1cIHlNLN2_kdZoyYrzpsSdKgED3tVeIw-aRId3yOPa-UvW8zJn6VpPHUwI4OQniRiJvTgof3g4q7nWvyzCoTd0DCpovg2IDSaxC3hD025QlkkR4EGjs',
+        gameType: 'speak-match'
+    }
+]
+
+// Miss Phuong's Favorites
+const FAVORITES = [
+    { id: 'space', name: 'Space Adventure', subtitle: 'AI Grammar Quest', icon: 'rocket_launch', color: 'primary' },
+    { id: 'sing', name: 'Sing Along', subtitle: 'Phonics Karaoke', icon: 'music_note', color: 'pink' }
+]
+
+export default function GameSelection() {
     const navigate = useNavigate()
+    const [searchTerm, setSearchTerm] = useState('')
 
     useEffect(() => {
         const student = localStorage.getItem('current_student')
@@ -14,103 +104,161 @@ export default function MinigameSelection() {
         }
     }, [navigate])
 
+    const getColorClass = (color) => {
+        switch (color) {
+            case 'pink': return 'accent-pink'
+            case 'yellow': return 'accent-yellow'
+            case 'purple': return 'accent-purple'
+            case 'orange': return 'accent-orange'
+            default: return 'primary'
+        }
+    }
+
+    // Filter games by search
+    const filteredAnimalGames = ANIMAL_GAMES.filter(game =>
+        game.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        game.subtitle.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+
+    const filteredTopics = MORE_TOPICS.filter(topic =>
+        topic.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        topic.subtitle.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+
     return (
-        <div className="games-page">
-            {/* Top App Bar */}
-            <header className="games-header">
-                <div className="header-avatar">
+        <div className="game-selection-page">
+            {/* Header */}
+            <header className="selection-header">
+                <div className="avatar-circle">
                     <div
-                        className="avatar-sm"
-                        style={{ backgroundImage: `url(${IMAGES.missPhuong})` }}
-                    ></div>
+                        className="avatar-img"
+                        style={{
+                            backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuAENY7W2ZLjFE5dt6rBLkkTYwoDNTKKq-qweCaDBCYXz5j5QLk2N4eLTNvUjIIqhmQdC-VUr2E8bORWvnHyj31umYK_6BSSwOO7MOV5BX4Pl-OyLR90iqYunAwL5uua2Y50yjfaWfuh7EleQ0Z-VfAkzsunWQGTGFpROoWM-qPkz25Oqj5QkTHlvLY2thOe-aUhYQ1dUFupTEac619fFNPl_ja5BsRgslndSq94clrnFWl77vz5raDDHyEV2Jp_XozMSl4TlW-hS98")`
+                        }}
+                    />
                 </div>
-                <h1>Game Time!</h1>
-                <button className="icon-btn toy-shadow">
+                <h1 className="header-title">Game Time!</h1>
+                <button className="notification-btn toy-shadow">
                     <span className="material-symbols-outlined">notifications</span>
                 </button>
             </header>
 
             {/* Search Bar */}
             <div className="search-container">
-                <label className="search-box toy-shadow">
+                <div className="search-box toy-shadow">
                     <span className="material-symbols-outlined search-icon">search</span>
                     <input
                         type="text"
                         placeholder="Search for a game..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                     />
-                </label>
+                </div>
             </div>
 
-            {/* Section Header */}
-            <div className="section-header">
-                <h2>Choose a Category</h2>
-                <span className="view-all">View All</span>
-            </div>
-
-            {/* Category Grid */}
-            <div className="category-grid">
-                {GAME_CATEGORIES.map(category => (
-                    <Link
-                        key={category.id}
-                        to={`/student/game/${category.id}`}
-                        className="category-tile toy-shadow"
-                        style={{ '--cat-color': category.color }}
-                    >
-                        <div
-                            className="tile-image"
-                            style={{
-                                backgroundColor: `${category.color}1A`,
-                                backgroundImage: `url(${category.image})`
-                            }}
+            {/* Animals Adventure Section */}
+            <section className="games-section">
+                <div className="section-header">
+                    <h2>Animals Adventure</h2>
+                    <span className="view-all">View All</span>
+                </div>
+                <div className="horizontal-scroll no-scrollbar">
+                    {filteredAnimalGames.map(game => (
+                        <Link
+                            key={game.id}
+                            to={`/student/game/${game.id}/detail`}
+                            className={`mini-game-card toy-shadow border-${getColorClass(game.color)}`}
                         >
-                            <div className="tile-stars">
-                                <span className="material-symbols-outlined">star</span>
-                                {category.stars}
+                            <div className={`card-image bg-${getColorClass(game.color)}`}>
+                                <img src={game.image} alt={game.name} />
+                                <div className={`star-badge text-${getColorClass(game.color)}`}>
+                                    <span className="material-symbols-outlined">star</span>
+                                    <span>{game.stars}</span>
+                                </div>
+                            </div>
+                            <div className="card-content">
+                                <p className="card-name">{game.name}</p>
+                                <p className="card-subtitle">{game.subtitle}</p>
+                                <div className={`skill-badge bg-${getColorClass(game.color)}`}>
+                                    <span className={`material-symbols-outlined text-${getColorClass(game.color)}`}>
+                                        {game.skillIcon}
+                                    </span>
+                                    <span className={`text-${getColorClass(game.color)}`}>
+                                        {game.skill}
+                                    </span>
+                                </div>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </section>
+
+            {/* More Topics Section */}
+            <section className="games-section">
+                <div className="section-header">
+                    <h2>More Topics</h2>
+                </div>
+                <div className="topics-grid">
+                    {filteredTopics.map(topic => (
+                        <Link
+                            key={topic.id}
+                            to={`/student/game/${topic.id}/detail`}
+                            className={`topic-card toy-shadow border-${getColorClass(topic.color)}`}
+                        >
+                            <div className={`card-image bg-${getColorClass(topic.color)}`}>
+                                <div
+                                    className="topic-illustration"
+                                    style={{ backgroundImage: `url(${topic.image})` }}
+                                />
+                                <div className={`star-badge text-${getColorClass(topic.color)}`}>
+                                    <span className="material-symbols-outlined">star</span>
+                                    <span>{topic.stars}</span>
+                                </div>
+                            </div>
+                            <div className="card-content">
+                                <p className="card-name">{topic.name}</p>
+                                <p className="card-subtitle">{topic.subtitle}</p>
+                                <div className={`skill-badge bg-${getColorClass(topic.color)}`}>
+                                    <span className={`material-symbols-outlined text-${getColorClass(topic.color)}`}>
+                                        {topic.skillIcon}
+                                    </span>
+                                    <span className={`text-${getColorClass(topic.color)}`}>
+                                        {topic.skill}
+                                    </span>
+                                </div>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </section>
+
+            {/* Miss Phuong's Favorites */}
+            <section className="games-section">
+                <div className="section-header">
+                    <h2>Miss Phượng's Favorites</h2>
+                </div>
+                <div className="horizontal-scroll no-scrollbar">
+                    {FAVORITES.map(fav => (
+                        <div
+                            key={fav.id}
+                            className={`favorite-card toy-shadow bg-${getColorClass(fav.color)}`}
+                        >
+                            <div className={`fav-icon bg-${getColorClass(fav.color)}-dark`}>
+                                <span className={`material-symbols-outlined text-${getColorClass(fav.color)}`}>
+                                    {fav.icon}
+                                </span>
+                            </div>
+                            <div className="fav-content">
+                                <p className="fav-name">{fav.name}</p>
+                                <p className="fav-subtitle">{fav.subtitle}</p>
                             </div>
                         </div>
-                        <div className="tile-info">
-                            <p className="tile-name">{category.name}</p>
-                            <p className="tile-subtitle">{category.subtitle}</p>
-                            <div className="tile-badge" style={{ backgroundColor: `${category.color}1A` }}>
-                                <span className="material-symbols-outlined" style={{ color: category.color }}>{category.icon}</span>
-                                <span style={{ color: category.color }}>{category.skillType}</span>
-                            </div>
-                        </div>
-                    </Link>
-                ))}
-            </div>
-
-            {/* Miss Phuong's Favorites Section */}
-            <div className="section-header favorites-header">
-                <h3>Miss Phượng's Favorites</h3>
-            </div>
-
-            {/* Horizontal Scroll Section */}
-            <div className="favorites-scroll no-scrollbar">
-                <div className="favorite-card toy-shadow" style={{ backgroundColor: 'rgba(38, 217, 217, 0.1)' }}>
-                    <div className="fav-icon" style={{ backgroundColor: 'rgba(38, 217, 217, 0.2)' }}>
-                        <span className="material-symbols-outlined" style={{ color: 'var(--color-primary)' }}>rocket_launch</span>
-                    </div>
-                    <div className="fav-info">
-                        <p className="fav-name">Space Adventure</p>
-                        <p className="fav-subtitle">AI Grammar Quest</p>
-                    </div>
+                    ))}
                 </div>
-                <div className="favorite-card toy-shadow" style={{ backgroundColor: 'rgba(255, 140, 190, 0.1)' }}>
-                    <div className="fav-icon" style={{ backgroundColor: 'rgba(255, 140, 190, 0.2)' }}>
-                        <span className="material-symbols-outlined" style={{ color: 'var(--color-secondary-pink)' }}>music_note</span>
-                    </div>
-                    <div className="fav-info">
-                        <p className="fav-name">Sing Along</p>
-                        <p className="fav-subtitle">Phonics Karaoke</p>
-                    </div>
-                </div>
-            </div>
+            </section>
 
             {/* Floating Surprise Button */}
-            <button className="surprise-fab">
+            <button className="surprise-btn">
                 <span className="material-symbols-outlined">casino</span>
             </button>
 
@@ -118,19 +266,19 @@ export default function MinigameSelection() {
             <nav className="bottom-nav">
                 <Link to="/student/home" className="nav-item">
                     <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 0" }}>home</span>
-                    <span>Home</span>
+                    <span>HOME</span>
                 </Link>
                 <Link to="/student/games" className="nav-item active">
                     <span className="material-symbols-outlined">videogame_asset</span>
-                    <span>Games</span>
+                    <span>GAMES</span>
                 </Link>
                 <Link to="/student/videos" className="nav-item">
                     <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 0" }}>movie</span>
-                    <span>Videos</span>
+                    <span>VIDEOS</span>
                 </Link>
                 <Link to="/student/rankings" className="nav-item">
                     <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 0" }}>leaderboard</span>
-                    <span>Rank</span>
+                    <span>RANK</span>
                 </Link>
             </nav>
         </div>

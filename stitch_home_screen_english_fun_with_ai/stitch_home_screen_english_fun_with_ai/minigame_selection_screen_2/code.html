@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Game Detail - Animals</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#26d9d9",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#122020",
+                        "accent-yellow": "#FCCD2B",
+                        "accent-pink": "#FF8CBE",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">.material-symbols-outlined {
+    font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.toy-shadow {
+    box-shadow: 0 8px 0 rgba(0, 0, 0, 0.05)
+    }
+.btn-shadow {
+    box-shadow: 0 6px 0 #1ba9a9
+    }
+.btn-shadow:active {
+    box-shadow: 0 2px 0 #1ba9a9;
+    transform: translatey(4px)
+    }
+.paw-pattern {
+    background-color: transparent;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCbFWmOirqUfoZ7p0Cn2L228DAbYrCWR0Annm_iJVLSqOdwEKD6npF994f73viLpjHVfOlk8TmJhlnr3C9gNQ7aHY7XGCbEPE4YTlVASWn_DIv78mg2xJyfrX3fFaBL21qmrhzvThI-Sogcil2Mj8-AyBZyhuXoj5XCC-nc54vnyLFp6nMC2P74D8BvifORSrbsujMtfbyXni6W2G6E1tDcHg92tHqRZ2KvlVuYP0HVXuwqcDnzmE7HOt69Okn2g0wUerKisFB9qQg)
+    }</style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-[#0f1a1a] dark:text-white paw-pattern">
+<div class="relative flex min-h-screen w-full flex-col max-w-[480px] mx-auto overflow-x-hidden pb-32">
+<header class="sticky top-0 z-20 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-4 py-4 flex items-center justify-between">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-white dark:bg-gray-800 toy-shadow">
+<span class="material-symbols-outlined text-[#0f1a1a] dark:text-white leading-none">arrow_back_ios_new</span>
+</button>
+<h1 class="text-[#0f1a1a] dark:text-white text-lg font-bold leading-tight flex-1 text-center">Animals</h1>
+<div class="flex w-10 items-center justify-end">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-white dark:bg-gray-800 toy-shadow">
+<span class="material-symbols-outlined text-[#0f1a1a] dark:text-white">favorite</span>
+</button>
+</div>
+</header>
+<main class="flex-1 px-6 flex flex-col items-center">
+<div class="mt-4 w-full aspect-[4/3] bg-primary/10 rounded-3xl relative flex items-center justify-center overflow-hidden border-4 border-white dark:border-gray-800 shadow-xl">
+<div class="w-64 h-64 bg-center bg-no-repeat bg-contain" data-alt="Large illustration of friendly animals" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD_2kT-byY3bM7YlgtQjXq7QjY_QgOGNpewACSIyNodDLsgiWghaKsnA8soJV91nS1HwFAf9W6QSJGhfC_T5M4MKkajXzDVdXvvkSiNy5G2tlyIUcB1HjQmesCP5ycdgAW_25gKcTawX-LtkD1SWkEQegDLv270KoeR7OUzSRuWp4yQGj0CHRq4XnDst1-xJxx71u6Ruij6spd1vrm89uDU_hqF48SKUCC3DHhFqBmf873h8a4uhbLtkzCoUuzjy_vUXdQ4GGOe3I0");'></div>
+<div class="absolute top-4 right-4 bg-accent-yellow px-4 py-2 rounded-2xl shadow-lg border-2 border-white flex flex-col items-center rotate-6">
+<span class="text-[10px] font-black text-[#0f1a1a] uppercase leading-none">High Score</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-[#0f1a1a]">star</span>
+<span class="text-lg font-black text-[#0f1a1a]">1,240</span>
+</div>
+</div>
+</div>
+<div class="mt-8 text-center space-y-3">
+<div class="inline-flex items-center gap-2 bg-primary/10 px-3 py-1 rounded-full">
+<span class="material-symbols-outlined text-primary text-sm">hearing</span>
+<span class="text-primary text-[10px] font-black uppercase tracking-widest leading-none">Listening Skill</span>
+</div>
+<h2 class="text-3xl font-black text-[#0f1a1a] dark:text-white leading-tight">Animals - Listen &amp; Click</h2>
+<p class="text-gray-500 dark:text-gray-400 text-base font-medium px-4">
+                Listen to the sound and tap the correct animal! How many can you get right?
+            </p>
+</div>
+<div class="mt-8 grid grid-cols-3 gap-4 w-full">
+<div class="bg-white dark:bg-gray-800 p-3 rounded-2xl toy-shadow flex flex-col items-center justify-center gap-1">
+<span class="material-symbols-outlined text-primary">timer</span>
+<span class="text-[10px] font-bold text-gray-400 uppercase">2 Mins</span>
+</div>
+<div class="bg-white dark:bg-gray-800 p-3 rounded-2xl toy-shadow flex flex-col items-center justify-center gap-1">
+<span class="material-symbols-outlined text-accent-pink">bolt</span>
+<span class="text-[10px] font-bold text-gray-400 uppercase">Easy</span>
+</div>
+<div class="bg-white dark:bg-gray-800 p-3 rounded-2xl toy-shadow flex flex-col items-center justify-center gap-1">
+<span class="material-symbols-outlined text-accent-yellow">workspace_premium</span>
+<span class="text-[10px] font-bold text-gray-400 uppercase">XP +50</span>
+</div>
+</div>
+</main>
+<div class="mt-auto px-6 pt-10 pb-4 flex flex-col items-center w-full">
+<button class="w-full bg-primary py-5 rounded-2xl text-white text-xl font-black uppercase tracking-widest btn-shadow flex items-center justify-center gap-3">
+<span class="material-symbols-outlined text-3xl">play_circle</span>
+            PLAY NOW
+        </button>
+<p class="mt-6 text-xs font-bold text-gray-400 uppercase tracking-tighter">Requires Level 2 to unlock hard mode</p>
+</div>
+<nav class="fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto bg-white/90 dark:bg-background-dark/90 backdrop-blur-xl border-t border-gray-200 dark:border-gray-800 px-6 py-4 flex items-center justify-between z-40">
+<button class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0">home</span>
+<span class="text-[10px] font-bold">HOME</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined">videogame_asset</span>
+<span class="text-[10px] font-bold">GAMES</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0">movie</span>
+<span class="text-[10px] font-bold">VIDEOS</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0">leaderboard</span>
+<span class="text-[10px] font-bold">RANK</span>
+</button>
+</nav>
+</div>
+
+</body></html>

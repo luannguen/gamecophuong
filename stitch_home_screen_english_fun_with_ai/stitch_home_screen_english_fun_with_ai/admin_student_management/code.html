@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#34b292",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#131f1c",
+                        "accent-gold": "#F5CE50",
+                        "danger": "#DD6B6B"
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Admin Student Management</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#101917] dark:text-white transition-colors duration-300">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Header Section -->
+<header class="sticky top-0 z-10 flex items-center bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md p-4 pb-2 justify-between">
+<div class="flex items-center gap-3">
+<div class="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined">school</span>
+</div>
+<h1 class="text-xl font-bold leading-tight tracking-tight">Students</h1>
+</div>
+<button class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-primary/20 transition-transform active:scale-95">
+<span class="material-symbols-outlined">person_add</span>
+</button>
+</header>
+<!-- Search & Filter Bar -->
+<div class="px-4 py-3">
+<div class="flex flex-col gap-4">
+<label class="flex h-12 w-full items-stretch">
+<div class="flex w-full flex-1 items-stretch rounded-xl bg-white dark:bg-[#1e2a27] shadow-sm border border-[#e9f1ef] dark:border-[#2d3a37]">
+<div class="flex items-center justify-center pl-4 text-primary">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="w-full border-none bg-transparent px-3 text-base font-normal focus:ring-0 placeholder:text-gray-400 dark:placeholder:text-gray-500" placeholder="Search by name or ID..."/>
+</div>
+</label>
+<!-- Chips / Filters -->
+<div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+<button class="flex h-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary px-4 text-white text-sm font-semibold">
+                        All Classes
+                    </button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-2 rounded-full bg-white dark:bg-[#1e2a27] border border-[#e9f1ef] dark:border-[#2d3a37] px-4 text-sm font-medium">
+                        Grade 5A <span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-2 rounded-full bg-white dark:bg-[#1e2a27] border border-[#e9f1ef] dark:border-[#2d3a37] px-4 text-sm font-medium">
+                        Evening English <span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-2 rounded-full bg-white dark:bg-[#1e2a27] border border-[#e9f1ef] dark:border-[#2d3a37] px-4 text-sm font-medium">
+                        Grade 4B <span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Section Header -->
+<div class="flex items-center justify-between px-4 pt-2">
+<h3 class="text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Student Directory (42)</h3>
+<span class="material-symbols-outlined text-primary">sort</span>
+</div>
+<!-- Student Data Cards (List) -->
+<main class="flex flex-col gap-4 p-4">
+<!-- Student Card 1 -->
+<div class="flex flex-col rounded-xl bg-white dark:bg-[#1e2a27] p-4 shadow-[0_4px_12px_rgba(0,0,0,0.05)] border border-[#f0f3f4] dark:border-[#2d3a37]">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-full bg-cover bg-center ring-2 ring-primary/20" data-alt="portrait of a happy young boy student" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB6eYpxofCjixVGXFcDg3xYu7B9ewk6RR6OW3ZIeckjvaJDDdJSiPRvzj-vokd12l-nigzgYwpUt2KIzPvNxqCjWAb6rv3S_W5X0TqLSYe6Ogy2vLw_H4PaWV-bz4raQ74WKIPxATKymae-g2Ci6i8zE6QP2N_kz5e8eiyQTAxvHeLL2HuJCQ1pHSBPl0QE8Q_6zZY0yBHEZhu-kkuzDRJsLIXTy23HNmmQbGzq66loHBJWx1gCmz_Ca1GqAzL1sqis0tCcv3zs8D4');"></div>
+<div>
+<h4 class="text-base font-bold text-[#101917] dark:text-white">Nguyen An</h4>
+<p class="text-xs font-medium text-primary">ID: MS-2024-001</p>
+</div>
+</div>
+<span class="inline-flex items-center rounded-full bg-green-100 dark:bg-green-900/30 px-2.5 py-0.5 text-xs font-bold text-green-700 dark:text-green-400">
+                        ACTIVE
+                    </span>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-3 gap-2 mb-4">
+<div class="rounded-lg bg-background-light dark:bg-[#131f1c] p-2 flex flex-col items-center justify-center border border-[#e9f1ef] dark:border-[#2d3a37]">
+<span class="text-[10px] uppercase font-bold text-gray-400">Class</span>
+<span class="text-sm font-bold">5A</span>
+</div>
+<div class="rounded-lg bg-accent-gold/10 p-2 flex flex-col items-center justify-center border border-accent-gold/20">
+<span class="text-[10px] uppercase font-bold text-accent-gold">Points</span>
+<span class="text-sm font-bold text-accent-gold">2,450</span>
+</div>
+<div class="rounded-lg bg-background-light dark:bg-[#131f1c] p-2 flex flex-col items-center justify-center border border-[#e9f1ef] dark:border-[#2d3a37]">
+<span class="text-[10px] uppercase font-bold text-gray-400">Games</span>
+<span class="text-sm font-bold">142</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex gap-2 border-t border-[#f0f3f4] dark:border-[#2d3a37] pt-4">
+<button class="flex-1 flex h-10 items-center justify-center gap-2 rounded-lg bg-primary/10 text-primary font-bold text-sm">
+<span class="material-symbols-outlined text-[18px]">bar_chart</span>
+                        Stats
+                    </button>
+<button class="flex-1 flex h-10 items-center justify-center gap-2 rounded-lg bg-background-light dark:bg-[#131f1c] text-[#101917] dark:text-white font-bold text-sm border border-[#e9f1ef] dark:border-[#2d3a37]">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+                        Edit
+                    </button>
+<button class="flex size-10 items-center justify-center rounded-lg bg-danger/10 text-danger border border-danger/20">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+<!-- Student Card 2 -->
+<div class="flex flex-col rounded-xl bg-white dark:bg-[#1e2a27] p-4 shadow-[0_4px_12px_rgba(0,0,0,0.05)] border border-[#f0f3f4] dark:border-[#2d3a37]">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-full bg-cover bg-center ring-2 ring-primary/20" data-alt="portrait of a smiling young girl student" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDsBcfFng3h5RZnNOdW8UOiSYnhRbXBnpZszSul67-RQrA7mf4vBO8vKpY7Gu1XN-8axPpRMEvqpbqcgO5a94tX60ACR6KuM7unY59oAmWLbdgTDKeNgiyZhcaaQTYLNjykMbl_WJQWWQzFtFyWwoHU0gNVb3Ll3q7aj_Bp6De_MeL01XKxDC338qmI_7086VUkICX9F0Czy8YprV-1pBJcd87678G2reLr6NL93fjQ8aBMTbPyVDais0QgNMzPHelYp8G0T4o3n6M');"></div>
+<div>
+<h4 class="text-base font-bold text-[#101917] dark:text-white">Le Minh Thu</h4>
+<p class="text-xs font-medium text-primary">ID: MS-2024-045</p>
+</div>
+</div>
+<span class="inline-flex items-center rounded-full bg-gray-100 dark:bg-gray-800 px-2.5 py-0.5 text-xs font-bold text-gray-500 dark:text-gray-400">
+                        INACTIVE
+                    </span>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-3 gap-2 mb-4">
+<div class="rounded-lg bg-background-light dark:bg-[#131f1c] p-2 flex flex-col items-center justify-center border border-[#e9f1ef] dark:border-[#2d3a37]">
+<span class="text-[10px] uppercase font-bold text-gray-400">Class</span>
+<span class="text-sm font-bold text-gray-500">Eve-Eng</span>
+</div>
+<div class="rounded-lg bg-accent-gold/10 p-2 flex flex-col items-center justify-center border border-accent-gold/20">
+<span class="text-[10px] uppercase font-bold text-accent-gold">Points</span>
+<span class="text-sm font-bold text-accent-gold">890</span>
+</div>
+<div class="rounded-lg bg-background-light dark:bg-[#131f1c] p-2 flex flex-col items-center justify-center border border-[#e9f1ef] dark:border-[#2d3a37]">
+<span class="text-[10px] uppercase font-bold text-gray-400">Games</span>
+<span class="text-sm font-bold text-gray-500">24</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex gap-2 border-t border-[#f0f3f4] dark:border-[#2d3a37] pt-4">
+<button class="flex-1 flex h-10 items-center justify-center gap-2 rounded-lg bg-primary/10 text-primary font-bold text-sm">
+<span class="material-symbols-outlined text-[18px]">bar_chart</span>
+                        Stats
+                    </button>
+<button class="flex-1 flex h-10 items-center justify-center gap-2 rounded-lg bg-background-light dark:bg-[#131f1c] text-[#101917] dark:text-white font-bold text-sm border border-[#e9f1ef] dark:border-[#2d3a37]">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+                        Edit
+                    </button>
+<button class="flex size-10 items-center justify-center rounded-lg bg-danger/10 text-danger border border-danger/20">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+<!-- Student Card 3 -->
+<div class="flex flex-col rounded-xl bg-white dark:bg-[#1e2a27] p-4 shadow-[0_4px_12px_rgba(0,0,0,0.05)] border border-[#f0f3f4] dark:border-[#2d3a37]">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-full bg-cover bg-center ring-2 ring-primary/20" data-alt="portrait of a confident elementary school boy" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCRQyF-sWRZheYxJiLxcL3nPc6QEHMcpbTJseVM8kSSP2Rb4cICGEdI5aS9uu2Y1s9Ma8GLtj0_8RY4O8lzy4QCKwlQK0JsV46tk-tg3YvftVvBFPGXsBOqWblfAH2VBroOUJAL6HNJDAmpatJioM6Hyl6C-1iTjZVzC8wr4DIts_qUGOuibdloIPCRF7uOq6rgegcGSx-mS7bhkb37XTGDaGQeEaveocYY_dIlDV5rFS9XKc3Jx8j8O3GH0TuFAU6D3gRo7S0sH6E');"></div>
+<div>
+<h4 class="text-base font-bold text-[#101917] dark:text-white">Phan Quoc Bao</h4>
+<p class="text-xs font-medium text-primary">ID: MS-2024-012</p>
+</div>
+</div>
+<span class="inline-flex items-center rounded-full bg-green-100 dark:bg-green-900/30 px-2.5 py-0.5 text-xs font-bold text-green-700 dark:text-green-400">
+                        ACTIVE
+                    </span>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-3 gap-2 mb-4">
+<div class="rounded-lg bg-background-light dark:bg-[#131f1c] p-2 flex flex-col items-center justify-center border border-[#e9f1ef] dark:border-[#2d3a37]">
+<span class="text-[10px] uppercase font-bold text-gray-400">Class</span>
+<span class="text-sm font-bold">5B</span>
+</div>
+<div class="rounded-lg bg-accent-gold/10 p-2 flex flex-col items-center justify-center border border-accent-gold/20">
+<span class="text-[10px] uppercase font-bold text-accent-gold">Points</span>
+<span class="text-sm font-bold text-accent-gold">1,820</span>
+</div>
+<div class="rounded-lg bg-background-light dark:bg-[#131f1c] p-2 flex flex-col items-center justify-center border border-[#e9f1ef] dark:border-[#2d3a37]">
+<span class="text-[10px] uppercase font-bold text-gray-400">Games</span>
+<span class="text-sm font-bold">98</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex gap-2 border-t border-[#f0f3f4] dark:border-[#2d3a37] pt-4">
+<button class="flex-1 flex h-10 items-center justify-center gap-2 rounded-lg bg-primary/10 text-primary font-bold text-sm">
+<span class="material-symbols-outlined text-[18px]">bar_chart</span>
+                        Stats
+                    </button>
+<button class="flex-1 flex h-10 items-center justify-center gap-2 rounded-lg bg-background-light dark:bg-[#131f1c] text-[#101917] dark:text-white font-bold text-sm border border-[#e9f1ef] dark:border-[#2d3a37]">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+                        Edit
+                    </button>
+<button class="flex size-10 items-center justify-center rounded-lg bg-danger/10 text-danger border border-danger/20">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Footer Padding for iOS Notch/Home Bar -->
+<div class="h-20 bg-transparent"></div>
+<!-- Navigation Bar (Simulated) -->
+<nav class="fixed bottom-0 w-full border-t border-[#e9f1ef] dark:border-[#2d3a37] bg-white/90 dark:bg-background-dark/90 backdrop-blur-lg px-6 py-3 flex justify-between items-center z-20">
+<div class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-bold">Home</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-bold">Students</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined">joystick</span>
+<span class="text-[10px] font-bold">Games</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined">translate</span>
+<span class="text-[10px] font-bold">Words</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-bold">Admin</span>
+</div>
+</nav>
+</div>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

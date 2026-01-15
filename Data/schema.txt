@@ -1,0 +1,322 @@
+-- ============================================================================
+-- English Fun with AI - Database Schema
+-- Supabase PostgreSQL
+-- ============================================================================
+
+-- Enable UUID extension
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- ============================================================================
+-- CORE TABLES
+-- ============================================================================
+
+-- Students Table
+CREATE TABLE students (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  display_name VARCHAR(100) NOT NULL,
+  avatar_url TEXT,
+  pin_code VARCHAR(6) UNIQUE NOT NULL,
+  qr_code VARCHAR(50) UNIQUE NOT NULL,
+  auth_user_id UUID, -- Link to Supabase auth.users if using auth
+  total_score INTEGER DEFAULT 0,
+  total_stars INTEGER DEFAULT 0,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Categories Table
+CREATE TABLE categories (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name VARCHAR(100) NOT NULL,
+  slug VARCHAR(100) UNIQUE NOT NULL,
+  description TEXT,
+  icon_url TEXT,
+  color_code VARCHAR(7), -- Hex color for UI
+  sort_order INTEGER DEFAULT 0,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Vocabulary Table
+CREATE TABLE vocabulary (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  category_id UUID REFERENCES categories(id) ON DELETE SET NULL,
+  word VARCHAR(100) NOT NULL,
+  meaning VARCHAR(200) NOT NULL,
+  pronunciation VARCHAR(100),
+  image_url TEXT,
+  audio_url TEXT,
+  difficulty_level VARCHAR(20) DEFAULT 'beginner', -- beginner, intermediate, advanced
+  usage_example TEXT,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Mini Games Table
+CREATE TABLE mini_games (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name VARCHAR(100) NOT NULL,
+  slug VARCHAR(100) UNIQUE NOT NULL,
+  game_type VARCHAR(50) NOT NULL, -- hide_and_seek, word_match, sentence_builder, etc.
+  skill_focus VARCHAR(50) NOT NULL, -- listening, vocabulary, grammar, speaking
+  description TEXT,
+  thumbnail_url TEXT,
+  max_stars INTEGER DEFAULT 3,
+  time_limit_seconds INTEGER, -- NULL = no time limit
+  min_score_for_3_stars INTEGER DEFAULT 900,
+  min_score_for_2_stars INTEGER DEFAULT 700,
+  min_score_for_1_star INTEGER DEFAULT 500,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- ============================================================================
+-- GAME SESSION TABLES
+-- ============================================================================
+
+-- Game Sessions Table
+CREATE TABLE game_sessions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  student_id UUID REFERENCES students(id) ON DELETE CASCADE,
+  game_id UUID REFERENCES mini_games(id) ON DELETE CASCADE,
+  category_id UUID REFERENCES categories(id) ON DELETE SET NULL,
+  start_time TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  end_time TIMESTAMP WITH TIME ZONE,
+  status VARCHAR(20) DEFAULT 'in_progress', -- in_progress, completed, abandoned
+  total_questions INTEGER DEFAULT 0,
+  correct_answers INTEGER DEFAULT 0,
+  score INTEGER DEFAULT 0,
+  stars_earned INTEGER DEFAULT 0,
+  time_spent_seconds INTEGER DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Game Answers Table (detailed tracking)
+CREATE TABLE game_answers (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  session_id UUID REFERENCES game_sessions(id) ON DELETE CASCADE,
+  vocabulary_id UUID REFERENCES vocabulary(id) ON DELETE SET NULL,
+  question_text TEXT,
+  student_answer TEXT,
+  correct_answer TEXT,
+  is_correct BOOLEAN NOT NULL,
+  time_spent_seconds INTEGER DEFAULT 0,
+  answered_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Scores Table (aggregated high scores)
+CREATE TABLE scores (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  student_id UUID REFERENCES students(id) ON DELETE CASCADE,
+  game_id UUID REFERENCES mini_games(id) ON DELETE CASCADE,
+  category_id UUID REFERENCES categories(id) ON DELETE SET NULL,
+  score INTEGER NOT NULL,
+  stars INTEGER DEFAULT 0,
+  completed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  UNIQUE(student_id, game_id, category_id) -- Keep only best score per student/game/category
+);
+
+-- ============================================================================
+-- CONTENT TABLES
+-- ============================================================================
+
+-- Videos Table
+CREATE TABLE videos (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  category_id UUID REFERENCES categories(id) ON DELETE SET NULL,
+  title VARCHAR(200) NOT NULL,
+  description TEXT,
+  video_url TEXT NOT NULL, -- YouTube URL or video file URL
+  thumbnail_url TEXT,
+  duration_seconds INTEGER,
+  view_count INTEGER DEFAULT 0,
+  is_featured BOOLEAN DEFAULT false,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Challenges Table
+CREATE TABLE challenges (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  title VARCHAR(200) NOT NULL,
+  description TEXT,
+  challenge_type VARCHAR(50), -- weekly, monthly, special
+  start_date TIMESTAMP WITH TIME ZONE NOT NULL,
+  end_date TIMESTAMP WITH TIME ZONE NOT NULL,
+  reward_points INTEGER DEFAULT 0,
+  reward_badge_url TEXT,
+  min_score_required INTEGER,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Challenge Participants Table
+CREATE TABLE challenge_participants (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  challenge_id UUID REFERENCES challenges(id) ON DELETE CASCADE,
+  student_id UUID REFERENCES students(id) ON DELETE CASCADE,
+  status VARCHAR(20) DEFAULT 'participating', -- participating, completed, failed
+  current_score INTEGER DEFAULT 0,
+  joined_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  completed_at TIMESTAMP WITH TIME ZONE,
+  UNIQUE(challenge_id, student_id)
+);
+
+-- ============================================================================
+-- RANKING TABLES
+-- ============================================================================
+
+-- Weekly Rankings Table
+CREATE TABLE weekly_rankings (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  week_start DATE NOT NULL,
+  week_end DATE NOT NULL,
+  student_id UUID REFERENCES students(id) ON DELETE CASCADE,
+  total_score INTEGER DEFAULT 0,
+  total_stars INTEGER DEFAULT 0,
+  games_played INTEGER DEFAULT 0,
+  rank INTEGER,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  UNIQUE(week_start, student_id)
+);
+
+-- ============================================================================
+-- ADMIN TABLES
+-- ============================================================================
+
+-- Admins Table
+CREATE TABLE admins (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  auth_user_id UUID UNIQUE NOT NULL, -- Link to Supabase auth.users
+  email VARCHAR(255) UNIQUE NOT NULL,
+  full_name VARCHAR(100),
+  role VARCHAR(20) DEFAULT 'admin', -- admin, super_admin
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Activity Logs Table
+CREATE TABLE activity_logs (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  student_id UUID REFERENCES students(id) ON DELETE SET NULL,
+  admin_id UUID REFERENCES admins(id) ON DELETE SET NULL,
+  action_type VARCHAR(50) NOT NULL, -- login, game_completed, score_achieved, admin_action
+  action_description TEXT,
+  metadata JSONB, -- Flexible field for additional data
+  ip_address INET,
+  user_agent TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- ============================================================================
+-- INDEXES for Performance
+-- ============================================================================
+
+-- Students
+CREATE INDEX idx_students_pin ON students(pin_code);
+CREATE INDEX idx_students_qr ON students(qr_code);
+CREATE INDEX idx_students_active ON students(is_active);
+
+-- Vocabulary
+CREATE INDEX idx_vocabulary_category ON vocabulary(category_id);
+CREATE INDEX idx_vocabulary_active ON vocabulary(is_active);
+CREATE INDEX idx_vocabulary_difficulty ON vocabulary(difficulty_level);
+
+-- Mini Games
+CREATE INDEX idx_minigames_type ON mini_games(game_type);
+CREATE INDEX idx_minigames_skill ON mini_games(skill_focus);
+CREATE INDEX idx_minigames_active ON mini_games(is_active);
+
+-- Game Sessions
+CREATE INDEX idx_sessions_student ON game_sessions(student_id);
+CREATE INDEX idx_sessions_game ON game_sessions(game_id);
+CREATE INDEX idx_sessions_status ON game_sessions(status);
+CREATE INDEX idx_sessions_start_time ON game_sessions(start_time DESC);
+
+-- Game Answers
+CREATE INDEX idx_answers_session ON game_answers(session_id);
+CREATE INDEX idx_answers_vocab ON game_answers(vocabulary_id);
+
+-- Scores
+CREATE INDEX idx_scores_student ON scores(student_id);
+CREATE INDEX idx_scores_game ON scores(game_id);
+CREATE INDEX idx_scores_score ON scores(score DESC);
+
+-- Videos
+CREATE INDEX idx_videos_category ON videos(category_id);
+CREATE INDEX idx_videos_featured ON videos(is_featured);
+CREATE INDEX idx_videos_active ON videos(is_active);
+
+-- Challenges
+CREATE INDEX idx_challenges_dates ON challenges(start_date, end_date);
+CREATE INDEX idx_challenges_active ON challenges(is_active);
+
+-- Weekly Rankings
+CREATE INDEX idx_rankings_week ON weekly_rankings(week_start);
+CREATE INDEX idx_rankings_student ON weekly_rankings(student_id);
+CREATE INDEX idx_rankings_rank ON weekly_rankings(rank);
+
+-- Activity Logs
+CREATE INDEX idx_activitylogs_student ON activity_logs(student_id);
+CREATE INDEX idx_activitylogs_action ON activity_logs(action_type);
+CREATE INDEX idx_activitylogs_created ON activity_logs(created_at DESC);
+
+-- ============================================================================
+-- TRIGGERS for auto-update timestamps
+-- ============================================================================
+
+-- Function to update updated_at timestamp
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Apply trigger to tables with updated_at
+CREATE TRIGGER update_students_updated_at BEFORE UPDATE ON students
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_vocabulary_updated_at BEFORE UPDATE ON vocabulary
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_minigames_updated_at BEFORE UPDATE ON mini_games
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_videos_updated_at BEFORE UPDATE ON videos
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_rankings_updated_at BEFORE UPDATE ON weekly_rankings
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_admins_updated_at BEFORE UPDATE ON admins
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- ============================================================================
+-- COMMENTS for Documentation
+-- ============================================================================
+
+COMMENT ON TABLE students IS 'Student accounts with PIN and QR code for quick login';
+COMMENT ON TABLE categories IS 'Learning categories (Animals, Family, etc.)';
+COMMENT ON TABLE vocabulary IS 'Vocabulary words with images and audio';
+COMMENT ON TABLE mini_games IS 'Available mini games with configuration';
+COMMENT ON TABLE game_sessions IS 'Individual game play sessions';
+COMMENT ON TABLE game_answers IS 'Detailed answers for each question in a session';
+COMMENT ON TABLE scores IS 'High scores for each student per game';
+COMMENT ON TABLE videos IS 'Educational videos for Watch & Learn';
+COMMENT ON TABLE challenges IS 'Time-limited challenges (weekly, monthly)';
+COMMENT ON TABLE challenge_participants IS 'Students participating in challenges';
+COMMENT ON TABLE weekly_rankings IS 'Weekly leaderboard rankings';
+COMMENT ON TABLE admins IS 'Admin users with access to dashboard';
+COMMENT ON TABLE activity_logs IS 'System activity logs for monitoring';
+
+-- ============================================================================
+-- SCHEMA COMPLETE
+-- ============================================================================

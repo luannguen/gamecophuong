@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Dashboard Overview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1a545b",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#131d1f",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-[#101819] dark:text-slate-200 min-h-screen pb-24">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-30 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+<div class="flex items-center p-4 justify-between max-w-xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="bg-primary/10 p-1 rounded-lg">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-md size-10 border-2 border-primary/20" data-alt="Professional portrait of teacher Miss Phượng" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDjO3MfiwXKxTvj5k6CqlIHkpImnLQ3oqn0mR12RkAk3XFssW8zTf_h1utUErS1E6-rh2JeZUzavx-wzK5I_fCUrg51FiCL7wREKGaay9nwb7xRvtAoAokn1N6SeOBEHnMlIGwUrMIS1nPLFJ8jFfeINikn8PyyO5dk0EyjScuQOHWaa3l8WLgqZK_kxYcwxDw_g1h7MBw90dOXBPTAFy0ZKDF7IN3nFgxKxNIL5fIVuKtYveAjSTGd_KIO6YbPHNUX2T7oT0toMNg");'>
+</div>
+</div>
+<div>
+<h2 class="text-[#101819] dark:text-white text-lg font-extrabold leading-tight tracking-tight">Dashboard</h2>
+<p class="text-xs text-primary font-semibold">Admin Panel</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="relative p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-2xl">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-background-light dark:border-background-dark"></span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-xl mx-auto">
+<!-- Headline Section -->
+<section class="px-4 pt-6 pb-2">
+<h1 class="text-[#101819] dark:text-white text-2xl font-extrabold tracking-tight">Welcome, Miss Phượng</h1>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Here's what's happening today.</p>
+</section>
+<!-- Stats Grid (Modular) -->
+<section class="grid grid-cols-2 gap-3 p-4">
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-[#1c2a2c] shadow-sm border border-gray-100 dark:border-gray-700/50">
+<p class="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">Total Students</p>
+<div class="flex items-baseline gap-2 mt-1">
+<p class="text-[#101819] dark:text-white text-2xl font-extrabold leading-none">1,240</p>
+<p class="text-[#078834] text-xs font-bold">+5%</p>
+</div>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-[#1c2a2c] shadow-sm border border-gray-100 dark:border-gray-700/50">
+<p class="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">Active Games</p>
+<div class="flex items-baseline gap-2 mt-1">
+<p class="text-[#101819] dark:text-white text-2xl font-extrabold leading-none">12</p>
+<span class="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-bold uppercase">Live</span>
+</div>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-[#1c2a2c] shadow-sm border border-gray-100 dark:border-gray-700/50">
+<p class="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">Avg. Score</p>
+<div class="flex items-baseline gap-2 mt-1">
+<p class="text-[#101819] dark:text-white text-2xl font-extrabold leading-none">85%</p>
+<p class="text-[#078834] text-xs font-bold">+2.1%</p>
+</div>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-[#1c2a2c] shadow-sm border border-gray-100 dark:border-gray-700/50">
+<p class="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">Engagement</p>
+<div class="flex items-baseline gap-2 mt-1">
+<p class="text-[#101819] dark:text-white text-2xl font-extrabold leading-none">450</p>
+<p class="text-[#078834] text-xs font-bold">+12%</p>
+</div>
+</div>
+</section>
+<!-- Analytics Chart Card -->
+<section class="px-4 py-2">
+<div class="bg-white dark:bg-[#1c2a2c] rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700/50">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="text-[#101819] dark:text-white text-lg font-extrabold">Weekly Engagement</h3>
+<p class="text-sm text-gray-500">Student activity across all modules</p>
+</div>
+<div class="text-right">
+<p class="text-2xl font-extrabold text-primary">450</p>
+<p class="text-[10px] text-gray-400 font-bold uppercase">Last 7 Days</p>
+</div>
+</div>
+<div class="h-40 w-full relative">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 472 150">
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#1a545b" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#1a545b" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25V150H0V109Z" fill="url(#chartGradient)"></path>
+<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25" fill="none" stroke="#1a545b" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+</div>
+<div class="flex justify-between mt-4 px-1">
+<p class="text-gray-400 text-[10px] font-bold">MON</p>
+<p class="text-gray-400 text-[10px] font-bold">TUE</p>
+<p class="text-gray-400 text-[10px] font-bold">WED</p>
+<p class="text-gray-400 text-[10px] font-bold">THU</p>
+<p class="text-gray-400 text-[10px] font-bold">FRI</p>
+<p class="text-gray-400 text-[10px] font-bold">SAT</p>
+<p class="text-gray-400 text-[10px] font-bold">SUN</p>
+</div>
+</div>
+</section>
+<!-- Recent Activity List -->
+<section class="px-4 pt-6 pb-12">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-[#101819] dark:text-white text-lg font-extrabold tracking-tight">Recent Activity</h3>
+<button class="text-primary text-sm font-bold">View all</button>
+</div>
+<div class="space-y-3">
+<!-- Activity Item 1 -->
+<div class="flex items-center gap-4 p-4 bg-white dark:bg-[#1c2a2c] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700/50">
+<div class="size-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-blue-600 dark:text-blue-400">emoji_events</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-[#101819] dark:text-white">Alex scored 980</p>
+<p class="text-xs text-gray-500">In 'Animals' Vocabulary Game</p>
+</div>
+<p class="text-[10px] font-semibold text-gray-400">2m ago</p>
+</div>
+<!-- Activity Item 2 -->
+<div class="flex items-center gap-4 p-4 bg-white dark:bg-[#1c2a2c] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700/50">
+<div class="size-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-green-600 dark:text-green-400">person_add</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-[#101819] dark:text-white">Minh Registered</p>
+<p class="text-xs text-gray-500">New student joining Class 3A</p>
+</div>
+<p class="text-[10px] font-semibold text-gray-400">15m ago</p>
+</div>
+<!-- Activity Item 3 -->
+<div class="flex items-center gap-4 p-4 bg-white dark:bg-[#1c2a2c] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700/50">
+<div class="size-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-orange-600 dark:text-orange-400">library_books</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-[#101819] dark:text-white">Library Updated</p>
+<p class="text-xs text-gray-500">20 new words added to 'Kitchen' set</p>
+</div>
+<p class="text-[10px] font-semibold text-gray-400">1h ago</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (iOS Style) -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-white/90 dark:bg-[#131d1f]/95 backdrop-blur-xl border-t border-gray-200 dark:border-gray-800 pb-safe">
+<div class="max-w-xl mx-auto flex justify-around items-center h-16 px-2">
+<button class="flex flex-col items-center justify-center gap-0.5 text-primary">
+<span class="material-symbols-outlined font-variation-settings-fill-1 text-2xl">dashboard</span>
+<span class="text-[10px] font-bold">Dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-0.5 text-gray-400 dark:text-gray-500">
+<span class="material-symbols-outlined text-2xl">group</span>
+<span class="text-[10px] font-bold">Students</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-0.5 text-gray-400 dark:text-gray-500">
+<span class="material-symbols-outlined text-2xl">sports_esports</span>
+<span class="text-[10px] font-bold">Games</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-0.5 text-gray-400 dark:text-gray-500">
+<span class="material-symbols-outlined text-2xl">menu_book</span>
+<span class="text-[10px] font-bold">Vocab</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-0.5 text-gray-400 dark:text-gray-500">
+<span class="material-symbols-outlined text-2xl">settings</span>
+<span class="text-[10px] font-bold">Settings</span>
+</button>
+</div>
+</nav>
+<!-- Optional Floating Action Button -->
+<div class="fixed bottom-20 right-4 z-40">
+<button class="size-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</div>
+</body></html>

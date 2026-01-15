@@ -1,0 +1,294 @@
+-- ============================================================================
+-- English Fun with AI - Seed Data
+-- Sample data for development and demo
+-- ============================================================================
+
+-- ============================================================================
+-- CATEGORIES (4 main categories)
+-- ============================================================================
+
+INSERT INTO categories (id, name, slug, description, color_code, sort_order) VALUES
+('550e8400-e29b-41d4-a716-446655440001', 'Animals', 'animals', 'Learn about animals and their names', '#FF6B6B', 1),
+('550e8400-e29b-41d4-a716-446655440002', 'My Family', 'my-family', 'Family members and relationships', '#4ECDC4', 2),
+('550e8400-e29b-41d4-a716-446655440003', 'Daily Routines', 'daily-routines', 'Activities we do every day', '#FFE66D', 3),
+('550e8400-e29b-41d4-a716-446655440004', 'My House', 'my-house', 'Rooms and items in the house', '#95E1D3', 4);
+
+-- ============================================================================
+-- VOCABULARY (50 sample words)
+-- ============================================================================
+
+-- Animals (15 words)
+INSERT INTO vocabulary (category_id, word, meaning, pronunciation, difficulty_level, usage_example) VALUES
+('550e8400-e29b-41d4-a716-446655440001', 'Cat', 'Con mèo', '/kæt/', 'beginner', 'I have a cute cat at home.'),
+('550e8400-e29b-41d4-a716-446655440001', 'Dog', 'Con chó', '/dɔːɡ/', 'beginner', 'The dog is playing in the yard.'),
+('550e8400-e29b-41d4-a716-446655440001', 'Bird', 'Con chim', '/bɜːrd/', 'beginner', 'A colorful bird is singing.'),
+('550e8400-e29b-41d4-a716-446655440001', 'Fish', 'Con cá', '/fɪʃ/', 'beginner', 'Fish swim in the water.'),
+('550e8400-e29b-41d4-a716-446655440001', 'Rabbit', 'Con thỏ', '/ˈræbɪt/', 'beginner', 'The rabbit hops fast.'),
+('550e8400-e29b-41d4-a716-446655440001', 'Elephant', 'Con voi', '/ˈelɪfənt/', 'beginner', 'Elephants have long trunks.'),
+('550e8400-e29b-41d4-a716-446655440001', 'Lion', 'Con sư tử', '/ˈlaɪən/', 'intermediate', 'The lion is the king of the jungle.'),
+('550e8400-e29b-41d4-a716-446655440001', 'Tiger', 'Con hổ', '/ˈtaɪɡər/', 'intermediate', 'Tigers have orange and black stripes.'),
+('550e8400-e29b-41d4-a716-446655440001', 'Monkey', 'Con khỉ', '/ˈmʌŋki/', 'beginner', 'Monkeys love to eat bananas.'),
+('550e8400-e29b-41d4-a716-446655440001', 'Bear', 'Con gấu', '/beər/', 'beginner', 'Bears sleep in winter.'),
+('550e8400-e29b-41d4-a716-446655440001', 'Turtle', 'Con rùa', '/ˈtɜːrtl/', 'beginner', 'Turtles move slowly.'),
+('550e8400-e29b-41d4-a716-446655440001', 'Frog', 'Con ếch', '/frɔːɡ/', 'beginner', 'Frogs can jump very high.'),
+('550e8400-e29b-41d4-a716-446655440001', 'Duck', 'Con vịt', '/dʌk/', 'beginner', 'Ducks swim in the pond.'),
+('550e8400-e29b-41d4-a716-446655440001', 'Chicken', 'Con gà', '/ˈtʃɪkɪn/', 'beginner', 'Chickens lay eggs.'),
+('550e8400-e29b-41d4-a716-446655440001', 'Horse', 'Con ngựa', '/hɔːrs/', 'beginner', 'Horses can run very fast.');
+
+-- My Family (12 words)
+INSERT INTO vocabulary (category_id, word, meaning, pronunciation, difficulty_level, usage_example) VALUES
+('550e8400-e29b-41d4-a716-446655440002', 'Father', 'Bố', '/ˈfɑːðər/', 'beginner', 'My father goes to work every day.'),
+('550e8400-e29b-41d4-a716-446655440002', 'Mother', 'Mẹ', '/ˈmʌðər/', 'beginner', 'Mother cooks delicious food.'),
+('550e8400-e29b-41d4-a716-446655440002', 'Brother', 'Anh/Em trai', '/ˈbrʌðər/', 'beginner', 'I play with my brother.'),
+('550e8400-e29b-41d4-a716-446655440002', 'Sister', 'Chị/Em gái', '/ˈsɪstər/', 'beginner', 'My sister is very kind.'),
+('550e8400-e29b-41d4-a716-446655440002', 'Grandfather', 'Ông', '/ˈɡrænfɑːðər/', 'beginner', 'Grandfather tells great stories.'),
+('550e8400-e29b-41d4-a716-446655440002', 'Grandmother', 'Bà', '/ˈɡrænmʌðər/', 'beginner', 'Grandmother bakes cookies.'),
+('550e8400-e29b-41d4-a716-446655440002', 'Uncle', 'Chú/Cậu', '/ˈʌŋkl/', 'beginner', 'Uncle takes me to the park.'),
+('550e8400-e29b-41d4-a716-446655440002', 'Aunt', 'Cô/Dì', '/ænt/', 'beginner', 'Aunt brings me gifts.'),
+('550e8400-e29b-41d4-a716-446655440002', 'Cousin', 'Anh/Chị/Em họ', '/ˈkʌzn/', 'intermediate', 'My cousin visits us often.'),
+('550e8400-e29b-41d4-a716-446655440002', 'Son', 'Con trai', '/sʌn/', 'beginner', 'He is my father''s son.'),
+('550e8400-e29b-41d4-a716-446655440002', 'Daughter', 'Con gái', '/ˈdɔːtər/', 'beginner', 'She is their daughter.'),
+('550e8400-e29b-41d4-a716-446655440002', 'Baby', 'Em bé', '/ˈbeɪbi/', 'beginner', 'The baby is crying.');
+
+-- Daily Routines (12 words)
+INSERT INTO vocabulary (category_id, word, meaning, pronunciation, difficulty_level, usage_example) VALUES
+('550e8400-e29b-41d4-a716-446655440003', 'Wake up', 'Thức dậy', '/weɪk ʌp/', 'beginner', 'I wake up at 7 AM.'),
+('550e8400-e29b-41d4-a716-446655440003', 'Brush teeth', 'Đánh răng', '/brʌʃ tiːθ/', 'beginner', 'I brush my teeth after breakfast.'),
+('550e8400-e29b-41d4-a716-446655440003', 'Take a shower', 'Tắm', '/teɪk ə ˈʃaʊər/', 'beginner', 'I take a shower every morning.'),
+('550e8400-e29b-41d4-a716-446655440003', 'Eat breakfast', 'Ăn sáng', '/iːt ˈbrekfəst/', 'beginner', 'I eat breakfast with my family.'),
+('550e8400-e29b-41d4-a716-446655440003', 'Go to school', 'Đi học', '/ɡoʊ tuː skuːl/', 'beginner', 'I go to school by bus.'),
+('550e8400-e29b-41d4-a716-446655440003', 'Study', 'Học', '/ˈstʌdi/', 'beginner', 'I study English every day.'),
+('550e8400-e29b-41d4-a716-446655440003', 'Play', 'Chơi', '/pleɪ/', 'beginner', 'I play games after school.'),
+('550e8400-e29b-41d4-a716-446655440003', 'Eat lunch', 'Ăn trưa', '/iːt lʌntʃ/', 'beginner', 'We eat lunch at noon.'),
+('550e8400-e29b-41d4-a716-446655440003', 'Do homework', 'Làm bài tập', '/duː ˈhoʊmwɜːrk/', 'beginner', 'I do homework in the evening.'),
+('550e8400-e29b-41d4-a716-446655440003', 'Eat dinner', 'Ăn tối', '/iːt ˈdɪnər/', 'beginner', 'My family eats dinner together.'),
+('550e8400-e29b-41d4-a716-446655440003', 'Watch TV', 'Xem ti vi', '/wɑːtʃ ˈtiːˈviː/', 'beginner', 'I watch TV before bed.'),
+('550e8400-e29b-41d4-a716-446655440003', 'Go to bed', 'Đi ngủ', '/ɡoʊ tuː bed/', 'beginner', 'I go to bed at 9 PM.');
+
+-- My House (11 words)
+INSERT INTO vocabulary (category_id, word, meaning, pronunciation, difficulty_level, usage_example) VALUES
+('550e8400-e29b-41d4-a716-446655440004', 'Kitchen', 'Nhà bếp', '/ˈkɪtʃɪn/', 'beginner', 'Mom cooks in the kitchen.'),
+('550e8400-e29b-41d4-a716-446655440004', 'Bedroom', 'Phòng ngủ', '/ˈbedruːm/', 'beginner', 'I sleep in my bedroom.'),
+('550e8400-e29b-41d4-a716-446655440004', 'Living room', 'Phòng khách', '/ˈlɪvɪŋ ruːm/', 'beginner', 'We watch TV in the living room.'),
+('550e8400-e29b-41d4-a716-446655440004', 'Bathroom', 'Phòng tắm', '/ˈbæθruːm/', 'beginner', 'The bathroom is clean.'),
+('550e8400-e29b-41d4-a716-446655440004', 'Dining room', 'Phòng ăn', '/ˈdaɪnɪŋ ruːm/', 'beginner', 'We eat in the dining room.'),
+('550e8400-e29b-41d4-a716-446655440004', 'Garden', 'Vườn', '/ˈɡɑːrdn/', 'beginner', 'There are flowers in the garden.'),
+('550e8400-e29b-41d4-a716-446655440004', 'Door', 'Cửa', '/dɔːr/', 'beginner', 'Please close the door.'),
+('550e8400-e29b-41d4-a716-446655440004', 'Window', 'Cửa sổ', '/ˈwɪndoʊ/', 'beginner', 'Open the window for fresh air.'),
+('550e8400-e29b-41d4-a716-446655440004', 'Table', 'Cái bàn', '/ˈteɪbl/', 'beginner', 'Books are on the table.'),
+('550e8400-e29b-41d4-a716-446655440004', 'Chair', 'Cái ghế', '/tʃer/', 'beginner', 'Sit on the chair.'),
+('550e8400-e29b-41d4-a716-446655440004', 'Bed', 'Giường', '/bed/', 'beginner', 'My bed is very comfortable.');
+
+-- ============================================================================
+-- MINI GAMES (8 games)
+-- ============================================================================
+
+INSERT INTO mini_games (id, name, slug, game_type, skill_focus, description, max_stars, time_limit_seconds) VALUES
+('650e8400-e29b-41d4-a716-446655440001', 'Listen & Click', 'listen-and-click', 'listening_game', 'listening', 'Listen to the word and click the correct picture', 3, 120),
+('650e8400-e29b-41d4-a716-446655440002', 'Word Match', 'word-match', 'matching_game', 'vocabulary', 'Match words with their meanings', 3, 90),
+('650e8400-e29b-41d4-a716-446655440003', 'Sentence Builder', 'sentence-builder', 'grammar_game', 'grammar', 'Arrange words to make correct sentences', 3, 150),
+('650e8400-e29b-41d4-a716-446655440004', 'Speak Match', 'speak-match', 'speaking_game', 'speaking', 'Speak the word and match with the picture', 3, 120),
+('650e8400-e29b-41d4-a716-446655440005', 'Hide and Seek', 'hide-and-seek', 'hidden_word_game', 'vocabulary', 'Find hidden words in the picture', 3, 180),
+('650e8400-e29b-41d4-a716-446655440006', 'Memory Card', 'memory-card', 'memory_game', 'vocabulary', 'Flip cards to find matching pairs', 3, 120),
+('650e8400-e29b-41d4-a716-446655440007', 'Spelling Bee', 'spelling-bee', 'spelling_game', 'vocabulary', 'Spell the word correctly', 3, 60),
+('650e8400-e29b-41d4-a716-446655440008', 'Quick Quiz', 'quick-quiz', 'quiz_game', 'vocabulary', 'Answer questions as fast as you can', 3, 90);
+
+-- ============================================================================
+-- STUDENTS (5 sample students for demo)
+-- ============================================================================
+
+INSERT INTO students (id, display_name, pin_code, qr_code, total_score, total_stars) VALUES
+('750e8400-e29b-41d4-a716-446655440001', 'Alex', '1234', 'QR-ALEX-001', 2850, 32),
+('750e8400-e29b-41d4-a716-446655440002', 'Emma', '5678', 'QR-EMMA-002', 3120, 38),
+('750e8400-e29b-41d4-a716-446655440003', 'Noah', '9876', 'QR-NOAH-003', 2650, 28),
+('750e8400-e29b-41d4-a716-446655440004', 'Sophia', '4321', 'QR-SOPHIA-004', 3400, 42),
+('750e8400-e29b-41d4-a716-446655440005', 'Liam', '8765', 'QR-LIAM-005', 2980, 35);
+
+-- ============================================================================
+-- VIDEOS (10 sample videos - using placeholder YouTube URLs)
+-- ============================================================================
+
+INSERT INTO videos (category_id, title, description, video_url, duration_seconds, view_count, is_featured) VALUES
+('550e8400-e29b-41d4-a716-446655440001', 'Learn Animal Names', 'Fun animated lesson about animal names', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 180, 450, true),
+('550e8400-e29b-41d4-a716-446655440001', 'Animal Sounds Song', 'Catchy song teaching animal sounds', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 240, 320, false),
+('550e8400-e29b-41d4-a716-446655440002', 'My Family Members', 'Learn about family relationships', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 200, 280, true),
+('550e8400-e29b-41d4-a716-446655440002', 'Family Tree Song', 'Song about family members', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 160, 195, false),
+('550e8400-e29b-41d4-a716-446655440003', 'Daily Routine Story', 'Animated story about daily activities', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 300, 410, true),
+('550e8400-e29b-41d4-a716-446655440003', 'Morning Routine Song', 'Fun morning routine song', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 150, 220, false),
+('550e8400-e29b-41d4-a716-446655440004', 'Rooms in My House', 'Learn about different rooms', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 210, 350, true),
+('550e8400-e29b-41d4-a716-446655440004', 'Furniture Names', 'Learn furniture vocabulary', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 180, 265, false),
+(NULL, 'English Alphabet Song', 'Learn ABC with fun animation', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 120, 520, true),
+(NULL, 'Numbers 1-20', 'Count from 1 to 20 with fun', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 140, 380, false);
+
+-- ============================================================================
+-- SAMPLE SCORES (for leaderboard demo)
+-- ============================================================================
+
+-- Alex's scores
+INSERT INTO scores (student_id, game_id, category_id, score, stars) VALUES
+('750e8400-e29b-41d4-a716-446655440001', '650e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440001', 920, 3),
+('750e8400-e29b-41d4-a716-446655440001', '650e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440002', 850, 3),
+('750e8400-e29b-41d4-a716-446655440001', '650e8400-e29b-41d4-a716-446655440005', '550e8400-e29b-41d4-a716-446655440001', 780, 2);
+
+-- Emma's scores
+INSERT INTO scores (student_id, game_id, category_id, score, stars) VALUES
+('750e8400-e29b-41d4-a716-446655440002', '650e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440001', 980, 3),
+('750e8400-e29b-41d4-a716-446655440002', '650e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440002', 950, 3),
+('750e8400-e29b-41d4-a716-446655440002', '650e8400-e29b-41d4-a716-446655440003', '550e8400-e29b-41d4-a716-446655440003', 890, 3);
+
+-- Noah's scores
+INSERT INTO scores (student_id, game_id, category_id, score, stars) VALUES
+('750e8400-e29b-41d4-a716-446655440003', '650e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440001', 820, 3),
+('750e8400-e29b-41d4-a716-446655440003', '650e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440002', 760, 2);
+
+-- Sophia's scores
+INSERT INTO scores (student_id, game_id, category_id, score, stars) VALUES
+('750e8400-e29b-41d4-a716-446655440004', '650e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440001', 1000, 3),
+('750e8400-e29b-41d4-a716-446655440004', '650e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440002', 970, 3),
+('750e8400-e29b-41d4-a716-446655440004', '650e8400-e29b-41d4-a716-446655440003', '550e8400-e29b-41d4-a716-446655440003', 940, 3),
+('750e8400-e29b-41d4-a716-446655440004', '650e8400-e29b-41d4-a716-446655440005', '550e8400-e29b-41d4-a716-446655440001', 920, 3);
+
+-- Liam's scores
+INSERT INTO scores (student_id, game_id, category_id, score, stars) VALUES
+('750e8400-e29b-41d4-a716-446655440005', '650e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440001', 880, 3),
+('750e8400-e29b-41d4-a716-446655440005', '650e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440002', 840, 3),
+('750e8400-e29b-41d4-a716-446655440005', '650e8400-e29b-41d4-a716-446655440003', '550e8400-e29b-41d4-a716-446655440003', 810, 2);
+
+-- ============================================================================
+-- WEEKLY RANKINGS (current week sample)
+-- ============================================================================
+
+INSERT INTO weekly_rankings (week_start, week_end, student_id, total_score, total_stars, games_played, rank) VALUES
+('2026-01-13', '2026-01-19', '750e8400-e29b-41d4-a716-446655440004', 3400, 42, 12, 1),
+('2026-01-13', '2026-01-19', '750e8400-e29b-41d4-a716-446655440002', 3120, 38, 11, 2),
+('2026-01-13', '2026-01-19', '750e8400-e29b-41d4-a716-446655440005', 2980, 35, 10, 3),
+('2026-01-13', '2026-01-19', '750e8400-e29b-41d4-a716-446655440001', 2850, 32, 9, 4),
+('2026-01-13', '2026-01-19', '750e8400-e29b-41d4-a716-446655440003', 2650, 28, 8, 5);
+
+-- ============================================================================
+-- CHALLENGES (1 active challenge)
+-- ============================================================================
+
+INSERT INTO challenges (id, title, description, challenge_type, start_date, end_date, reward_points, min_score_required) VALUES
+('850e8400-e29b-41d4-a716-446655440001', 'Grammar Master Quest', 'Complete 5 grammar games with 3 stars each to become a Grammar Master!', 'weekly', '2026-01-13 00:00:00', '2026-01-19 23:59:59', 500, 900);
+
+-- Challenge participants
+INSERT INTO challenge_participants (challenge_id, student_id, status, current_score) VALUES
+('850e8400-e29b-41d4-a716-446655440001', '750e8400-e29b-41d4-a716-446655440001', 'participating', 1850),
+('850e8400-e29b-41d4-a716-446655440001', '750e8400-e29b-41d4-a716-446655440002', 'participating', 2120),
+('850e8400-e29b-41d4-a716-446655440001', '750e8400-e29b-41d4-a716-446655440003', 'participating', 1650),
+('850e8400-e29b-41d4-a716-446655440001', '750e8400-e29b-41d4-a716-446655440004', 'participating', 2400),
+('850e8400-e29b-41d4-a716-446655440001', '750e8400-e29b-41d4-a716-446655440005', 'participating', 1980);
+
+-- ============================================================================
+-- ADMIN ACCOUNT
+-- Note: This creates the admin record. You'll need to create the corresponding
+-- auth user manually in Supabase Dashboard or use their API.
+-- ============================================================================
+
+-- Placeholder UUID - replace with actual auth.users ID after creating admin user
+INSERT INTO admins (id, auth_user_id, email, full_name, role) VALUES
+('950e8400-e29b-41d4-a716-446655440001', 
+ '00000000-0000-0000-0000-000000000000', -- Replace with real auth_user_id
+ 'admin@cophuong.com', 
+ 'Miss Phương', 
+ 'super_admin');
+
+-- ============================================================================
+-- SAMPLE ACTIVITY LOGS
+-- ============================================================================
+
+INSERT INTO activity_logs (student_id, action_type, action_description, created_at) VALUES
+('750e8400-e29b-41d4-a716-446655440001', 'score_achieved', 'Alex scored 980 in Word Match', NOW() - INTERVAL '20 seconds'),
+('750e8400-e29b-41d4-a716-446655440002', 'game_completed', 'Emma completed Hide and Seek', NOW() - INTERVAL '1 minute'),
+('750e8400-e29b-41d4-a716-446655440003', 'login', 'Noah joined', NOW() - INTERVAL '5 minutes'),
+('750e8400-e29b-41d4-a716-446655440005', 'score_achieved', 'Liam scored 850 in Listen & Click', NOW() - INTERVAL '10 minutes');
+
+-- ============================================================================
+-- VERIFICATION QUERIES
+-- ============================================================================
+
+-- Verify categories
+SELECT COUNT(*) as category_count FROM categories;
+-- Expected: 4
+
+-- Verify vocabulary
+SELECT COUNT(*) as vocab_count FROM vocabulary;
+-- Expected: 50
+
+-- Verify games
+SELECT COUNT(*) as game_count FROM mini_games;
+-- Expected: 8
+
+-- Verify students
+SELECT COUNT(*) as student_count FROM students;
+-- Expected: 5
+
+-- Verify videos
+SELECT COUNT(*) as video_count FROM videos;
+-- Expected: 10
+
+-- Verify scores
+SELECT COUNT(*) as score_count FROM scores;
+-- Expected: 15
+
+-- Verify rankings
+SELECT * FROM weekly_rankings ORDER BY rank;
+-- Expected: 5 rows (Sophia #1, Emma #2, Liam #3, Alex #4, Noah #5)
+
+-- Verify challenge
+SELECT 
+  c.title, 
+  COUNT(cp.id) as participants
+FROM challenges c
+LEFT JOIN challenge_participants cp ON c.id = cp.challenge_id
+GROUP BY c.id, c.title;
+-- Expected: Grammar Master Quest with 5 participants
+
+-- ============================================================================
+-- NOTES FOR ADMIN USER SETUP
+-- ============================================================================
+
+/*
+To create the admin user in Supabase:
+
+1. Go to Supabase Dashboard > Authentication > Users
+2. Click "Add user" > "Create new user"
+3. Enter:
+   - Email: admin@cophuong.com
+   - Password: (your secure password)
+   - Email Confirm: true (to bypass email verification)
+4. After creating, copy the User UID
+5. Run this query to update admins table:
+
+   UPDATE admins 
+   SET auth_user_id = '<copied-user-uid>'
+   WHERE email = 'admin@cophuong.com';
+
+OR use SQL to create auth user programmatically:
+
+   -- This requires service role key
+   INSERT INTO auth.users (email, encrypted_password, email_confirmed_at)
+   VALUES (
+     'admin@cophuong.com',
+     crypt('YourSecurePassword123', gen_salt('bf')),
+     NOW()
+   )
+   RETURNING id; -- Copy this ID and update admins table
+*/
+
+-- ============================================================================
+-- SEED DATA COMPLETE
+-- ============================================================================
+
+-- Summary:
+-- ✓ 4 categories
+-- ✓ 50 vocabulary words
+-- ✓ 8 mini games
+-- ✓ 5 students with PINs/QR codes
+-- ✓ 10 educational videos
+-- ✓ 15 high scores
+-- ✓ 5 weekly rankings
+-- ✓ 1 active challenge with 5 participants
+-- ✓ 1 admin account (needs auth user creation)
+-- ✓ 4 activity log entries

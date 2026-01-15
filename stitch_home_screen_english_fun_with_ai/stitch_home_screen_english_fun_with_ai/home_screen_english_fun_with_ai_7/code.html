@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>English Fun with AI - Landing Page</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#26d9d9",
+                        "secondary-pink": "#FF8CBE",
+                        "accent-yellow": "#FCCD2B",
+                        "background-light": "#fdfefe",
+                        "background-dark": "#122020",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        body {
+            font-family: 'Spline Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .blob {
+            position: absolute;
+            filter: blur(60px);
+            z-index: -1;
+            opacity: 0.4;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-[#0f1a1a] dark:text-white transition-colors duration-300 overflow-x-hidden">
+<div class="blob w-64 h-64 bg-primary top-[-50px] left-[-100px] rounded-full"></div>
+<div class="blob w-72 h-72 bg-secondary-pink top-[20%] right-[-100px] rounded-full"></div>
+<div class="blob w-64 h-64 bg-accent-yellow bottom-[10%] left-[-50px] rounded-full"></div>
+<header class="flex items-center justify-between p-6 sticky top-0 z-50 backdrop-blur-md bg-white/30">
+<div class="flex items-center gap-2">
+<div class="size-10 rounded-xl bg-primary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-white">school</span>
+</div>
+<h1 class="font-bold text-lg leading-none">English Fun<br/><span class="text-primary text-xs uppercase tracking-tighter">with AI</span></h1>
+</div>
+<button class="bg-primary text-white px-4 py-2 rounded-full font-bold text-sm shadow-md hover:scale-105 transition-transform active:scale-95">
+            Join Now
+        </button>
+</header>
+<main>
+<section class="px-6 py-8 relative">
+<div class="text-center mb-8">
+<div class="inline-block px-4 py-1.5 bg-primary/10 text-primary rounded-full text-xs font-bold uppercase tracking-widest mb-4">
+                    Miss Phượng Presents
+                </div>
+<h2 class="text-4xl font-extrabold leading-[1.1] mb-4 bg-gradient-to-r from-primary via-secondary-pink to-accent-yellow bg-clip-text text-transparent">
+                    Where English Meets Fun!
+                </h2>
+<p class="text-gray-600 dark:text-gray-400 text-lg mb-8 leading-relaxed">
+                    Personalized AI learning for primary students. Play games, earn rewards, and speak like a pro!
+                </p>
+<div class="flex flex-col gap-3 items-center">
+<button class="w-full max-w-xs bg-[#0f1a1a] dark:bg-white text-white dark:text-[#0f1a1a] py-4 rounded-2xl font-bold text-lg shadow-xl flex items-center justify-center gap-3 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">download</span>
+                        Download Now
+                    </button>
+<p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">check_circle</span> Available on iOS App Store
+                    </p>
+</div>
+</div>
+<div class="relative w-full aspect-square max-w-sm mx-auto flex items-center justify-center">
+<div class="absolute inset-0 bg-primary/10 rounded-full scale-90 animate-pulse"></div>
+<div class="relative z-10 w-full h-full bg-contain bg-center bg-no-repeat" data-alt="Happy mascot celebrating" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuByJFR-YzkX7JGnxpFsjc5lyeLbeLD7w8Ff16TjyagxaLPRdo1v45fYb7VuB6HQIVbvMxPhmJkWE1yCNdD9jFLiGNvMRxFWy1yG3WzB22u87Kl6v8cGknU01CKs9iGhbq5dL_0qfr5bFbDc9hKdg5by3mEdBKz8NqgVuXFPIsBRRyxqd32k5WEzwwULlBvSN_dYh71a4chLjFIsmziMhTrPeb2pI_EC0d7DQbvW44K-axHq590M8Fy2UKPBWPJlFbnRoYt8faBSuVk');"></div>
+<div class="absolute top-10 left-0 bg-white dark:bg-gray-800 p-3 rounded-2xl shadow-lg rotate-[-12deg]">
+<span class="material-symbols-outlined text-secondary-pink text-3xl">edit</span>
+</div>
+<div class="absolute bottom-12 right-0 bg-white dark:bg-gray-800 p-3 rounded-2xl shadow-lg rotate-[12deg]">
+<span class="material-symbols-outlined text-accent-yellow text-3xl">star</span>
+</div>
+</div>
+</section>
+<section class="px-6 py-12 bg-white/50 dark:bg-gray-900/50">
+<div class="flex flex-col gap-2 mb-8">
+<h3 class="text-2xl font-black">Super Cool Features</h3>
+<p class="text-gray-500 text-sm">Learning that feels exactly like playtime.</p>
+</div>
+<div class="flex flex-col gap-6">
+<div class="glass-card p-6 rounded-3xl flex flex-col gap-4 border-b-4 border-primary">
+<div class="size-14 bg-primary/20 rounded-2xl flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">sports_esports</span>
+</div>
+<h4 class="text-xl font-bold">AI Games</h4>
+<p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                        Interactive speaking and listening games powered by smart AI that talks back to you!
+                    </p>
+</div>
+<div class="glass-card p-6 rounded-3xl flex flex-col gap-4 border-b-4 border-secondary-pink">
+<div class="size-14 bg-secondary-pink/20 rounded-2xl flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-pink text-3xl">smart_display</span>
+</div>
+<h4 class="text-xl font-bold">Short Videos</h4>
+<p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                        Watch fun animated stories and lessons with Miss Phượng. No more boring grammar!
+                    </p>
+</div>
+<div class="glass-card p-6 rounded-3xl flex flex-col gap-4 border-b-4 border-accent-yellow">
+<div class="size-14 bg-accent-yellow/20 rounded-2xl flex items-center justify-center">
+<span class="material-symbols-outlined text-accent-yellow text-3xl">leaderboard</span>
+</div>
+<h4 class="text-xl font-bold">Leaderboards</h4>
+<p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                        Compete with friends, climb the ranks, and earn exclusive stickers and digital pets.
+                    </p>
+</div>
+</div>
+</section>
+<section class="px-6 py-16 relative">
+<div class="text-center mb-12">
+<h3 class="text-2xl font-black mb-2">How it Works</h3>
+<p class="text-gray-500">As easy as 1, 2, 3!</p>
+</div>
+<div class="flex flex-col gap-12 relative">
+<div class="absolute left-7 top-10 bottom-10 w-0.5 border-l-2 border-dashed border-primary/30"></div>
+<div class="flex gap-6 items-start relative z-10">
+<div class="size-14 shrink-0 rounded-full bg-primary text-white font-black text-xl flex items-center justify-center shadow-lg shadow-primary/30">
+                        1
+                    </div>
+<div class="flex flex-col gap-1 pt-2">
+<h4 class="font-bold text-lg">Choose Game</h4>
+<p class="text-gray-500 text-sm">Pick your favorite adventure from our library of 100+ AI lessons.</p>
+</div>
+</div>
+<div class="flex gap-6 items-start relative z-10">
+<div class="size-14 shrink-0 rounded-full bg-secondary-pink text-white font-black text-xl flex items-center justify-center shadow-lg shadow-secondary-pink/30">
+                        2
+                    </div>
+<div class="flex flex-col gap-1 pt-2">
+<h4 class="font-bold text-lg">Play &amp; Learn</h4>
+<p class="text-gray-500 text-sm">Speak, tap, and record your voice to complete fun interactive challenges.</p>
+</div>
+</div>
+<div class="flex gap-6 items-start relative z-10">
+<div class="size-14 shrink-0 rounded-full bg-accent-yellow text-black font-black text-xl flex items-center justify-center shadow-lg shadow-accent-yellow/30">
+                        3
+                    </div>
+<div class="flex flex-col gap-1 pt-2">
+<h4 class="font-bold text-lg">Earn Rewards</h4>
+<p class="text-gray-500 text-sm">Collect stars, unlock new characters, and see your name on the weekly ranking.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="px-6 py-16 text-center bg-primary rounded-t-[3rem]">
+<h3 class="text-white text-3xl font-black mb-6">Ready to start the journey?</h3>
+<div class="bg-white rounded-full p-2 mb-8 shadow-inner overflow-hidden flex items-center gap-2">
+<div class="size-12 rounded-full border-2 border-primary overflow-hidden shrink-0 bg-white">
+<div class="bg-center bg-no-repeat aspect-square bg-cover size-full" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAp3WQuD9CUJHnAbmASrH_GHIqrdP7UnGMMfJbqczcWWXgkivNe_EtT1Ab3j74WvO2jeDI03Z_Kc2x9PnY5uSs3rrmgO5306_gBDHBJO_elmG9jCCD7Fgt-37keSd1eJta0dt3z_EL7xOxUCV0WJk9W8nwjXOMTHqncFWNaXQaVSJUe533NBJIAYlsz50yNfAVXNO_Hc_ZUrceSlnPgU5zxQfm68aaDqREoDP8ua45o8_67DXTTaDJMDNCLldTkooLJ7TAPEPLoZZI");'></div>
+</div>
+<p class="text-primary font-bold text-sm text-left leading-tight">Join 5,000+ students<br/><span class="text-[10px] text-gray-400">learning with Miss Phượng</span></p>
+</div>
+<button class="w-full bg-white text-[#0f1a1a] py-4 rounded-2xl font-black text-lg shadow-xl active:scale-95 transition-transform mb-4">
+                Get Started for Free
+            </button>
+<p class="text-white/80 text-xs font-medium uppercase tracking-widest">No credit card required</p>
+<div class="mt-12 flex justify-center gap-8 text-white/60">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="material-symbols-outlined">history_edu</span>
+<span class="material-symbols-outlined">rocket</span>
+</div>
+</section>
+<footer class="p-8 text-center bg-primary text-white/40 text-[10px] font-bold uppercase tracking-widest">
+            © 2024 English Fun with AI • Miss Phượng
+        </footer>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-t border-gray-100 dark:border-gray-800 px-8 pb-8 pt-4 flex justify-around items-center z-[100] md:hidden">
+<div class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-2xl">home</span>
+<span class="text-[10px] font-bold uppercase">Intro</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined text-2xl">star_rate</span>
+<span class="text-[10px] font-bold uppercase">Features</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined text-2xl">help</span>
+<span class="text-[10px] font-bold uppercase">How to</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined text-2xl">download</span>
+<span class="text-[10px] font-bold uppercase">Get App</span>
+</div>
+</nav>
+
+</body></html>

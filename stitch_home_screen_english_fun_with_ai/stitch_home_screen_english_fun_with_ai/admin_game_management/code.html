@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Game Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#26d9d9",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#122020",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: "Spline Sans", sans-serif;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-[#0f1a1a] dark:text-white min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-20 flex items-center bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-4 py-4 justify-between border-b border-gray-200 dark:border-gray-800">
+<div class="flex items-center gap-3">
+<div class="flex size-10 items-center justify-center rounded-full bg-white dark:bg-gray-800 shadow-sm">
+<span class="material-symbols-outlined text-[#0f1a1a] dark:text-white">chevron_left</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight">Game Management</h1>
+</div>
+<div class="flex gap-2">
+<button class="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined">settings_suggest</span>
+</button>
+<div class="flex size-10 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+<div class="bg-cover bg-center w-full h-full" data-alt="Profile picture of Miss Phượng" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDDCyzkYsgWy3qo395_eXXVVWjfKo8nrOuAUNizfy8fVb8jN5hEZXMi6malKpkabd7LlWufjBsGQI-19E3yvEQbxRML8p6VNchCzbF8RooPvdpUqaAvRKqtou9TTk9rSY95a_MIAfKgC0aKt1HzW4ZLVaObbHCEEGchCx8jXmNVxSDbBaAXJpqCOOgozukY7OYiHvBxgwnFJilloHUc6yFImoaTGKpUCG-wZnhacUxy8CvtKrsvup4NuIod3GLw90PKX5KpKDLcjTQ");'></div>
+</div>
+</div>
+</header>
+<main class="pb-32 px-4">
+<!-- Dashboard Summary / Quick Stats -->
+<div class="flex gap-4 py-6 overflow-x-auto no-scrollbar">
+<div class="flex-1 min-w-[140px] p-4 rounded-xl bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700">
+<p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Total Games</p>
+<p class="text-2xl font-bold mt-1">12</p>
+</div>
+<div class="flex-1 min-w-[140px] p-4 rounded-xl bg-primary/10 border border-primary/20">
+<p class="text-xs font-medium text-primary uppercase tracking-wider">Active Vocab</p>
+<p class="text-2xl font-bold mt-1 text-primary">142</p>
+</div>
+</div>
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-lg font-bold">Current Modules</h2>
+<button class="text-primary text-sm font-semibold flex items-center gap-1">
+                View All <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+<!-- Game Management Grid -->
+<div class="grid grid-cols-2 gap-4">
+<!-- Animals Card -->
+<div class="bg-white dark:bg-gray-800 p-3 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col group">
+<div class="relative w-full aspect-square bg-center bg-no-repeat bg-cover rounded-lg mb-3 overflow-hidden" data-alt="Cute colorful animal patterns" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDP2B_YKvQjZpPdgqhYeb3JEpLdTiWl8MYqG7igxGJIocsDqVAfcfRF9XKRfoPY1xNQ88SiPh61XjCGjq1GA_Tt94TEXI6N0w_odP72ra9uCehJ-8qp9xDENRcAFP0uvYO9LxrMuEgCtRBnhOGtpY0jcJv51V8N6yLub703wAaMqEzraHmcyUt1U1v5rUuEQxa0Y5M-w9IQcGuX8eMK5FedfAxK7fkff8SO9FxyaqT3Mz1oAQ6jaroZKkMTCG54qDdRWC361aUzQDU");'>
+<div class="absolute top-2 right-2 flex gap-1">
+<button class="bg-white/90 dark:bg-gray-900/90 p-1.5 rounded-full shadow-sm text-red-500">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+<div>
+<h3 class="font-bold text-base mb-1">Animals</h3>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined text-sm">hearing</span>
+<span>Skill: Listening</span>
+</div>
+<div class="flex items-center gap-1.5 text-xs text-primary font-medium">
+<span class="material-symbols-outlined text-sm">menu_book</span>
+<span>24 Words</span>
+</div>
+</div>
+</div>
+<div class="mt-4 flex gap-2">
+<button class="flex-1 bg-primary text-white py-2 rounded-lg text-xs font-bold transition-transform active:scale-95">Manage</button>
+<button class="px-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-sm">settings</span>
+</button>
+</div>
+</div>
+<!-- Family Card -->
+<div class="bg-white dark:bg-gray-800 p-3 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col">
+<div class="relative w-full aspect-square bg-center bg-no-repeat bg-cover rounded-lg mb-3 overflow-hidden" data-alt="Icon representing family members" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAlDxR7C3_vLQN95kUCHrufcJeu7orvvTEscElUJzFX-j3hxAvDxPl8D1n_nkQ1qxKEERZMKdWTuxKMqF0xWNjbNQ14kTRlWB7NNKYhtRuBfamYmgbahUzdAdRP2UMeLqGFf5KwegkmksmrlhRVzDzwH04UQ7lN8pm_B1oSMC_PqJaxtzHX1mdwVGtU8tIS-CNP-9vzuInWl5XFP7DG_SOUi2Hcqlcrk0Mo_hlVlgi6Zrg69nRrvGJEVyAVuQ0Lkbc47k6LUFko35w");'>
+<div class="absolute top-2 right-2 flex gap-1">
+<button class="bg-white/90 dark:bg-gray-900/90 p-1.5 rounded-full shadow-sm text-red-500">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+<div>
+<h3 class="font-bold text-base mb-1">Family</h3>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined text-sm">record_voice_over</span>
+<span>Skill: Speaking</span>
+</div>
+<div class="flex items-center gap-1.5 text-xs text-primary font-medium">
+<span class="material-symbols-outlined text-sm">menu_book</span>
+<span>15 Words</span>
+</div>
+</div>
+</div>
+<div class="mt-4 flex gap-2">
+<button class="flex-1 bg-primary text-white py-2 rounded-lg text-xs font-bold transition-transform active:scale-95">Manage</button>
+<button class="px-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-sm">settings</span>
+</button>
+</div>
+</div>
+<!-- Fruits Card -->
+<div class="bg-white dark:bg-gray-800 p-3 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col">
+<div class="relative w-full aspect-square bg-center bg-no-repeat bg-cover rounded-lg mb-3 overflow-hidden" data-alt="Graphic of various fresh fruits" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDx6-N2rAXSrwFq-26Y55lmm2tMKnfML6QL6SDUScpCMSUbHZheQhausPbtrNwtisiifpfQrCAPn9DFE52N8oNQvmPzd45JapdGqY2YUtdkkPuZJ6-sgreHoWdNN-bZCDXju8ayZl3-Ynw7Pkuc_Jg6hz0KzsStusaq8eu56A_YBE42ZYvz4QFJdImdNPPJTgWBn8FXgtYYCp2A0QYcRLCqsffisEosd-rw6d9yiXfhv7WBI7sbNsJTqjs6rQxIFqNH65b5a3kMqF4");'>
+<div class="absolute top-2 right-2 flex gap-1">
+<button class="bg-white/90 dark:bg-gray-900/90 p-1.5 rounded-full shadow-sm text-red-500">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+<div>
+<h3 class="font-bold text-base mb-1">Fruits</h3>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined text-sm">auto_stories</span>
+<span>Skill: Reading</span>
+</div>
+<div class="flex items-center gap-1.5 text-xs text-primary font-medium">
+<span class="material-symbols-outlined text-sm">menu_book</span>
+<span>12 Words</span>
+</div>
+</div>
+</div>
+<div class="mt-4 flex gap-2">
+<button class="flex-1 bg-primary text-white py-2 rounded-lg text-xs font-bold transition-transform active:scale-95">Manage</button>
+<button class="px-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-sm">settings</span>
+</button>
+</div>
+</div>
+<!-- School Card -->
+<div class="bg-white dark:bg-gray-800 p-3 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col">
+<div class="relative w-full aspect-square bg-center bg-no-repeat bg-cover rounded-lg mb-3 overflow-hidden" data-alt="School supplies and classroom illustration" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAs4UEenaAPcJeTtGieLaRAKUqXuA_ExjnAmGOna36XFwyMBEztsyvTdVlXTO4P2DJ0BByyqDk5ppEqIbMjOfOsYu2VaOdbmxNjOeCxPgBUTiyRRt-H1j1bvEswgXZnKQZCR1iaFubCOOWFquHD0y9YQz6DOOc7uT_6WttcLd_Z5IcLkVyTSeAHOe2mkcHDDBGbuZ7AovO48iUaEKCX6MZj6YxmJOzogNpmn9ACg5AYmUK6CmYyynv5kWjMsgROXVRILvOP8WL7q4U");'>
+<div class="absolute top-2 right-2 flex gap-1">
+<button class="bg-white/90 dark:bg-gray-900/90 p-1.5 rounded-full shadow-sm text-red-500">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+<div>
+<h3 class="font-bold text-base mb-1">School</h3>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined text-sm">star</span>
+<span>Skill: General</span>
+</div>
+<div class="flex items-center gap-1.5 text-xs text-primary font-medium">
+<span class="material-symbols-outlined text-sm">menu_book</span>
+<span>30 Words</span>
+</div>
+</div>
+</div>
+<div class="mt-4 flex gap-2">
+<button class="flex-1 bg-primary text-white py-2 rounded-lg text-xs font-bold transition-transform active:scale-95">Manage</button>
+<button class="px-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-sm">settings</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Quick Actions List -->
+<div class="mt-8">
+<h3 class="text-lg font-bold mb-4">Quick Actions</h3>
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm transition-all hover:bg-gray-50 dark:hover:bg-gray-750">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">account_tree</span>
+</div>
+<div>
+<p class="font-bold text-sm">Edit Game Flow</p>
+<p class="text-xs text-gray-500 dark:text-gray-400">Adjust difficulty &amp; rewards</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-gray-400">chevron_right</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm transition-all hover:bg-gray-50 dark:hover:bg-gray-750">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">analytics</span>
+</div>
+<div>
+<p class="font-bold text-sm">Engagement Reports</p>
+<p class="text-xs text-gray-500 dark:text-gray-400">See which games are popular</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-gray-400">chevron_right</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Fixed Bottom Actions -->
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background-light via-background-light to-transparent dark:from-background-dark dark:via-background-dark pointer-events-none">
+<div class="max-w-md mx-auto pointer-events-auto">
+<button class="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-primary/25 flex items-center justify-center gap-2 transition-transform active:scale-[0.98]">
+<span class="material-symbols-outlined">add_circle</span>
+                Create New Game
+            </button>
+</div>
+</div>
+</body></html>

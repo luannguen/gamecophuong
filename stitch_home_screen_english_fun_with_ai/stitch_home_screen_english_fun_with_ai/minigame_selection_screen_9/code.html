@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My Rewards Sticker Book</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#26d9d9",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#122020",
+                        "accent-yellow": "#FCCD2B",
+                        "accent-pink": "#FF8CBE",
+                        "sticker-locked": "#e2e8f0",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .material-symbols-outlined {
+            font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24
+        }
+        .toy-shadow {
+            box-shadow: 0 8px 0 rgba(0, 0, 0, 0.05)
+        }
+        .btn-shadow {
+            box-shadow: 0 6px 0 #1ba9a9
+        }
+        .sticker-slot {
+            @apply relative aspect-square rounded-full flex items-center justify-center overflow-hidden border-4 border-white dark:border-gray-800 shadow-lg;
+        }
+        .sticker-filled {
+            @apply bg-gradient-to-br from-white to-primary/20;
+        }
+        .sticker-empty {
+            @apply bg-sticker-locked dark:bg-gray-800/50;
+        }
+        .paw-pattern {
+            background-color: transparent;
+            background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCbFWmOirqUfoZ7p0Cn2L228DAbYrCWR0Annm_iJVLSqOdwEKD6npF994f73viLpjHVfOlk8TmJhlnr3C9gNQ7aHY7XGCbEPE4YTlVASWn_DIv78mg2xJyfrX3fFaBL21qmrhzvThI-Sogcil2Mj8-AyBZyhuXoj5XCC-nc54vnyLFp6nMC2P74D8BvifORSrbsujMtfbyXni6W2G6E1tDcHg92tHqRZ2KvlVuYP0HVXuwqcDnzmE7HOt69Okn2g0wUerKisFB9qQg);
+            background-size: 200px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-[#0f1a1a] dark:text-white paw-pattern">
+<div class="relative flex min-h-screen w-full flex-col max-w-[480px] mx-auto overflow-x-hidden pb-24">
+<header class="sticky top-0 z-30 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-4 py-4">
+<div class="flex items-center justify-between mb-4">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-white dark:bg-gray-800 toy-shadow">
+<span class="material-symbols-outlined text-[#0f1a1a] dark:text-white leading-none">arrow_back_ios_new</span>
+</button>
+<h1 class="text-[#0f1a1a] dark:text-white text-xl font-black leading-tight flex-1 text-center">My Sticker Book</h1>
+<div class="flex w-10 items-center justify-end">
+<span class="material-symbols-outlined text-accent-yellow text-2xl">auto_awesome</span>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-800 p-4 rounded-2xl toy-shadow border-2 border-primary/20">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs font-black text-primary uppercase tracking-wider">Progress</span>
+<span class="text-xs font-black text-primary">12 / 30 Collected</span>
+</div>
+<div class="h-4 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-500" style="width: 40%;"></div>
+</div>
+</div>
+</header>
+<main class="flex-1 px-6 py-4">
+<div class="grid grid-cols-3 gap-6">
+<div class="flex flex-col items-center gap-2">
+<div class="sticker-slot sticker-filled ring-4 ring-accent-yellow ring-offset-2">
+<div class="w-16 h-16 bg-center bg-no-repeat bg-contain" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD_2kT-byY3bM7YlgtQjXq7QjY_QgOGNpewACSIyNodDLsgiWghaKsnA8soJV91nS1HwFAf9W6QSJGhfC_T5M4MKkajXzDVdXvvkSiNy5G2tlyIUcB1HjQmesCP5ycdgAW_25gKcTawX-LtkD1SWkEQegDLv270KoeR7OUzSRuWp4yQGj0CHRq4XnDst1-xJxx71u6Ruij6spd1vrm89uDU_hqF48SKUCC3DHhFqBmf873h8a4uhbLtkzCoUuzjy_vUXdQ4GGOe3I0");'></div>
+<div class="absolute -bottom-1 -right-1 bg-accent-yellow rounded-full p-1 shadow-sm">
+<span class="material-symbols-outlined text-[16px] text-white">grade</span>
+</div>
+</div>
+<span class="text-[10px] font-bold uppercase text-gray-500">Lion King</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="sticker-slot sticker-filled">
+<div class="w-14 h-14 bg-center bg-no-repeat bg-contain opacity-90" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD_2kT-byY3bM7YlgtQjXq7QjY_QgOGNpewACSIyNodDLsgiWghaKsnA8soJV91nS1HwFAf9W6QSJGhfC_T5M4MKkajXzDVdXvvkSiNy5G2tlyIUcB1HjQmesCP5ycdgAW_25gKcTawX-LtkD1SWkEQegDLv270KoeR7OUzSRuWp4yQGj0CHRq4XnDst1-xJxx71u6Ruij6spd1vrm89uDU_hqF48SKUCC3DHhFqBmf873h8a4uhbLtkzCoUuzjy_vUXdQ4GGOe3I0"); filter: hue-rotate(90deg);'></div>
+</div>
+<span class="text-[10px] font-bold uppercase text-gray-500">Panda Bear</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="sticker-slot bg-gradient-to-br from-accent-yellow to-orange-400">
+<span class="material-symbols-outlined text-4xl text-white">military_tech</span>
+</div>
+<span class="text-[10px] font-bold uppercase text-accent-yellow">Golden Star</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="sticker-slot sticker-empty">
+<span class="material-symbols-outlined text-3xl text-gray-300 dark:text-gray-600">lock</span>
+</div>
+<span class="text-[10px] font-bold uppercase text-gray-400">Locked</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="sticker-slot sticker-filled ring-4 ring-accent-pink/30 ring-offset-2">
+<div class="w-14 h-14 bg-center bg-no-repeat bg-contain" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD_2kT-byY3bM7YlgtQjXq7QjY_QgOGNpewACSIyNodDLsgiWghaKsnA8soJV91nS1HwFAf9W6QSJGhfC_T5M4MKkajXzDVdXvvkSiNy5G2tlyIUcB1HjQmesCP5ycdgAW_25gKcTawX-LtkD1SWkEQegDLv270KoeR7OUzSRuWp4yQGj0CHRq4XnDst1-xJxx71u6Ruij6spd1vrm89uDU_hqF48SKUCC3DHhFqBmf873h8a4uhbLtkzCoUuzjy_vUXdQ4GGOe3I0"); filter: grayscale(0.5) sepia(0.5);'></div>
+</div>
+<span class="text-[10px] font-bold uppercase text-gray-500">Fast Rabbit</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="sticker-slot sticker-empty">
+<span class="material-symbols-outlined text-3xl text-gray-300 dark:text-gray-600">help</span>
+</div>
+<span class="text-[10px] font-bold uppercase text-gray-400">???</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="sticker-slot sticker-empty">
+<span class="material-symbols-outlined text-3xl text-gray-300 dark:text-gray-600">lock</span>
+</div>
+<span class="text-[10px] font-bold uppercase text-gray-400">Locked</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="sticker-slot sticker-filled">
+<div class="w-14 h-14 bg-center bg-no-repeat bg-contain" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD_2kT-byY3bM7YlgtQjXq7QjY_QgOGNpewACSIyNodDLsgiWghaKsnA8soJV91nS1HwFAf9W6QSJGhfC_T5M4MKkajXzDVdXvvkSiNy5G2tlyIUcB1HjQmesCP5ycdgAW_25gKcTawX-LtkD1SWkEQegDLv270KoeR7OUzSRuWp4yQGj0CHRq4XnDst1-xJxx71u6Ruij6spd1vrm89uDU_hqF48SKUCC3DHhFqBmf873h8a4uhbLtkzCoUuzjy_vUXdQ4GGOe3I0"); filter: hue-rotate(240deg);'></div>
+</div>
+<span class="text-[10px] font-bold uppercase text-gray-500">Wise Owl</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="sticker-slot sticker-empty">
+<span class="material-symbols-outlined text-3xl text-gray-300 dark:text-gray-600">lock</span>
+</div>
+<span class="text-[10px] font-bold uppercase text-gray-400">Locked</span>
+</div>
+</div>
+<div class="mt-10 bg-accent-pink/10 border-2 border-dashed border-accent-pink rounded-3xl p-6 flex flex-col items-center text-center">
+<div class="bg-accent-pink text-white w-12 h-12 rounded-full flex items-center justify-center mb-3 toy-shadow">
+<span class="material-symbols-outlined">redeem</span>
+</div>
+<h3 class="text-lg font-black text-accent-pink">Next Milestone</h3>
+<p class="text-sm font-medium text-gray-600 dark:text-gray-400 mt-1">Collect 3 more stickers to unlock the "Super Speaker" badge!</p>
+</div>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto bg-white/90 dark:bg-background-dark/90 backdrop-blur-xl border-t border-gray-200 dark:border-gray-800 px-6 py-4 flex items-center justify-between z-40">
+<button class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0">home</span>
+<span class="text-[10px] font-bold">HOME</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0">videogame_asset</span>
+<span class="text-[10px] font-bold">GAMES</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">auto_stories</span>
+<span class="text-[10px] font-bold">BOOK</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0">movie</span>
+<span class="text-[10px] font-bold">VIDEOS</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0">leaderboard</span>
+<span class="text-[10px] font-bold">RANK</span>
+</button>
+</nav>
+</div>
+
+</body></html>

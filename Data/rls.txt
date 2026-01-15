@@ -1,0 +1,362 @@
+-- ============================================================================
+-- English Fun with AI - Row Level Security (RLS) Policies
+-- Supabase PostgreSQL
+-- ============================================================================
+
+-- Enable RLS on all tables
+ALTER TABLE students ENABLE ROW LEVEL SECURITY;
+ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE vocabulary ENABLE ROW LEVEL SECURITY;
+ALTER TABLE mini_games ENABLE ROW LEVEL SECURITY;
+ALTER TABLE game_sessions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE game_answers ENABLE ROW LEVEL SECURITY;
+ALTER TABLE scores ENABLE ROW LEVEL SECURITY;
+ALTER TABLE videos ENABLE ROW LEVEL SECURITY;
+ALTER TABLE challenges ENABLE ROW LEVEL SECURITY;
+ALTER TABLE challenge_participants ENABLE ROW LEVEL SECURITY;
+ALTER TABLE weekly_rankings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE admins ENABLE ROW LEVEL SECURITY;
+ALTER TABLE activity_logs ENABLE ROW LEVEL SECURITY;
+
+-- ============================================================================
+-- HELPER FUNCTIONS
+-- ============================================================================
+
+-- Check if current user is admin
+CREATE OR REPLACE FUNCTION is_admin()
+RETURNS BOOLEAN AS $$
+BEGIN
+  RETURN EXISTS (
+    SELECT 1 FROM admins
+    WHERE auth_user_id = auth.uid()
+    AND is_active = true
+  );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Get student ID from authenticated user
+CREATE OR REPLACE FUNCTION get_student_id()
+RETURNS UUID AS $$
+BEGIN
+  RETURN (
+    SELECT id FROM students
+    WHERE auth_user_id = auth.uid()
+    LIMIT 1
+  );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- ============================================================================
+-- STUDENTS TABLE POLICIES
+-- ============================================================================
+
+-- Public can read active students (for leaderboard, rankings)
+CREATE POLICY "Public can view active students"
+  ON students FOR SELECT
+  USING (is_active = true);
+
+-- Students can update their own profile
+CREATE POLICY "Students can update own profile"
+  ON students FOR UPDATE
+  USING (auth.uid() = auth_user_id);
+
+-- Admins have full access
+CREATE POLICY "Admins have full access to students"
+  ON students FOR ALL
+  USING (is_admin());
+
+-- ============================================================================
+-- CATEGORIES TABLE POLICIES
+-- ============================================================================
+
+-- Public read access (all students can see categories)
+CREATE POLICY "Public can view active categories"
+  ON categories FOR SELECT
+  USING (is_active = true);
+
+-- Admins can manage categories
+CREATE POLICY "Admins can manage categories"
+  ON categories FOR ALL
+  USING (is_admin());
+
+-- ============================================================================
+-- VOCABULARY TABLE POLICIES
+-- ============================================================================
+
+-- Public read access to active vocabulary
+CREATE POLICY "Public can view active vocabulary"
+  ON vocabulary FOR SELECT
+  USING (is_active = true);
+
+-- Admins can manage vocabulary
+CREATE POLICY "Admins can manage vocabulary"
+  ON vocabulary FOR ALL
+  USING (is_admin());
+
+-- ============================================================================
+-- MINI GAMES TABLE POLICIES
+-- ============================================================================
+
+-- Public read access to active games
+CREATE POLICY "Public can view active games"
+  ON mini_games FOR SELECT
+  USING (is_active = true);
+
+-- Admins can manage games
+CREATE POLICY "Admins can manage games"
+  ON mini_games FOR ALL
+  USING (is_admin());
+
+-- ============================================================================
+-- GAME SESSIONS TABLE POLICIES
+-- ============================================================================
+
+-- Students can view own sessions
+CREATE POLICY "Students can view own sessions"
+  ON game_sessions FOR SELECT
+  USING (student_id = get_student_id());
+
+-- Students can create own sessions
+CREATE POLICY "Students can create own sessions"
+  ON game_sessions FOR INSERT
+  WITH CHECK (student_id = get_student_id());
+
+-- Students can update own sessions
+CREATE POLICY "Students can update own sessions"
+  ON game_sessions FOR UPDATE
+  USING (student_id = get_student_id());
+
+-- Admins have full access
+CREATE POLICY "Admins can view all sessions"
+  ON game_sessions FOR SELECT
+  USING (is_admin());
+
+-- ============================================================================
+-- GAME ANSWERS TABLE POLICIES
+-- ============================================================================
+
+-- Students can view own answers (via session ownership)
+CREATE POLICY "Students can view own answers"
+  ON game_answers FOR SELECT
+  USING (
+    EXISTS (
+      SELECT 1 FROM game_sessions
+      WHERE game_sessions.id = game_answers.session_id
+      AND game_sessions.student_id = get_student_id()
+    )
+  );
+
+-- Students can insert answers for own sessions
+CREATE POLICY "Students can insert own answers"
+  ON game_answers FOR INSERT
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM game_sessions
+      WHERE game_sessions.id = game_answers.session_id
+      AND game_sessions.student_id = get_student_id()
+    )
+  );
+
+-- Admins have full access
+CREATE POLICY "Admins can view all answers"
+  ON game_answers FOR SELECT
+  USING (is_admin());
+
+-- ============================================================================
+-- SCORES TABLE POLICIES
+-- ============================================================================
+
+-- Public can view all scores (for leaderboards)
+CREATE POLICY "Public can view scores"
+  ON scores FOR SELECT
+  USING (true);
+
+-- Students can insert/update own scores
+CREATE POLICY "Students can manage own scores"
+  ON scores FOR ALL
+  USING (student_id = get_student_id())
+  WITH CHECK (student_id = get_student_id());
+
+-- Admins have full access
+CREATE POLICY "Admins can manage all scores"
+  ON scores FOR ALL
+  USING (is_admin());
+
+-- ============================================================================
+-- VIDEOS TABLE POLICIES
+-- ============================================================================
+
+-- Public can view active videos
+CREATE POLICY "Public can view active videos"
+  ON videos FOR SELECT
+  USING (is_active = true);
+
+-- Admins can manage videos
+CREATE POLICY "Admins can manage videos"
+  ON videos FOR ALL
+  USING (is_admin());
+
+-- ============================================================================
+-- CHALLENGES TABLE POLICIES
+-- ============================================================================
+
+-- Public can view active challenges
+CREATE POLICY "Public can view active challenges"
+  ON challenges FOR SELECT
+  USING (is_active = true);
+
+-- Admins can manage challenges
+CREATE POLICY "Admins can manage challenges"
+  ON challenges FOR ALL
+  USING (is_admin());
+
+-- ============================================================================
+-- CHALLENGE PARTICIPANTS TABLE POLICIES
+-- ============================================================================
+
+-- Students can view own participations
+CREATE POLICY "Students can view own participations"
+  ON challenge_participants FOR SELECT
+  USING (student_id = get_student_id());
+
+-- Students can join challenges
+CREATE POLICY "Students can join challenges"
+  ON challenge_participants FOR INSERT
+  WITH CHECK (student_id = get_student_id());
+
+-- Students can update own participation status
+CREATE POLICY "Students can update own participation"
+  ON challenge_participants FOR UPDATE
+  USING (student_id = get_student_id());
+
+-- Admins have full access
+CREATE POLICY "Admins can manage challenge participants"
+  ON challenge_participants FOR ALL
+  USING (is_admin());
+
+-- ============================================================================
+-- WEEKLY RANKINGS TABLE POLICIES
+-- ============================================================================
+
+-- Public can view all rankings (leaderboard)
+CREATE POLICY "Public can view rankings"
+  ON weekly_rankings FOR SELECT
+  USING (true);
+
+-- System/Admins can manage rankings
+CREATE POLICY "Admins can manage rankings"
+  ON weekly_rankings FOR ALL
+  USING (is_admin());
+
+-- ============================================================================
+-- ADMINS TABLE POLICIES
+-- ============================================================================
+
+-- Admins can view other admins
+CREATE POLICY "Admins can view admins"
+  ON admins FOR SELECT
+  USING (is_admin());
+
+-- Only super_admins can manage other admins
+CREATE POLICY "Super admins can manage admins"
+  ON admins FOR ALL
+  USING (
+    EXISTS (
+      SELECT 1 FROM admins
+      WHERE auth_user_id = auth.uid()
+      AND role = 'super_admin'
+      AND is_active = true
+    )
+  );
+
+-- ============================================================================
+-- ACTIVITY LOGS TABLE POLICIES
+-- ============================================================================
+
+-- Admins can view all activity logs
+CREATE POLICY "Admins can view activity logs"
+  ON activity_logs FOR SELECT
+  USING (is_admin());
+
+-- System can insert logs (via service role)
+-- No RLS policy needed - use service role for inserts
+
+-- ============================================================================
+-- AUTHENTICATION CONFIGURATION
+-- ============================================================================
+
+-- Note: The following should be configured in Supabase Dashboard:
+-- 
+-- 1. Enable Anonymous Sign-in:
+--    - Go to Authentication > Providers
+--    - Enable "Anonymous sign-in"
+--    - This allows students to sign in via PIN/QR without creating full accounts
+--
+-- 2. Enable Email/Password for Admins:
+--    - Should already be enabled by default
+--    - Used for admin authentication
+--
+-- 3. JWT Settings:
+--    - JWT expiry: 604800 (7 days)
+--    - Automatically configured
+--
+-- 4. Custom Claims (Optional):
+--    - Can add student_id to JWT claims for easier RLS
+--    - Use Database Functions or Auth Hooks
+--
+-- 5. Email Templates:
+--    - Customize for admin password reset if needed
+--
+-- ============================================================================
+-- SECURITY NOTES
+-- ============================================================================
+
+-- 1. Anonymous Auth for Students:
+--    Students use PIN/QR codes which create anonymous auth sessions.
+--    The frontend maps PIN/QR to student_id, then creates an auth session
+--    with student_id stored in auth.users metadata or custom claims.
+--
+-- 2. Admin Auth:
+--    Admins use email/password authentication.
+--    Admin records are linked to auth.users via auth_user_id.
+--
+-- 3. Service Role:
+--    Some operations (like activity logs, scheduled rankings updates)
+--    should use Supabase Service Role key to bypass RLS.
+--    NEVER expose service role key to frontend.
+--
+-- 4. Public Data:
+--    Leaderboards, rankings, scores are intentionally public to
+--    encourage friendly competition. No sensitive student data (email, phone)
+--    is stored in students table.
+--
+-- 5. Rate Limiting:
+--    Configure rate limiting in Supabase dashboard to prevent abuse.
+--    Recommended: 60 requests/minute per IP for anonymous users.
+--
+-- ============================================================================
+-- TESTING RLS POLICIES
+-- ============================================================================
+
+-- Test as anonymous student:
+-- SELECT * FROM students; -- Should only show active students
+-- SELECT * FROM vocabulary WHERE is_active = true; -- Should work
+-- SELECT * FROM game_sessions; -- Should only show own sessions (after auth)
+
+-- Test as admin:
+-- SELECT * FROM students; -- Should show all students
+-- UPDATE students SET display_name = 'Test' WHERE id = <student_id>; -- Should work
+
+-- Test policy bypass (should fail):
+-- UPDATE students SET display_name = 'Hacked' WHERE id = <another_student_id>; -- Should fail for students
+
+-- ============================================================================
+-- RLS POLICIES COMPLETE
+-- ============================================================================
+
+-- Summary:
+-- - All tables have RLS enabled
+-- - Public read access for: students (active), categories, vocabulary, games, videos, challenges, scores, rankings
+-- - Students can only modify their own data (sessions, answers, scores, participations)
+-- - Admins have full access to all tables
+-- - Service role should be used for system operations (activity logs, scheduled tasks)

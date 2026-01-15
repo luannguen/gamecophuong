@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Post-Video Mini Quiz - English Fun with AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#26d9d9",
+                        "secondary-pink": "#FF8CBE",
+                        "accent-yellow": "#FCCD2B",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#122020",
+                        "success": "#4CAF50"
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        body {
+            font-family: 'Spline Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            min-height: 100dvh;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .answer-card {
+            @apply bg-white dark:bg-gray-800 border-b-4 border-gray-200 dark:border-gray-700 active:border-b-0 active:translate-y-1 transition-all duration-75;
+        }
+        .answer-card.correct {
+            @apply border-primary ring-4 ring-primary/20 shadow-[0_0_20px_rgba(38,217,217,0.3)] bg-primary/5;
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-[#0f1a1a] dark:text-white transition-colors duration-300">
+<div class="fixed top-0 left-0 right-0 bg-background-light dark:bg-background-dark z-50 px-6 pt-8 pb-4">
+<div class="flex items-center gap-4">
+<button class="size-10 flex items-center justify-center rounded-full bg-white dark:bg-gray-800 shadow-sm">
+<span class="material-symbols-outlined text-gray-400">close</span>
+</button>
+<div class="flex-1 h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-2/3 rounded-full relative">
+<div class="absolute right-0 top-0 h-full w-2 bg-white/30"></div>
+</div>
+</div>
+<div class="flex items-center gap-1 text-accent-yellow font-bold">
+<span class="material-symbols-outlined">stars</span>
+<span>120</span>
+</div>
+</div>
+</div>
+<main class="pt-24 px-6 pb-32 max-w-md mx-auto">
+<div class="flex items-start gap-4 mb-8">
+<div class="size-20 shrink-0 rounded-2xl bg-primary/20 border-2 border-primary/40 overflow-hidden">
+<div class="bg-center bg-no-repeat aspect-square bg-cover size-full" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAp3WQuD9CUJHnAbmASrH_GHIqrdP7UnGMMfJbqczcWWXgkivNe_EtT1Ab3j74WvO2jeDI03Z_Kc2x9PnY5uSs3rrmgO5306_gBDHBJO_elmG9jCCD7Fgt-37keSd1eJta0dt3z_EL7xOxUCV0WJk9W8nwjXOMTHqncFWNaXQaVSJUe533NBJIAYlsz50yNfAVXNO_Hc_ZUrceSlnPgU5zxQfm68aaDqREoDP8ua45o8_67DXTTaDJMDNCLldTkooLJ7TAPEPLoZZI");'></div>
+</div>
+<div class="relative bg-white dark:bg-gray-800 p-4 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 dark:border-gray-700">
+<div class="absolute -left-2 top-0 w-0 h-0 border-t-[10px] border-t-white dark:border-t-gray-800 border-l-[10px] border-l-transparent"></div>
+<p class="text-sm font-bold text-primary mb-1 uppercase tracking-wider">Miss Phượng says:</p>
+<p class="text-lg font-bold leading-tight">What did we learn today? Which one is the <span class="text-secondary-pink">Dad</span>?</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<button class="answer-card p-4 rounded-2xl flex flex-col items-center gap-3 group">
+<div class="aspect-square w-full rounded-xl bg-gray-100 dark:bg-gray-700 overflow-hidden">
+<div class="size-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAYXkg2-vqdIu3XPyiL7o0RTRHnuIWDxwL-xjGGiIqchNH_RPspl2KPYXVEOuuFLyZw-vpEkiPuWs5-CUKZUFFTDlPMCbFCusvlXH_SZ9jTyFcR-W8s_OloxzuPM0CgB8CZBuH8iKXA-U34RdQM__a-7BH2X-2Ay3DdKZcWm3rc7sujS0iA6KFtSg0Mmc2AEpjywyXVqGXByVMScaBWfPJoLiFBiJnNcykU_jWnjVWPn9wWye-0A_n0t3BEatTN8FzQhvyed5SsD_8')"></div>
+</div>
+<span class="font-bold text-lg">Mom</span>
+</button>
+<button class="answer-card correct p-4 rounded-2xl flex flex-col items-center gap-3 group">
+<div class="aspect-square w-full rounded-xl bg-primary/10 overflow-hidden relative">
+<div class="size-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCWJzlFIzXWbWBl0cW1BOJ0itcuVNDZgZv7EJnBZwZXLb1AFAS0Dgs4x7PM_vka7Uv9rgzdZKQmWLMUbXPqxkFONoNvkqUvyz-mAJtXnqbM48tUG8Oms22cCMAmybF3A6UW_Ijjw4vswEOJ5OZgIt9mciugUNKNWSabXMOOW5gxzhSQSyZCol3-H6V1CFs9nMe4XOgfmGIwrrUr4yW37cB5qyjO6iRuWoQ2rCS6jXyy6BrgbNzDY6cHmr9YYIbZeoUSTyWi6-p2DWQ')"></div>
+<div class="absolute top-2 right-2">
+<span class="material-symbols-outlined text-accent-yellow text-xl animate-pulse">auto_awesome</span>
+</div>
+</div>
+<span class="font-bold text-lg text-primary">Dad</span>
+</button>
+<button class="answer-card p-4 rounded-2xl flex flex-col items-center gap-3 group">
+<div class="aspect-square w-full rounded-xl bg-gray-100 dark:bg-gray-700 overflow-hidden">
+<div class="size-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDlPjFeqVvg9YZo__T9IoNyvJAwO-3Xfuu3VyBiPBSoCT7zkFPC01bmyrHwrSHyb3PKZBijdnNHdVXmTUOc_r6t-NJeofIed8DCl4HMkdVtGEOHR1fEZG1qWNtUhG-wYroM8etJvmuNztNIAWVaVV37FOC7VyM0r0XoO2gTsKtJTyw608n0GzLavL0UyqCgAZuroLGgjOFKEzEiaFHugWFHBcnQcX1CpHNTN_Warn_RpeXYHC_-TrfbHTcV3kzpD5xdzz8kfZ5uydk')"></div>
+</div>
+<span class="font-bold text-lg">Brother</span>
+</button>
+<button class="answer-card p-4 rounded-2xl flex flex-col items-center gap-3 group">
+<div class="aspect-square w-full rounded-xl bg-gray-100 dark:bg-gray-700 overflow-hidden">
+<div class="size-full bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD7H0IXYu0Z7WGmxLKhXr7N7kjUY7cU4k0XEGNO-vz19QPp6scujTnJHFqZJicDQq0lWPdS3aGL0-gJ6zpcTqg0PgGdZckJafypgiH8LLlCfPbZiXOLrHIsTI6GzLmngEhgER8_6YeFFyA8CuH767h9Mzom73VrzeT-lgfaAlpUOr8j_2lfclAYg4ydGmM9Yao6-nY4YztTPTJdka02NxjnPkbUMkCq6NUIc3jlpEekzltOiysKJAXj05uMWmPkuaQBUZOedTxaNmw')"></div>
+</div>
+<span class="font-bold text-lg">Sister</span>
+</button>
+</div>
+<div class="mt-8 flex flex-col items-center justify-center text-center">
+<div class="flex gap-2 mb-2">
+<span class="material-symbols-outlined text-accent-yellow text-3xl">star</span>
+<span class="material-symbols-outlined text-accent-yellow text-4xl -translate-y-2">star</span>
+<span class="material-symbols-outlined text-accent-yellow text-3xl">star</span>
+</div>
+<p class="text-success font-black text-2xl mb-1">AMAZING!</p>
+<p class="text-gray-500 text-sm">You're doing great!</p>
+</div>
+</main>
+<div class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border-t border-gray-100 dark:border-gray-800 p-6 pb-10 flex flex-col gap-4">
+<button class="w-full py-4 bg-primary text-white rounded-2xl font-black text-lg shadow-lg shadow-primary/30 active:scale-[0.98] transition-transform">
+        CHECK ANSWER
+    </button>
+</div>
+<div class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 overflow-hidden">
+<div class="absolute top-[-10%] right-[-10%] w-[50%] h-[40%] bg-primary/5 rounded-full blur-[100px]"></div>
+<div class="absolute bottom-[-10%] left-[-10%] w-[50%] h-[40%] bg-secondary-pink/5 rounded-full blur-[100px]"></div>
+</div>
+
+</body></html>

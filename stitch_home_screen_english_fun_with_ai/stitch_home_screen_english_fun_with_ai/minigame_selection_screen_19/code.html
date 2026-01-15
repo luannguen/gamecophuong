@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Daily Routines - Game Intro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#26d9d9",
+                        "background-light": "#FFFBEB", // Soft morning yellow
+                        "background-dark": "#122020",
+                        "accent-yellow": "#FCCD2B",
+                        "accent-pink": "#FF8CBE",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .toy-shadow {
+            box-shadow: 0 8px 0px rgba(0, 0, 0, 0.05);
+        }
+        .button-shadow {
+            box-shadow: 0 6px 0px #1a9e9e;
+        }
+        .doodle-bg {
+            background-image: radial-gradient(#FDE68A 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-[#0f1a1a] dark:text-white">
+<div class="relative flex min-h-screen w-full flex-col max-w-[480px] mx-auto overflow-x-hidden doodle-bg">
+<header class="sticky top-0 z-20 px-4 py-4 flex items-center justify-between">
+<button class="flex items-center justify-center rounded-full h-10 w-10 bg-white dark:bg-gray-800 toy-shadow">
+<span class="material-symbols-outlined text-[#0f1a1a] dark:text-white">arrow_back_ios_new</span>
+</button>
+<div class="flex items-center gap-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur px-4 py-1.5 rounded-full toy-shadow">
+<span class="material-symbols-outlined text-accent-yellow text-sm">stars</span>
+<span class="text-sm font-bold">Level 12</span>
+</div>
+<button class="flex items-center justify-center rounded-full h-10 w-10 bg-white dark:bg-gray-800 toy-shadow">
+<span class="material-symbols-outlined text-[#0f1a1a] dark:text-white">settings</span>
+</button>
+</header>
+<main class="flex-1 flex flex-col items-center px-6 pt-4 pb-32">
+<div class="relative w-full max-w-[320px] aspect-square mb-8">
+<div class="absolute -top-4 -right-4 animate-pulse">
+<span class="material-symbols-outlined text-6xl text-accent-yellow opacity-40">sunny</span>
+</div>
+<div class="absolute -bottom-2 -left-4">
+<span class="material-symbols-outlined text-5xl text-primary opacity-30">schedule</span>
+</div>
+<div class="w-full h-full bg-white dark:bg-gray-800 rounded-[3rem] toy-shadow border-4 border-white flex items-center justify-center overflow-hidden">
+<div class="w-full h-full bg-center bg-no-repeat bg-contain p-8" data-alt="Illustration of a child waking up" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAqEAi1c6fc-n4BsihOb3lE-Pbe8MKVixuHLe2-KXzSIL-Fu5fHX_lIOxu_31rtLqyN5vyaR_KaUEPUBiLKo7VuzNJvfd11YsbaDAb_Mxe2dLxUH1bJCHn-AiSHCOkIeNX5tkzgxuoJjUUO44cgBwFanp5rRjY5am68IkRmHo0wx64RhPgiLoOthjjaWIgADnAEc4hOxlqmGYTi9-zliEWfUW8PyZrGvQKlZ3szoMKSvptneh-SdpIXZq0AbtsI0GuMciU5tfOwGtA");'></div>
+</div>
+</div>
+<div class="text-center space-y-2 mb-8">
+<h1 class="text-4xl font-black tracking-tight text-[#0f1a1a] dark:text-white">Daily Routines</h1>
+<p class="text-lg font-medium text-gray-600 dark:text-gray-400">Sentence Builder</p>
+<div class="inline-flex items-center gap-2 bg-primary/10 px-3 py-1 rounded-full mt-2">
+<span class="material-symbols-outlined text-primary text-sm">edit_note</span>
+<span class="text-primary text-xs font-bold uppercase tracking-widest">Grammar</span>
+</div>
+</div>
+<div class="w-full bg-white/80 dark:bg-gray-800/80 backdrop-blur p-6 rounded-2xl toy-shadow border-b-4 border-primary/20 mb-8">
+<div class="flex items-start gap-4">
+<div class="size-10 bg-accent-yellow/20 rounded-full flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-accent-yellow">lightbulb</span>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-500 uppercase tracking-tighter">Instructions</p>
+<p class="text-lg font-bold leading-snug">Drag the words to build the correct sentence!</p>
+</div>
+</div>
+</div>
+<div class="w-full grid grid-cols-2 gap-4 mb-8">
+<div class="bg-white dark:bg-gray-800 p-4 rounded-xl toy-shadow flex flex-col items-center">
+<span class="text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-1">High Score</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-accent-yellow">military_tech</span>
+<span class="text-xl font-black">2,450</span>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-800 p-4 rounded-xl toy-shadow flex flex-col items-center">
+<span class="text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-1">Progress</span>
+<div class="w-full h-3 bg-gray-100 dark:bg-gray-700 rounded-full mt-2 overflow-hidden">
+<div class="w-[65%] h-full bg-primary rounded-full"></div>
+</div>
+</div>
+</div>
+</main>
+<div class="fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto z-40">
+<div class="px-6 pb-24">
+<button class="w-full h-16 bg-primary text-white text-2xl font-black rounded-2xl button-shadow flex items-center justify-center gap-3 transform active:translate-y-1 active:shadow-none transition-all">
+<span>START</span>
+<span class="material-symbols-outlined text-3xl">play_circle</span>
+</button>
+</div>
+<nav class="bg-white/90 dark:bg-background-dark/90 backdrop-blur-xl border-t border-gray-200 dark:border-gray-800 px-6 py-4 flex items-center justify-between">
+<button class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0">home</span>
+<span class="text-[10px] font-bold">HOME</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined">videogame_asset</span>
+<span class="text-[10px] font-bold">GAMES</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0">movie</span>
+<span class="text-[10px] font-bold">VIDEOS</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0">leaderboard</span>
+<span class="text-[10px] font-bold">RANK</span>
+</button>
+</nav>
+</div>
+</div>
+
+</body></html>

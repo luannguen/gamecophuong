@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reset Success Celebration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#26d9d9",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#122020",
+                        "sunny": "#FCCD2B",
+                        "coral": "#FF8CBE",
+                        "soft-gray": "#f8fbfb",
+                        "sky": "#7DD3FC"
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"],
+                        "body": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .tactile-shadow {
+            box-shadow: 0 8px 24px -4px rgba(38, 217, 217, 0.12), 0 4px 8px -4px rgba(38, 217, 217, 0.08);
+        }
+        .floating-button {
+            box-shadow: 0 6px 0 0 #1ca3a3;
+        }
+        .floating-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 4px 0 0 #1ca3a3;
+        }
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+        }
+        .balloon {
+            position: absolute;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased">
+<div class="relative flex h-screen w-full flex-col overflow-hidden max-w-[430px] mx-auto bg-background-light dark:bg-background-dark">
+<div class="absolute inset-0 pointer-events-none opacity-40">
+<div class="confetti bg-coral top-10 left-10 rotate-12"></div>
+<div class="confetti bg-sunny top-20 right-20 -rotate-45"></div>
+<div class="confetti bg-primary bottom-40 left-20 rotate-45"></div>
+<div class="confetti bg-sky top-1/2 right-10 rotate-90"></div>
+<div class="confetti bg-coral top-1/4 left-1/2 rotate-12"></div>
+<div class="confetti bg-sunny bottom-20 right-1/4"></div>
+<div class="confetti bg-primary top-10 right-1/3"></div>
+<div class="confetti bg-sky bottom-1/3 left-10"></div>
+</div>
+<div class="flex flex-col items-center justify-center flex-grow px-8 text-center z-10">
+<div class="relative mb-8">
+<div class="balloon -left-12 top-0 text-4xl" style="animation-delay: 0s">🎈</div>
+<div class="balloon -right-12 top-4 text-4xl" style="animation-delay: 0.5s">🎈</div>
+<div class="balloon -left-8 -bottom-4 text-3xl" style="animation-delay: 1.2s">✨</div>
+<div class="relative">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full min-h-48 w-48 border-8 border-white dark:border-white/10 shadow-2xl scale-110" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBcyDdBDK9QugpEDmrQVJsdjFhttIpjyKvZK3Saf26aiIUHl3t6mzmS5XYxPkE7R8-jGHSLJOaWBu_AynXeI88PG3X1EBwO0z1ajR0rNz2nH2fq45I_X3ulDISujONTxv00gbw-o5315-UeqOK1ot0xGDgwxMXfxPUF9uuaW2UDWSPvOXSACeQrMGN-SLVZpvOkDH_ypm2dPiz3xcKh2ZBGs8gFGlEmen3Zuf4022agYxi4Kf7MjzK0_D2QUZ3T2YQ2l8UdcmQD12w");'>
+</div>
+<div class="absolute -right-2 -bottom-2 bg-sunny w-14 h-14 rounded-full flex items-center justify-center border-4 border-white shadow-lg">
+<span class="material-symbols-outlined text-white font-bold text-2xl">check_circle</span>
+</div>
+</div>
+</div>
+<div class="space-y-3 mb-10">
+<h1 class="text-4xl font-black text-[#0f1a1a] dark:text-white tracking-tight">
+                    All Fixed!
+                </h1>
+<p class="text-lg font-medium text-[#539393] dark:text-[#539393]/80 leading-relaxed max-w-[280px] mx-auto">
+                    You can now log in with your new password.
+                </p>
+</div>
+<div class="w-full max-w-xs">
+<button class="floating-button relative flex w-full min-h-[72px] cursor-pointer items-center justify-center overflow-hidden rounded-2xl bg-primary text-[#0f1a1a] text-xl font-bold leading-normal transition-all hover:brightness-105 active:scale-95">
+<span class="flex items-center gap-3">
+                        Go to Login
+                        <span class="material-symbols-outlined text-3xl rotate-45">rocket_launch</span>
+</span>
+</button>
+</div>
+</div>
+<div class="absolute bottom-[-2%] left-0 w-full opacity-20 pointer-events-none">
+<svg fill="none" viewBox="0 0 430 150" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 150C50 120 100 140 150 120C200 100 250 80 300 100C350 120 400 100 430 80V150H0Z" fill="#26d9d9"></path>
+</svg>
+</div>
+<div class="absolute top-0 left-0 right-0 p-6 flex justify-between items-center z-20 pointer-events-none opacity-60">
+<div class="flex gap-1.5">
+<div class="w-2 h-2 rounded-full bg-primary/30"></div>
+<div class="w-2 h-2 rounded-full bg-coral/30"></div>
+<div class="w-2 h-2 rounded-full bg-sunny/30"></div>
+</div>
+</div>
+</div>
+
+</body></html>

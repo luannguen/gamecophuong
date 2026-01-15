@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Speak Match - Active Gameplay</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#26d9d9",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#122020",
+                        "accent-yellow": "#FCCD2B",
+                        "accent-pink": "#FF8CBE",
+                        "accent-purple": "#A855F7",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .material-symbols-outlined {
+            font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24
+        }
+        .toy-shadow {
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.05)
+        }
+        .toy-shadow-lg {
+            box-shadow: 0 8px 0 rgba(0, 0, 0, 0.05)
+        }
+        .mic-shadow {
+            box-shadow: 0 0 20px rgba(38, 217, 217, 0.4), 0 8px 0 #1ba9a9;
+        }
+        .mic-shadow:active {
+            box-shadow: 0 0 10px rgba(38, 217, 217, 0.2), 0 2px 0 #1ba9a9;
+            transform: translateY(6px);
+        }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            border-width: 10px 10px 0 10px;
+            border-style: solid;
+            border-color: white transparent transparent transparent;
+        }
+        .dark .speech-bubble::after {
+            border-color: #1f2937 transparent transparent transparent;
+        }
+        .voice-bar {
+            @apply w-1.5 bg-primary rounded-full;
+            transition: height 0.2s ease;
+        }
+        .hint-popup {
+            display: none;
+        }.hint-enabled .word-trigger:active + .hint-popup,
+        .hint-enabled .word-trigger:focus + .hint-popup {
+            display: block;
+        }
+        .toggle-checked .toggle-dot {
+            transform: translateX(1.25rem);
+        }
+        .toggle-checked {
+            background-color: #A855F7;
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-[#0f1a1a] dark:text-white">
+<div class="relative flex min-h-screen w-full flex-col max-w-[480px] mx-auto overflow-x-hidden hint-enabled">
+<header class="sticky top-0 z-20 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-4 py-4 flex items-center justify-between">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-white dark:bg-gray-800 toy-shadow">
+<span class="material-symbols-outlined text-[#0f1a1a] dark:text-white leading-none">close</span>
+</button>
+<div class="flex flex-col items-center">
+<h1 class="text-[#0f1a1a] dark:text-white text-sm font-black uppercase tracking-widest leading-none">Speak Match</h1>
+<span class="text-[10px] text-gray-400 font-bold uppercase">My House</span>
+</div>
+<div class="flex items-center gap-2 bg-white dark:bg-gray-800 px-3 py-1.5 rounded-full toy-shadow">
+<span class="material-symbols-outlined text-accent-yellow text-base">stars</span>
+<span class="text-sm font-black tracking-tighter">450</span>
+</div>
+</header>
+<div class="px-6 mt-2 flex flex-col gap-4">
+<div class="flex items-center justify-between w-full bg-white/50 dark:bg-gray-800/50 p-3 rounded-2xl border border-white/50 dark:border-gray-700/50">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-accent-purple/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-accent-purple text-xl">translate</span>
+</div>
+<div>
+<p class="text-[10px] font-black text-gray-400 uppercase leading-none mb-1">Language Support</p>
+<p class="text-xs font-bold text-[#0f1a1a] dark:text-white">VI Hints</p>
+</div>
+</div>
+<button class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none toggle-checked">
+<span class="toggle-dot inline-block h-4 w-4 transform rounded-full bg-white transition-transform ml-1"></span>
+</button>
+</div>
+<div class="w-full h-3 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden p-0.5">
+<div class="h-full w-2/3 bg-primary rounded-full shadow-[0_0_8px_rgba(38,217,217,0.6)]"></div>
+</div>
+</div>
+<main class="flex-1 px-6 flex flex-col items-center justify-between py-6">
+<div class="w-full relative aspect-[4/3] rounded-[2.5rem] overflow-hidden border-4 border-white dark:border-gray-800 shadow-2xl">
+<div class="absolute inset-0 bg-center bg-cover" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDLXkdKax3G9CcYbY0A_MGKdCHJ87fHJDQZxoLfzKyxuifthwBdk6yXfULgU8MK2Xx8avFVoPyvT7U58hi0tvTs7hD6LyYGAR3mK3op9o6K22tNuqtc1hRfBt8W7CsGsfAqWV03W7wOn9yjJVGMNrqugZNJIHaeZQW7pgzNud95C0OXWJTxGxv3UlJLaDrVRwgqZGig5VuA8io0nbYB0bkLUrCjCYkOfMFTQ63eY_aZ3gTZpJIfk3EVhaBvMzCHc7OwTV1NtX5kbcE');"></div>
+<div class="absolute bottom-4 left-4 flex flex-col items-start gap-2">
+<div class="speech-bubble relative bg-white dark:bg-gray-800 px-4 py-2 rounded-2xl shadow-lg border-2 border-primary/20">
+<p class="text-sm font-bold text-[#0f1a1a] dark:text-white">
+                            Repeat after me: 
+                            <span class="relative inline-block">
+<button class="word-trigger text-primary text-lg underline decoration-dashed decoration-primary/40 underline-offset-4 font-black">Bed</button>
+<span class="hint-popup absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap bg-accent-purple text-white text-[10px] py-1 px-2.5 rounded-lg shadow-xl font-bold z-50">
+                                    Cái giường
+                                    <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-accent-purple rotate-45"></span>
+</span>
+</span>
+</p>
+</div>
+<div class="w-20 h-20 bg-contain bg-no-repeat" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD_2kT-byY3bM7YlgtQjXq7QjY_QgOGNpewACSIyNodDLsgiWghaKsnA8soJV91nS1HwFAf9W6QSJGhfC_T5M4MKkajXzDVdXvvkSiNy5G2tlyIUcB1HjQmesCP5ycdgAW_25gKcTawX-LtkD1SWkEQegDLv270KoeR7OUzSRuWp4yQGj0CHRq4XnDst1-xJxx71u6Ruij6spd1vrm89uDU_hqF48SKUCC3DHhFqBmf873h8a4uhbLtkzCoUuzjy_vUXdQ4GGOe3I0');"></div>
+</div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+<div class="w-24 h-24 border-4 border-dashed border-white/60 rounded-full animate-pulse flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-4xl opacity-80">touch_app</span>
+</div>
+</div>
+</div>
+<div class="w-full flex flex-col items-center mt-8">
+<div class="flex items-end justify-center gap-1.5 h-16 mb-8">
+<div class="voice-bar h-4"></div>
+<div class="voice-bar h-8"></div>
+<div class="voice-bar h-14"></div>
+<div class="voice-bar h-10"></div>
+<div class="voice-bar h-12"></div>
+<div class="voice-bar h-6"></div>
+<div class="voice-bar h-10"></div>
+</div>
+<div class="text-center mb-10 relative">
+<div class="relative inline-block">
+<button class="word-trigger group">
+<h2 class="text-4xl font-black text-[#0f1a1a] dark:text-white tracking-tight group-active:scale-95 transition-transform">BED</h2>
+</button>
+<div class="hint-popup absolute -top-12 left-1/2 -translate-x-1/2 bg-accent-purple text-white text-sm py-1.5 px-4 rounded-xl shadow-2xl font-bold z-50 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">translate</span>
+                            Cái giường
+                            <span class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-accent-purple rotate-45"></span>
+</div>
+</div>
+<p class="text-gray-400 font-bold text-sm uppercase mt-2 tracking-widest flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-xs">info</span>
+                        Tap text for hint
+                    </p>
+</div>
+<div class="relative">
+<div class="absolute inset-0 bg-primary/20 blur-3xl rounded-full"></div>
+<button class="relative w-28 h-28 bg-primary rounded-full flex items-center justify-center mic-shadow border-4 border-white dark:border-gray-800">
+<span class="material-symbols-outlined text-white text-5xl">mic</span>
+</button>
+<div class="absolute -top-4 -right-2 bg-accent-pink px-2 py-0.5 rounded-full border-2 border-white shadow-md">
+<span class="text-[8px] font-black text-white uppercase italic">AI Active</span>
+</div>
+</div>
+</div>
+</main>
+<div class="h-12"></div>
+</div>
+
+</body></html>

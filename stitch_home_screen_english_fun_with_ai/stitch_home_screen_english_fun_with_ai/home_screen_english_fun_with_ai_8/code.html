@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Student Onboarding Guide</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#26d9d9",
+                        "secondary-pink": "#FF8CBE",
+                        "accent-yellow": "#FCCD2B",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#122020",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Spline Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .step-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid white;
+        }
+        .dark .step-bubble::after {
+            border-top: 8px solid #1f2937;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-[#0f1a1a] dark:text-white transition-colors duration-300">
+<div class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 py-4 flex items-center justify-between">
+<button class="size-10 flex items-center justify-center rounded-full bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700">
+<span class="material-symbols-outlined">close</span>
+</button>
+<h1 class="text-xl font-bold tracking-tight">How to Play</h1>
+<div class="size-10"></div> 
+</div>
+<main class="px-6 pb-32 max-w-md mx-auto">
+<div class="text-center mb-10 mt-4">
+<h2 class="text-2xl font-black text-primary mb-2">Welcome! 👋</h2>
+<p class="text-gray-600 dark:text-gray-400 font-medium">Let's learn how to use English Fun with AI!</p>
+</div>
+<div class="relative mb-12">
+<div class="bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-sm border-b-4 border-primary/20 relative overflow-hidden">
+<div class="absolute top-4 right-4 bg-primary/10 text-primary size-8 rounded-full flex items-center justify-center font-bold">1</div>
+<div class="flex flex-col items-center gap-6">
+<div class="relative w-full aspect-square max-w-[200px] bg-gray-50 dark:bg-gray-900/50 rounded-2xl flex items-center justify-center border-2 border-dashed border-gray-200 dark:border-gray-700">
+<div class="grid grid-cols-2 gap-2 p-4 w-full">
+<div class="h-16 bg-accent-yellow/40 rounded-lg"></div>
+<div class="h-16 bg-secondary-pink/40 rounded-lg ring-4 ring-primary ring-inset"></div>
+<div class="h-16 bg-primary/40 rounded-lg"></div>
+<div class="h-16 bg-gray-300 rounded-lg"></div>
+</div>
+<div class="absolute top-1/2 left-1/2 translate-x-2 translate-y-2">
+<span class="material-symbols-outlined text-4xl text-black/80">touch_app</span>
+</div>
+</div>
+<div class="w-full">
+<div class="relative step-bubble bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 p-4 rounded-2xl mb-4 shadow-sm">
+<p class="font-bold text-lg">Step 1: Pick your favorite theme!</p>
+<p class="text-sm text-gray-500 italic">Bước 1: Chọn chủ đề yêu thích của bạn!</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="relative mb-12">
+<div class="bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-sm border-b-4 border-secondary-pink/20 relative overflow-hidden">
+<div class="absolute top-4 right-4 bg-secondary-pink/10 text-secondary-pink size-8 rounded-full flex items-center justify-center font-bold">2</div>
+<div class="flex flex-col items-center gap-6">
+<div class="relative w-full aspect-video max-w-[240px] bg-gray-50 dark:bg-gray-900/50 rounded-2xl flex flex-col p-4 gap-3 border-2 border-dashed border-gray-200 dark:border-gray-700">
+<div class="h-8 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg flex items-center px-3 gap-2">
+<span class="material-symbols-outlined text-xs text-gray-400">person</span>
+<div class="h-2 w-20 bg-gray-200 dark:bg-gray-600 rounded"></div>
+</div>
+<div class="h-8 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg flex items-center px-3 gap-2">
+<span class="material-symbols-outlined text-xs text-gray-400">school</span>
+<div class="h-2 w-16 bg-gray-200 dark:bg-gray-600 rounded"></div>
+</div>
+</div>
+<div class="w-full">
+<div class="relative step-bubble bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 p-4 rounded-2xl mb-4 shadow-sm">
+<p class="font-bold text-lg">Step 2: Enter your name and class.</p>
+<p class="text-sm text-gray-500 italic">Bước 2: Nhập tên và lớp của bạn.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="relative mb-8">
+<div class="bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-sm border-b-4 border-accent-yellow/20 relative overflow-hidden">
+<div class="absolute top-4 right-4 bg-accent-yellow/10 text-accent-yellow size-8 rounded-full flex items-center justify-center font-bold">3</div>
+<div class="flex flex-col items-center gap-6">
+<div class="relative w-full aspect-square max-w-[180px] bg-accent-yellow/10 rounded-full flex items-center justify-center">
+<div class="relative">
+<span class="material-symbols-outlined text-8xl text-accent-yellow drop-shadow-lg">emoji_events</span>
+<div class="absolute -top-2 -right-2 bg-secondary-pink text-white text-[10px] font-bold px-2 py-0.5 rounded-full">+50 pts</div>
+</div>
+</div>
+<div class="w-full">
+<div class="relative step-bubble bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 p-4 rounded-2xl mb-4 shadow-sm">
+<p class="font-bold text-lg">Step 3: Earn points and win trophies!</p>
+<p class="text-sm text-gray-500 italic">Bước 3: Tích điểm và giành cúp vô địch!</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div class="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background-light dark:from-background-dark via-background-light dark:via-background-dark to-transparent z-50">
+<button class="w-full bg-primary py-4 rounded-2xl text-white font-bold text-lg shadow-xl shadow-primary/30 flex items-center justify-center gap-2 active:scale-95 transition-transform">
+<span>Got it, let's play!</span>
+<span class="material-symbols-outlined">rocket_launch</span>
+</button>
+</div>
+<div class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 overflow-hidden">
+<div class="absolute top-[-10%] right-[-10%] w-[50%] h-[40%] bg-primary/5 rounded-full blur-[100px]"></div>
+<div class="absolute bottom-[-10%] left-[-10%] w-[50%] h-[40%] bg-secondary-pink/5 rounded-full blur-[100px]"></div>
+</div>
+
+</body></html>

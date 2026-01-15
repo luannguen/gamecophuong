@@ -1,0 +1,88 @@
+.game-card-ui {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.game-card-ui:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.game-card-ui.compact {
+    flex-direction: row;
+    align-items: center;
+}
+
+.game-card-ui .game-thumbnail {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, var(--color-primary), #45B7AA);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-card-ui.compact .game-thumbnail {
+    width: 80px;
+    height: 80px;
+    aspect-ratio: 1;
+    border-radius: var(--radius-lg);
+    margin: var(--space-3);
+}
+
+.game-card-ui .placeholder-icon {
+    font-size: 48px;
+}
+
+.game-card-ui.compact .placeholder-icon {
+    font-size: 32px;
+}
+
+.game-card-ui .game-content {
+    padding: var(--space-4);
+}
+
+.game-card-ui.compact .game-content {
+    padding: var(--space-3);
+    flex: 1;
+}
+
+.game-card-ui .game-name {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    margin: 0 0 var(--space-2) 0;
+}
+
+.game-card-ui.compact .game-name {
+    font-size: var(--font-size-base);
+    margin-bottom: var(--space-1);
+}
+
+.game-card-ui .game-meta {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+}
+
+.game-card-ui .skill-tag,
+.game-card-ui .word-count {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+}
+
+.game-card-ui .skill-tag .material-symbols-outlined,
+.game-card-ui .word-count .material-symbols-outlined {
+    font-size: 14px;
+}

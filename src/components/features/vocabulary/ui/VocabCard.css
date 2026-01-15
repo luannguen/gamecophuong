@@ -1,0 +1,110 @@
+.vocab-card-ui {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: var(--space-4);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    box-shadow: var(--shadow-sm);
+}
+
+.vocab-card-ui .vocab-main {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    flex: 1;
+}
+
+.vocab-card-ui .vocab-image {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-lg);
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+}
+
+.vocab-card-ui .vocab-placeholder {
+    width: 60px;
+    height: 60px;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+}
+
+.vocab-card-ui .vocab-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.vocab-card-ui .vocab-word {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    margin: 0 0 2px 0;
+}
+
+.vocab-card-ui .vocab-meaning {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-2) 0;
+}
+
+.vocab-card-ui .difficulty-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: white;
+    text-transform: capitalize;
+}
+
+.vocab-card-ui .vocab-actions {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.vocab-card-ui .action-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform var(--transition-base);
+}
+
+.vocab-card-ui .action-btn:hover {
+    transform: scale(1.1);
+}
+
+.vocab-card-ui .action-btn.audio {
+    background: #E3F2FD;
+    color: #1976D2;
+}
+
+.vocab-card-ui .action-btn.play {
+    background: #E8F5E9;
+    color: #4CAF50;
+}
+
+.vocab-card-ui .action-btn.edit {
+    background: #FFF3E0;
+    color: #FF9800;
+}
+
+.vocab-card-ui .action-btn.delete {
+    background: #FFEBEE;
+    color: #F44336;
+}
+
+.vocab-card-ui .action-btn .material-symbols-outlined {
+    font-size: 18px;
+}

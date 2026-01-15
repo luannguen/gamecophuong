@@ -1,0 +1,83 @@
+.stats-card-ui {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: var(--space-4);
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+}
+
+.stats-card-ui.primary {
+    background: linear-gradient(135deg, #1a545b, #2a6a72);
+    color: white;
+}
+
+.stats-card-ui .stat-icon {
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stats-card-ui.primary .stat-icon {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.stats-card-ui .stat-content {
+    flex: 1;
+}
+
+.stats-card-ui .stat-label {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-tertiary);
+    margin: 0 0 var(--space-1) 0;
+}
+
+.stats-card-ui.primary .stat-label {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.stats-card-ui .stat-value-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+}
+
+.stats-card-ui .stat-number {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+}
+
+.stats-card-ui .stat-change {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+}
+
+.stats-card-ui .stat-change.up {
+    background: #E8F5E9;
+    color: #4CAF50;
+}
+
+.stats-card-ui .stat-change.down {
+    background: #FFEBEE;
+    color: #F44336;
+}
+
+.stats-card-ui .stat-change.same {
+    background: var(--color-bg-secondary);
+    color: var(--color-text-tertiary);
+}
+
+.stats-card-ui.primary .stat-change {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}

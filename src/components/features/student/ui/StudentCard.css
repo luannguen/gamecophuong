@@ -1,0 +1,93 @@
+.student-card-ui {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-sm);
+}
+
+.student-card-ui .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-3);
+}
+
+.student-card-ui .student-info {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+}
+
+.student-card-ui .student-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--color-bg-secondary);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.student-card-ui .student-details h4 {
+    margin: 0;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+}
+
+.student-card-ui .class-info {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.student-card-ui .status-badge {
+    padding: 4px 8px;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+}
+
+.student-card-ui .status-badge.active {
+    background: #E8F5E9;
+    color: #4CAF50;
+}
+
+.student-card-ui .status-badge.inactive {
+    background: #FFF3E0;
+    color: #FF9800;
+}
+
+.student-card-ui .stats-row {
+    display: flex;
+    gap: var(--space-4);
+    margin-bottom: var(--space-3);
+}
+
+.student-card-ui .stat {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.student-card-ui .stat-icon {
+    font-size: 16px;
+}
+
+.student-card-ui .stat-value {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+}
+
+.student-card-ui .action-btn {
+    width: 100%;
+    padding: var(--space-3);
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-lg);
+    font-weight: var(--font-weight-semibold);
+    cursor: pointer;
+}

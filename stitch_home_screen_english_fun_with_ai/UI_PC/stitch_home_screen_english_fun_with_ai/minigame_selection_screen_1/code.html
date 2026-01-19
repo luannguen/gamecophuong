@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>English Fun with AI - Desktop Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "sky-blue": "#E0F2FE",
+                        "primary-blue": "#0EA5E9",
+                        "fun-yellow": "#FDE047",
+                        "fun-pink": "#F472B6",
+                        "fun-green": "#4ADE80",
+                        "nav-bg": "rgba(255, 255, 255, 0.9)",
+                    },
+                    fontFamily: {
+                        "display": ["Fredoka", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "super": "2.5rem",
+                        "kid": "1.5rem"
+                    },
+                    backgroundImage: {
+                        'cloud-pattern': "url('https://www.transparenttextures.com/patterns/clouds.png')",
+                    }
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .material-symbols-outlined {
+            font-variation-settings: "FILL" 1, "wght" 600, "GRAD" 0, "opsz" 48;
+            font-size: 2rem;
+        }
+        .nav-item {
+            @apply flex flex-col items-center justify-center p-4 rounded-kid transition-all hover:bg-white hover:shadow-lg text-gray-600 hover:text-primary-blue;
+        }
+        .toy-button {
+            box-shadow: 0 8px 0 #0369a1;
+            transition: all 0.1s ease;
+        }
+        .toy-button:active {
+            box-shadow: 0 2px 0 #0369a1;
+            transform: translateY(6px);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+        }
+        .cloud-bg {
+            background-color: #E0F2FE;
+            background-image: radial-gradient(#ffffff 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-sky-blue font-display text-slate-800 cloud-bg overflow-x-hidden">
+<header class="w-full px-12 py-6 flex items-center justify-between sticky top-0 z-50 bg-nav-bg backdrop-blur-md shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 bg-primary-blue rounded-full flex items-center justify-center text-white text-2xl font-black">MF</div>
+<div>
+<h1 class="text-2xl font-black text-primary-blue leading-none">English Fun</h1>
+<p class="text-xs font-bold text-gray-400 uppercase tracking-widest">By Miss Phượng</p>
+</div>
+</div>
+<nav class="flex items-center gap-8">
+<a class="nav-item text-primary-blue" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-sm font-bold mt-1">Home</span>
+</a>
+<a class="nav-item" href="#">
+<span class="material-symbols-outlined">videogame_asset</span>
+<span class="text-sm font-bold mt-1">Games</span>
+</a>
+<a class="nav-item" href="#">
+<span class="material-symbols-outlined">play_circle</span>
+<span class="text-sm font-bold mt-1">Videos</span>
+</a>
+<a class="nav-item" href="#">
+<span class="material-symbols-outlined">military_tech</span>
+<span class="text-sm font-bold mt-1">Ranking</span>
+</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="bg-fun-yellow px-6 py-3 rounded-full flex items-center gap-2 shadow-inner border-b-4 border-yellow-500/30">
+<span class="material-symbols-outlined text-yellow-700 !text-xl">stars</span>
+<span class="text-lg font-black text-yellow-800 leading-none">1,250</span>
+</div>
+<button class="w-14 h-14 bg-white rounded-full border-4 border-white shadow-lg overflow-hidden">
+<img alt="Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsRPpGT1qAVr3eJsoxZlQoW59FzWXtktuwTiwiTdp8A1XqgmzK3R7KcjplkCWwHEuQASwsfq2IUeHYqM35SYPnGAmowjHUS6rwv1uRaZqN4E4iXs_947xX-ACSv3R-4Zdp88P7zESOA2fZdcDxhrmcXF8FUp6NSKj7kgcvJ3nfxFbk6L-NXZgToDemxwwrKrm2g5qSN1gDV_ZuWrfoWoWJrUTmhbgXgivRs5Wzu6gGPn8fhQILhLfoe0cP2_-EFXXIba0L8jn9SYs"/>
+</button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-12 py-8">
+<section class="relative w-full bg-white rounded-super p-16 flex items-center justify-between overflow-hidden shadow-xl mb-12 min-h-[500px]">
+<div class="absolute top-0 right-0 w-64 h-64 bg-fun-pink/10 rounded-full -mr-20 -mt-20"></div>
+<div class="absolute bottom-0 left-0 w-48 h-48 bg-fun-green/10 rounded-full -ml-10 -mb-10"></div>
+<div class="relative z-10 max-w-2xl">
+<span class="inline-block bg-fun-pink text-white px-6 py-2 rounded-full font-black text-lg mb-6 transform -rotate-2">NEW ADVENTURE!</span>
+<h2 class="text-7xl font-black text-slate-800 leading-tight mb-8">
+                    Let’s Play &amp; <br/>
+<span class="text-primary-blue">Learn English!</span>
+</h2>
+<button class="toy-button bg-primary-blue text-white px-12 py-6 rounded-kid text-2xl font-black flex items-center gap-4 hover:brightness-105">
+                    START ADVENTURE
+                    <span class="material-symbols-outlined !text-3xl">rocket_launch</span>
+</button>
+</div>
+<div class="relative z-10 flex-1 flex justify-center items-center">
+<div class="w-[450px] h-[450px] relative">
+<img alt="Mascot" class="w-full h-full object-contain drop-shadow-2xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_2kT-byY3bM7YlgtQjXq7QjY_QgOGNpewACSIyNodDLsgiWghaKsnA8soJV91nS1HwFAf9W6QSJGhfC_T5M4MKkajXzDVdXvvkSiNy5G2tlyIUcB1HjQmesCP5ycdgAW_25gKcTawX-LtkD1SWkEQegDLv270KoeR7OUzSRuWp4yQGj0CHRq4XnDst1-xJxx71u6Ruij6spd1vrm89uDU_hqF48SKUCC3DHhFqBmf873h8a4uhbLtkzCoUuzjy_vUXdQ4GGOe3I0"/>
+</div>
+</div>
+</section>
+<section class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+<div class="card-hover transition-all bg-fun-green p-8 rounded-super text-white card-shadow relative overflow-hidden group">
+<div class="relative z-10">
+<h3 class="text-3xl font-black mb-2">Play Games</h3>
+<p class="font-bold text-white/90 mb-6">Master vocabulary with AI!</p>
+<div class="w-full aspect-video rounded-kid bg-white/20 mb-6 flex items-center justify-center overflow-hidden">
+<img alt="Games" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLXkdKax3G9CcYbY0A_MGKdCHJ87fHJDQZxoLfzKyxuifthwBdk6yXfULgU8MK2Xx8avFVoPyvT7U58hi0tvTs7hD6LyYGAR3mK3op9o6K22tNuqtc1hRfBt8W7CsGsfAqWV03W7wOn9yjJVGMNrqugZNJIHaeZQW7pgzNud95C0OXWJTxGxv3UlJLaDrVRwgqZGig5VuA8io0nbYB0bkLUrCjCYkOfMFTQ63eY_aZ3gTZpJIfk3EVhaBvMzCHc7OwTV1NtX5kbcE"/>
+</div>
+<button class="w-full bg-white text-fun-green py-4 rounded-kid font-black text-lg group-hover:bg-fun-yellow group-hover:text-yellow-800 transition-colors">
+                        GO TO GAMES
+                    </button>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-white/20 !text-[120px] rotate-12">joystick</span>
+</div>
+<div class="card-hover transition-all bg-fun-pink p-8 rounded-super text-white card-shadow relative overflow-hidden group">
+<div class="relative z-10">
+<h3 class="text-3xl font-black mb-2">Watch &amp; Learn</h3>
+<p class="font-bold text-white/90 mb-6">Funny videos for you!</p>
+<div class="w-full aspect-video rounded-kid bg-white/20 mb-6 flex items-center justify-center relative group">
+<div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-fun-pink shadow-lg">
+<span class="material-symbols-outlined !text-4xl translate-x-1">play_arrow</span>
+</div>
+</div>
+<button class="w-full bg-white text-fun-pink py-4 rounded-kid font-black text-lg group-hover:bg-fun-yellow group-hover:text-yellow-800 transition-colors">
+                        WATCH NOW
+                    </button>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-white/20 !text-[120px] rotate-12">movie</span>
+</div>
+<div class="card-hover transition-all bg-accent-purple p-8 rounded-super text-white card-shadow relative overflow-hidden group">
+<style>
+                    .bg-accent-purple { background-color: #A855F7; }
+                </style>
+<div class="relative z-10">
+<h3 class="text-3xl font-black mb-2">Weekly Challenge</h3>
+<p class="font-bold text-white/90 mb-6">Win limited stickers!</p>
+<div class="w-full aspect-video rounded-kid bg-white/20 mb-6 flex flex-col items-center justify-center border-4 border-dashed border-white/40">
+<span class="material-symbols-outlined !text-6xl text-white/80">emoji_events</span>
+<span class="text-sm font-bold mt-2 uppercase">Ends in: 2 days</span>
+</div>
+<button class="w-full bg-white text-purple-600 py-4 rounded-kid font-black text-lg group-hover:bg-fun-yellow group-hover:text-yellow-800 transition-colors">
+                        JOIN MISSION
+                    </button>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-white/20 !text-[120px] rotate-12">star</span>
+</div>
+</section>
+<footer class="bg-white/80 backdrop-blur-sm rounded-kid p-8 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-6 flex-1 max-w-2xl">
+<div class="text-left">
+<p class="text-xs font-black text-gray-400 uppercase tracking-widest">Your Weekly Progress</p>
+<h4 class="text-xl font-black text-slate-800">Mission: Animal Kingdom</h4>
+</div>
+<div class="flex-1 h-6 bg-gray-100 rounded-full p-1 overflow-hidden">
+<div class="h-full w-[70%] bg-primary-blue rounded-full relative">
+<div class="absolute right-0 top-0 bottom-0 w-2 bg-white/30"></div>
+</div>
+</div>
+<span class="text-xl font-black text-primary-blue">70%</span>
+</div>
+<div class="flex items-center gap-12 ml-12">
+<div class="text-center">
+<span class="block text-2xl font-black text-fun-pink">12</span>
+<span class="text-[10px] font-bold text-gray-400 uppercase">Streak</span>
+</div>
+<div class="text-center border-l border-gray-100 pl-12">
+<span class="block text-2xl font-black text-fun-green">45</span>
+<span class="text-[10px] font-bold text-gray-400 uppercase">Words</span>
+</div>
+</div>
+</footer>
+</main>
+<div class="h-12"></div>
+
+</body></html>

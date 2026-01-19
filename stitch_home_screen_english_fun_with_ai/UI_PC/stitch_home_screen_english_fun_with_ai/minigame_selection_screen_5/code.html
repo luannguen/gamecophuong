@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Quick Login - English with Miss Phượng</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#26d9d9",
+                        "background-light": "#f0f9f9",
+                        "background-dark": "#122020",
+                        "accent-yellow": "#FCCD2B",
+                        "accent-pink": "#FF8CBE",
+                        "accent-purple": "#A855F7",
+                        "toy-blue": "#3B82F6"
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "2.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .material-symbols-outlined {
+            font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24
+        }
+        .toy-shadow {
+            box-shadow: 0 8px 0 rgba(0, 0, 0, 0.05)
+        }
+        .btn-shadow {
+            box-shadow: 0 8px 0 #1ba9a9;
+        }
+        .btn-shadow:active {
+            box-shadow: 0 2px 0 #1ba9a9;
+            transform: translateY(6px);
+        }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: -15px;
+            border-width: 15px 0 15px 20px;
+            border-style: solid;
+            border-color: transparent transparent transparent white;
+        }
+        .dark .speech-bubble::after {
+            border-color: transparent transparent transparent #1f2937;
+        }
+        .doodle-bg {
+            background-color: #f0f9f9;
+            background-image: radial-gradient(#26d9d9 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .dark .doodle-bg {
+            background-color: #122020;
+            background-image: radial-gradient(#1ba9a9 1px, transparent 1px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="doodle-bg font-display antialiased text-[#0f1a1a] dark:text-white flex items-center justify-center min-h-screen p-4">
+<div class="relative w-full max-w-4xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-[3rem] shadow-2xl overflow-hidden border-8 border-white dark:border-gray-800 flex flex-col md:flex-row">
+<div class="w-full md:w-5/12 bg-primary/10 dark:bg-primary/5 p-8 flex flex-col items-center justify-center relative overflow-hidden">
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-48 h-48 md:w-64 md:h-64 mb-6 relative">
+<img alt="Owl Mascot" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_2kT-byY3bM7YlgtQjXq7QjY_QgOGNpewACSIyNodDLsgiWghaKsnA8soJV91nS1HwFAf9W6QSJGhfC_T5M4MKkajXzDVdXvvkSiNy5G2tlyIUcB1HjQmesCP5ycdgAW_25gKcTawX-LtkD1SWkEQegDLv270KoeR7OUzSRuWp4yQGj0CHRq4XnDst1-xJxx71u6Ruij6spd1vrm89uDU_hqF48SKUCC3DHhFqBmf873h8a4uhbLtkzCoUuzjy_vUXdQ4GGOe3I0"/>
+<div class="hidden md:block speech-bubble absolute -top-4 -left-48 w-44 bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-xl border-2 border-primary/20">
+<p class="text-sm font-bold text-center leading-tight">Ready to learn? Enter your name and class!</p>
+</div>
+</div>
+<div class="md:hidden text-center mb-6">
+<h2 class="text-2xl font-black text-primary">Hi there!</h2>
+<p class="font-bold text-gray-500">Ready to learn? Enter your details!</p>
+</div>
+<div class="flex gap-2">
+<div class="w-3 h-3 rounded-full bg-accent-yellow"></div>
+<div class="w-3 h-3 rounded-full bg-accent-pink"></div>
+<div class="w-3 h-3 rounded-full bg-accent-purple"></div>
+</div>
+</div>
+<div class="absolute -bottom-10 -left-10 w-40 h-40 bg-accent-yellow/20 rounded-full blur-3xl"></div>
+<div class="absolute -top-10 -right-10 w-40 h-40 bg-accent-pink/20 rounded-full blur-3xl"></div>
+</div>
+<div class="w-full md:w-7/12 p-8 md:p-16 flex flex-col justify-center">
+<div class="mb-10 text-center md:text-left">
+<h1 class="text-4xl md:text-5xl font-black tracking-tight mb-2">Welcome Back!</h1>
+<p class="text-gray-400 font-bold uppercase tracking-widest text-sm">English with Miss Phượng</p>
+</div>
+<form class="space-y-6" onsubmit="event.preventDefault();">
+<div class="relative">
+<label class="block text-xs font-black uppercase text-gray-400 mb-2 ml-4">Full Name</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-primary group-focus-within:text-accent-purple transition-colors">person</span>
+</div>
+<input class="block w-full pl-14 pr-6 py-5 bg-background-light dark:bg-gray-800 border-2 border-transparent focus:border-primary rounded-2xl font-bold text-lg transition-all focus:ring-0 outline-none" placeholder="e.g. Minh Anh" type="text"/>
+</div>
+</div>
+<div class="relative">
+<label class="block text-xs font-black uppercase text-gray-400 mb-2 ml-4">Your Class</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-primary group-focus-within:text-accent-purple transition-colors">school</span>
+</div>
+<input class="block w-full pl-14 pr-6 py-5 bg-background-light dark:bg-gray-800 border-2 border-transparent focus:border-primary rounded-2xl font-bold text-lg transition-all focus:ring-0 outline-none" placeholder="e.g. Grade 3A" type="text"/>
+</div>
+</div>
+<div class="pt-6">
+<button class="w-full bg-primary hover:bg-[#20c4c4] text-white py-6 rounded-2xl text-2xl font-black flex items-center justify-center gap-3 btn-shadow transition-all group">
+<span>START PLAYING</span>
+<span class="material-symbols-outlined text-3xl group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">rocket_launch</span>
+</button>
+</div>
+</form>
+<div class="mt-12 flex justify-center md:justify-start gap-4 opacity-30">
+<span class="material-symbols-outlined text-4xl">draw</span>
+<span class="material-symbols-outlined text-4xl">auto_stories</span>
+<span class="material-symbols-outlined text-4xl">translate</span>
+</div>
+</div>
+</div>
+<div class="fixed bottom-6 text-gray-400 font-bold text-xs uppercase tracking-widest pointer-events-none">
+        Powered by AI Learning • 2024
+    </div>
+
+</body></html>

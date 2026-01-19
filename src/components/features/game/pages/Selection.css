@@ -469,3 +469,43 @@
 .material-symbols-outlined {
     font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
+
+/* Desktop Layout */
+@media (min-width: 1024px) {
+    .game-selection-page {
+        max-width: 100%;
+        padding-bottom: 40px;
+    }
+
+    .selection-header {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .search-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .games-section {
+        max-width: 1200px;
+        margin: 24px auto 0;
+    }
+
+    .horizontal-scroll {
+        padding: 0 16px 16px;
+    }
+
+    .mini-game-card {
+        flex: 0 0 240px;
+    }
+
+    .topics-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .surprise-btn {
+        bottom: 40px;
+        right: 40px;
+    }
+}

@@ -352,7 +352,14 @@
 
 @media (min-width: 1024px) {
     .ranking-page {
-        max-width: 800px;
+        max-width: 100%;
+    }
+
+    .ranking-header,
+    .podium-section,
+    .rankings-list {
+        max-width: 900px;
+        margin: 0 auto;
     }
 
     .current-user-card {
@@ -361,10 +368,17 @@
         max-width: 600px;
     }
 
-    .ranking-page .bottom-nav {
-        max-width: 800px;
-        left: 50%;
-        transform: translateX(-50%);
-        border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    .podium {
+        gap: var(--space-6);
+    }
+
+    .podium-item {
+        width: 160px;
+    }
+
+    .rankings-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-4);
     }
 }

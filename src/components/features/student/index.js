@@ -16,3 +16,4 @@ export { default as StudentCard } from './ui/StudentCard';
 // Pages
 export { default as StudentHomePage } from './pages/Home';
 export { default as StudentLoginPage } from './pages/Login';
+export { default as StudentProfilePage } from './pages/Profile';

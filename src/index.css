@@ -308,6 +308,13 @@ a:hover {
   z-index: var(--z-fixed);
 }
 
+/* Hide ALL mobile bottom navs on desktop globally */
+@media (min-width: 1024px) {
+  .bottom-nav {
+    display: none !important;
+  }
+}
+
 .nav-item {
   display: flex;
   flex-direction: column;

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Video Hub Gallery - Miss Phượng</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#26d9d9",
+                        "primary-dark": "#1ba9a9",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#122020",
+                        "accent-yellow": "#FCCD2B",
+                        "accent-pink": "#FF8CBE",
+                        "accent-purple": "#A855F7",
+                        "soft-teal": "#E6F7F7",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "2rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .material-symbols-outlined {
+            font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24
+        }
+        .toy-shadow {
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.05)
+        }
+        .card-shadow {
+            box-shadow: 0 8px 0 #e2e8f0;
+        }
+        .dark .card-shadow {
+            box-shadow: 0 8px 0 #1f2937;
+        }
+        .play-button-shadow {
+            box-shadow: 0 0 20px rgba(38, 217, 217, 0.4), 0 6px 0 #1ba9a9;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-[#0f1a1a] dark:text-white">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<header class="sticky top-0 z-30 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md px-8 py-4 flex items-center justify-between border-b border-gray-100 dark:border-gray-800">
+<div class="flex items-center gap-8">
+<div class="flex flex-col">
+<h1 class="text-primary text-xl font-black uppercase tracking-tight leading-none">Miss Phượng</h1>
+<span class="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em]">English Hub</span>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-bold text-primary border-b-2 border-primary pb-1" href="#">Video Gallery</a>
+<a class="text-sm font-bold text-gray-400 hover:text-primary transition-colors" href="#">Games</a>
+<a class="text-sm font-bold text-gray-400 hover:text-primary transition-colors" href="#">Worksheets</a>
+<a class="text-sm font-bold text-gray-400 hover:text-primary transition-colors" href="#">Achievements</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 bg-soft-teal dark:bg-gray-800 px-4 py-2 rounded-full toy-shadow">
+<span class="material-symbols-outlined text-accent-yellow">stars</span>
+<span class="font-black text-primary">1,250</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-accent-pink border-2 border-white overflow-hidden shadow-sm">
+<img alt="User" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCG5mY5z2beHAUdGtgs2EoPLm6oSa_v2cpDQbPsWwcVAhRxONB6jMKxHTtsOtNgLXCO8mAU_0pBBBp47Wsrjcpnk-bdfKlwR9sz205qICBI8ZcQL9aJ1KSzzacVyOE1CEwHKOoio9Yb_JbHCZ9-_V9oei9AVCKT3b3_1l-LvTVjG44rPww0STBJyVcdpNk3JAWSrIssVP-7HmrLY2IRhqgF3W0saruaKAhyH71vznTCf4n9m22PLM53usNHrmfet9y6UDsuMjIF-Wg"/>
+</div>
+</div>
+</header>
+<main class="flex-1 w-full max-w-7xl mx-auto px-8 py-8">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+<div class="lg:col-span-2">
+<h2 class="text-2xl font-black mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-accent-yellow">auto_awesome</span>
+                        Featured Lesson
+                    </h2>
+<div class="relative aspect-video rounded-3xl overflow-hidden shadow-2xl group cursor-pointer border-4 border-white dark:border-gray-800">
+<img alt="Featured Lesson" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLXkdKax3G9CcYbY0A_MGKdCHJ87fHJDQZxoLfzKyxuifthwBdk6yXfULgU8MK2Xx8avFVoPyvT7U58hi0tvTs7hD6LyYGAR3mK3op9o6K22tNuqtc1hRfBt8W7CsGsfAqWV03W7wOn9yjJVGMNrqugZNJIHaeZQW7pgzNud95C0OXWJTxGxv3UlJLaDrVRwgqZGig5VuA8io0nbYB0bkLUrCjCYkOfMFTQ63eY_aZ3gTZpJIfk3EVhaBvMzCHc7OwTV1NtX5kbcE"/>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+<button class="w-24 h-24 bg-primary rounded-full flex items-center justify-center play-button-shadow group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-white text-6xl ml-2">play_arrow</span>
+</button>
+</div>
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8">
+<span class="bg-accent-yellow text-[#0f1a1a] text-xs font-black px-3 py-1 rounded-full uppercase mb-2 inline-block">Unit 4: My House</span>
+<h3 class="text-white text-3xl font-black">Exploring the Bedroom &amp; Kitchen</h3>
+<p class="text-white/80 font-medium">Learn 15 new words about furniture today!</p>
+</div>
+</div>
+</div>
+<div class="lg:col-span-1 flex flex-col h-full">
+<h2 class="text-2xl font-black mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-accent-pink">calendar_today</span>
+                        Upcoming
+                    </h2>
+<div class="flex-1 bg-white dark:bg-gray-800 rounded-3xl p-4 overflow-y-auto max-h-[440px] scrollbar-hide card-shadow border border-gray-100 dark:border-gray-700">
+<div class="space-y-4">
+<div class="flex gap-4 p-3 rounded-2xl hover:bg-soft-teal dark:hover:bg-gray-700/50 transition-colors cursor-pointer group">
+<div class="w-24 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-gray-200">
+<img alt="Upcoming" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_2kT-byY3bM7YlgtQjXq7QjY_QgOGNpewACSIyNodDLsgiWghaKsnA8soJV91nS1HwFAf9W6QSJGhfC_T5M4MKkajXzDVdXvvkSiNy5G2tlyIUcB1HjQmesCP5ycdgAW_25gKcTawX-LtkD1SWkEQegDLv270KoeR7OUzSRuWp4yQGj0CHRq4XnDst1-xJxx71u6Ruij6spd1vrm89uDU_hqF48SKUCC3DHhFqBmf873h8a4uhbLtkzCoUuzjy_vUXdQ4GGOe3I0"/>
+</div>
+<div class="flex flex-col justify-center">
+<span class="text-[10px] font-black text-accent-purple uppercase tracking-wider">Tomorrow • 9:00 AM</span>
+<h4 class="text-sm font-bold group-hover:text-primary transition-colors">Garden Friends: Insects</h4>
+</div>
+</div>
+<div class="flex gap-4 p-3 rounded-2xl hover:bg-soft-teal dark:hover:bg-gray-700/50 transition-colors cursor-pointer group">
+<div class="w-24 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-gray-200">
+<img alt="Upcoming" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAc6ppeVA114g4h8ac40VWf3kxvIMfoKxD6xbar9NL6ZG0qnAij3pbRpILsmHD6WNUh95j7NMdP93fF2L8_icjpSEiD85Rj_rB37EmtKUUvm8tbr-1_bQ2k0KuCtE9xKS5-CcyIlLgSK7XKmLrabnYBp2hK7xsyddcXMf7mdHD9oCqXloYEtadn3YCJOnon6sfEDqSvCE54mGv3Z7ZchQIle11wgFyRhbK6tfd2KRp1OxxXqlXXphbq1bV4DXegtea2nzotmH0F8js"/>
+</div>
+<div class="flex flex-col justify-center">
+<span class="text-[10px] font-black text-primary uppercase tracking-wider">Wed • 2:00 PM</span>
+<h4 class="text-sm font-bold group-hover:text-primary transition-colors">Action Verbs: Jump &amp; Run</h4>
+</div>
+</div>
+<div class="flex gap-4 p-3 rounded-2xl hover:bg-soft-teal dark:hover:bg-gray-700/50 transition-colors cursor-pointer group">
+<div class="w-24 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-gray-200">
+<img alt="Upcoming" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0qtECfYDCEwZdVbFakmI3SVz8TERaCtkT0oTjiNJTCBgB7X0tgITrz4OYmx-EqXqLc3BsM15pjkZjuNNIqfDAifP5KU3mt-Kq6X3_3qgePHB-FnAAAuc-jpngedRd4esG-usTmZ6KXSqsks-nKwz8plVmajrzxH86J5DbBfCVsnmPEcdu1fizCLFdtLfSihB28OjAgOZ8jlPPGUWZ09ldhWMvl-F1rpRh7ojb3i7PiZqiEfb0NuseLOdxqhytibsztjgGiPwv0U8"/>
+</div>
+<div class="flex flex-col justify-center">
+<span class="text-[10px] font-black text-accent-pink uppercase tracking-wider">Thu • 10:30 AM</span>
+<h4 class="text-sm font-bold group-hover:text-primary transition-colors">Animal Sounds: Zoo Trip</h4>
+</div>
+</div>
+<div class="flex gap-4 p-3 rounded-2xl hover:bg-soft-teal dark:hover:bg-gray-700/50 transition-colors cursor-pointer group">
+<div class="w-24 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-gray-200">
+<img alt="Upcoming" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvO0h37hSGXRh36aDC1EJ_JXu_FVsRYpKZzY0jPlNYaHcH15QuAdtO5IRsWoI9vRgUErS25wOHwBw6AHCikpAjSQIXLzz32KkaS90MbhvHZnddRipOd-MoW7G_0WNFhdbAqT879l_IvlWAjWpeHWsG_RSw1dkVzdHydz_JQIjEqgeV1AXF_j5kGqCaQS65rxKj_Hf1TJ7hVmxh0qzIaJsSvve3Uxv-rBHGFSDF1dByvQYEpBGl8HhUz25qfASxcUxx1KEq3qyycDk"/>
+</div>
+<div class="flex flex-col justify-center">
+<span class="text-[10px] font-black text-accent-yellow uppercase tracking-wider">Fri • 3:00 PM</span>
+<h4 class="text-sm font-bold group-hover:text-primary transition-colors">Let's Plant a Tree</h4>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-12">
+<section>
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-2xl font-black flex items-center gap-3">
+<span class="w-10 h-10 rounded-xl bg-accent-purple/20 text-accent-purple flex items-center justify-center">
+<span class="material-symbols-outlined">spellcheck</span>
+</span>
+                            Grammar Fun
+                        </h2>
+<a class="text-primary font-bold text-sm hover:underline" href="#">View All</a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+<div class="group cursor-pointer">
+<div class="relative aspect-video rounded-2xl overflow-hidden mb-3 border-2 border-white dark:border-gray-800 shadow-lg group-hover:scale-105 transition-transform">
+<img alt="Grammar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKbCTQvbu5JfyowrKGYX368_Ok-YH8XK6fs61fKR0y72XtUY4NLlmvY1AjdUl3tjKEfGKSUn3jwK85Qd6s1lDz0CdWfdGHISEUtIhrKQLXkuXlsYEQ-vin4gnPpVK195lvCoUSHgIDKtNsjlszeUaEBTNkqLUQVr2nEjegapOdEpYTsl98KRkkQQXEJj7tiargpJQpHrPchL79_66zoK4BDVGM2q8bj6ejlEZyDVS3ZHJmzl3o2_40ZmGnKR-tuiNb5OCr4hkWZIs"/>
+<div class="absolute bottom-2 right-2 bg-black/60 px-2 py-0.5 rounded text-[10px] text-white font-bold">5:20</div>
+</div>
+<h4 class="font-bold text-sm leading-tight group-hover:text-primary transition-colors">Present Continuous: What are they doing?</h4>
+</div>
+<div class="group cursor-pointer text-gray-400">
+<div class="relative aspect-video rounded-2xl overflow-hidden mb-3 border-2 border-white dark:border-gray-800 shadow-lg group-hover:scale-105 transition-transform bg-gray-100 dark:bg-gray-800">
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl opacity-20">lock</span>
+</div>
+</div>
+<h4 class="font-bold text-sm leading-tight">Past Tense Stories</h4>
+</div>
+<div class="group cursor-pointer">
+<div class="relative aspect-video rounded-2xl overflow-hidden mb-3 border-2 border-white dark:border-gray-800 shadow-lg group-hover:scale-105 transition-transform">
+<img alt="Grammar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzwD2cTQm348LML7ObjjzlloBTNgLvoyZxaRzEzPNfktRrILBOL0OAGIkEc4613in0sYuyuZ7wf_IkYBQc-nSrtom0XpAmgoFBeJGuMR-BvO9m82qOuTP75LNrfg7wRQg2o3c29I6xf_w6bHuiYnkik3X3drfPiXpCEWoWIcE1XYhRi7Yt0PDovFn9-9H4_1aQiQiT8enyqqYw3QUc4zFS55M5JnD-fnNrR0bUoRS-UY_TQWUeVbahvrH4XezNrrSifEPMLnis8cE"/>
+<div class="absolute bottom-2 right-2 bg-black/60 px-2 py-0.5 rounded text-[10px] text-white font-bold">4:15</div>
+</div>
+<h4 class="font-bold text-sm leading-tight group-hover:text-primary transition-colors">Pronouns: He, She, It</h4>
+</div>
+<div class="group cursor-pointer">
+<div class="relative aspect-video rounded-2xl overflow-hidden mb-3 border-2 border-white dark:border-gray-800 shadow-lg group-hover:scale-105 transition-transform">
+<img alt="Grammar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDS8q9ZKetTxFG99fJRwjtAzxxsR-N9fQ4_JfKqI2HUkFOWBCXsAnjpvTleDMmMMiQK_jj5tb7JtPvWKP4c7h5XD52lC6EUNpZtRY8JtE6OYxb3UvkyQcLkJeUe4v6q2TMaXNkMpf6R-h67S0tvclTkf8X5OfkXbfhTA1fVYgICd4eNhul2Q-3Wtx1EkO7sjVkPamufPlxhBbygphpUnR3JzizAoEbMypZlkD2SGFZeUx4_4lcIQ0cRbfwqbVkXEFyvzNJKtcrxKJ4"/>
+<div class="absolute bottom-2 right-2 bg-black/60 px-2 py-0.5 rounded text-[10px] text-white font-bold">6:30</div>
+</div>
+<h4 class="font-bold text-sm leading-tight group-hover:text-primary transition-colors">Questions with "Do"</h4>
+</div>
+<div class="group cursor-pointer">
+<div class="relative aspect-video rounded-2xl overflow-hidden mb-3 border-2 border-white dark:border-gray-800 shadow-lg group-hover:scale-105 transition-transform">
+<img alt="Grammar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdvSxA8n2mnqiaoK4AwOUBrXfCupZ-lPh5CiQgtDjwoAUiEIZXzof3_GVmd33H4qFnIYk_CfNk_pagJSyTMAD_fO8VQHIehjJXloBu6Qf3lYK75ptgeoPJoEtrmVUerg9ufIK1TF0Ug6L6HDePoDfxKUhpcrCpiRqDXowvs11ZLTrE4QZY4KN2qIGqcq65C5YcAi5tW-DVz-mwxgIoc-n9qVq4zeoN7_pv94_fH0QCTCcIf7Eon5g-Lj2GmkyvhhRcSgJm6YVl99I"/>
+<div class="absolute bottom-2 right-2 bg-black/60 px-2 py-0.5 rounded text-[10px] text-white font-bold">3:45</div>
+</div>
+<h4 class="font-bold text-sm leading-tight group-hover:text-primary transition-colors">Plural Nouns: Apples &amp; Oranges</h4>
+</div>
+</div>
+</section>
+<section>
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-2xl font-black flex items-center gap-3">
+<span class="w-10 h-10 rounded-xl bg-accent-yellow/20 text-accent-yellow flex items-center justify-center">
+<span class="material-symbols-outlined text-fill-1">translate</span>
+</span>
+                            New Words
+                        </h2>
+<a class="text-primary font-bold text-sm hover:underline" href="#">View All</a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+<div class="group cursor-pointer">
+<div class="relative aspect-video rounded-2xl overflow-hidden mb-3 border-2 border-white dark:border-gray-800 shadow-lg group-hover:scale-105 transition-transform">
+<img alt="Vocabulary" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAISxQaNiU3ltJh7pvj-Ueq2-LYt77kts2WUBfXqZFGfg7v2IvlGaEXknO8ANtgEN5JcSQcUBouGaBn_fEq6aslTpK5y52YsaG_0suvuFiN2sYeOdmHxJE6bhbqzn2Bbb12iRk4AqQ_97ztZxl7pUknAgwUYocTS8B4DoHkK_jA3y6tek8rJeD7F_hQMp7dtff1WvE3k56hHLjdd-gs7j8jV_ztmNxNXDTsZM-uj84oi1umuQ6vWDwXKfcBuCld0J5l2-P3zyX-DeA"/>
+<div class="absolute bottom-2 right-2 bg-black/60 px-2 py-0.5 rounded text-[10px] text-white font-bold">4:40</div>
+</div>
+<h4 class="font-bold text-sm leading-tight group-hover:text-primary transition-colors">Breakfast Foods</h4>
+</div>
+<div class="group cursor-pointer">
+<div class="relative aspect-video rounded-2xl overflow-hidden mb-3 border-2 border-white dark:border-gray-800 shadow-lg group-hover:scale-105 transition-transform">
+<img alt="Vocabulary" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQINmUhYvegPXCRnHjtPrAPFPR8nYrIED8gNH7vVMEhcvBA4cDEd-fQc6zQ8wJHsPNOrgO7X19vBjvMmbDphgpA0aoKENKJXDNA6-GrLTCBoq5coCtGqXa-ZF7UsCYpw8xlU6LW3axmEQuoqqGoyEIx1O8GkvLohuALFxHzxwRdXyA269onr2nKjhvQEzRuKruwwGj917z9tq-ny_MFNPKiTxa9XAk-9DheS7lRuuWhUSbdeedrmEwUi8fI0zLBRXuvppqmAp59jg"/>
+<div class="absolute bottom-2 right-2 bg-black/60 px-2 py-0.5 rounded text-[10px] text-white font-bold">7:10</div>
+</div>
+<h4 class="font-bold text-sm leading-tight group-hover:text-primary transition-colors">Colors &amp; Shapes</h4>
+</div>
+<div class="group cursor-pointer">
+<div class="relative aspect-video rounded-2xl overflow-hidden mb-3 border-2 border-white dark:border-gray-800 shadow-lg group-hover:scale-105 transition-transform">
+<img alt="Vocabulary" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_-qwbOehoXsCBJWg_4jZNZ8JZDI7eWd4uX1KsgnyvxTJ6xcfeRREPBQK-nNfdBZer34lLz4WrqHh6kCzHLI64EpQbSTnL7iQlwSOW99eCqqfwFNF9Pl2ZXRZv3hO9CIqfMk7mcHSZECDfAFc2tCAt8UafBI5PDmabkPch3jMHLJjzgZEjnsx_BwTPllNAgwUPeZohX6B2h2yKHWxVGPKiYrT_CEiRPgwHC6GERs5X-UbmEdQr0l5f_nmbfxD4KUKt1zNJTT-_Cgg"/>
+<div class="absolute bottom-2 right-2 bg-black/60 px-2 py-0.5 rounded text-[10px] text-white font-bold">5:00</div>
+</div>
+<h4 class="font-bold text-sm leading-tight group-hover:text-primary transition-colors">Transportation: Cars &amp; Buses</h4>
+</div>
+<div class="group cursor-pointer">
+<div class="relative aspect-video rounded-2xl overflow-hidden mb-3 border-2 border-white dark:border-gray-800 shadow-lg group-hover:scale-105 transition-transform">
+<img alt="Vocabulary" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAK1t-gYNc-krvZr-FVtIqzLx2YVgMLTYArThKzh3ezZnVPIGnBP1LisQMod2L4PS145e1JA9KzGUhD678CClO3P79-RBesAMuLshhU7O7ZQ5MyTfpzdJvNaX8bgtUKu4bHy8Fuv5t0vCMu_Vt4oX1z_tfAHE3sGXsO-XJyQzOFdyXpyQ-g8BIT1e2wQZs4WRbx_iYXe6EwlmKfEwzowMD1fPQuh5Zmz0kp8HLyETZPFQVg8NHbaSjHbcRfBM1cqCo3PlBIHguMSSk"/>
+<div class="absolute bottom-2 right-2 bg-black/60 px-2 py-0.5 rounded text-[10px] text-white font-bold">3:20</div>
+</div>
+<h4 class="font-bold text-sm leading-tight group-hover:text-primary transition-colors">Beautiful Flowers</h4>
+</div>
+<div class="group cursor-pointer">
+<div class="relative aspect-video rounded-2xl overflow-hidden mb-3 border-2 border-white dark:border-gray-800 shadow-lg group-hover:scale-105 transition-transform">
+<img alt="Vocabulary" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC15fKy_oRpiCyybX-1WGRqvcXCLlHEb2EtjH-myK-kZYWLULl4uPcz7TSOFq-0Xhf3ap2eNeW-D0GbxiMdD3pcbBhMvoZNHpOmnw4k1LU2mciZqDT_GiBlKBaQ1PyQWTYiddsC8AiyTVStO_fauOUm3edpC5snAZuFcpJJz3IYeYLhg5rN5z0C-ouKdjJyB6OoFQuzXiepWAJhNCbOP2q3a6V3KWOD6aUeOUSgB8q1R72W93BkaBH3hvNJeC6QJKvvZYdE31V12jI"/>
+<div class="absolute bottom-2 right-2 bg-black/60 px-2 py-0.5 rounded text-[10px] text-white font-bold">8:50</div>
+</div>
+<h4 class="font-bold text-sm leading-tight group-hover:text-primary transition-colors">Outdoor Nature Walk</h4>
+</div>
+</div>
+</section>
+<section class="pb-20">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-2xl font-black flex items-center gap-3">
+<span class="w-10 h-10 rounded-xl bg-accent-pink/20 text-accent-pink flex items-center justify-center">
+<span class="material-symbols-outlined">music_note</span>
+</span>
+                            Sing Along
+                        </h2>
+<a class="text-primary font-bold text-sm hover:underline" href="#">View All</a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+<div class="group cursor-pointer">
+<div class="relative aspect-video rounded-2xl overflow-hidden mb-3 border-2 border-white dark:border-gray-800 shadow-lg group-hover:scale-105 transition-transform">
+<img alt="Songs" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFGnv605txi9Cr8ekbzuERrUqmAsIJQirPPWgn8ySjvHwAasI3rGRfCdJgK4tJndnrv7f4XUBU6n_THSvxzf2ktd2PC0mNJvWhiwckSE-kS5MF4EADB9Yq4itHJwNrT9bjdt1qEDlqgLubxnq1IB1rFz5fEWHRZj_FHD9FZgTEfR9iX_UCUpB7Hdlb0RUVScEqmMcNhpfYpvGvxO1ELbsAk2BsTQHe-ZnXjXnm_loIuWEJqq7_gFC04cYBbqkR4dg8u0pGYLvQtjo"/>
+<div class="absolute bottom-2 right-2 bg-black/60 px-2 py-0.5 rounded text-[10px] text-white font-bold">2:45</div>
+</div>
+<h4 class="font-bold text-sm leading-tight group-hover:text-primary transition-colors">The ABC Song</h4>
+</div>
+<div class="group cursor-pointer">
+<div class="relative aspect-video rounded-2xl overflow-hidden mb-3 border-2 border-white dark:border-gray-800 shadow-lg group-hover:scale-105 transition-transform">
+<img alt="Songs" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAv4b8knLbI3EBs_doR0ddprwZxvMgrxtwDfV6StpFn8VKpNx5Ntj1nlpQOcNlx8yIteaJvQY1WGWz5CRUiiH1ugoFn-0VrCwWlpZbTNLAcyU_KZSlncIN2MxyrXpqkhGgpvmVXC5MPOKUd63XjbQEg21cWVlHXNSUeP1VgtwCA5cPkdr2zIyPbuC0kX9Z6byTL13pk_-zE3SLfzYNkIqpj1gntkrBrrYtVAiE7DRACoHvgYfHPMvsFgLVJgrCmVTtGUeIt-qOPB_8"/>
+<div class="absolute bottom-2 right-2 bg-black/60 px-2 py-0.5 rounded text-[10px] text-white font-bold">3:10</div>
+</div>
+<h4 class="font-bold text-sm leading-tight group-hover:text-primary transition-colors">Rain, Rain Go Away</h4>
+</div>
+<div class="group cursor-pointer">
+<div class="relative aspect-video rounded-2xl overflow-hidden mb-3 border-2 border-white dark:border-gray-800 shadow-lg group-hover:scale-105 transition-transform">
+<img alt="Songs" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsaEh0wcJwI86c2icnBwd2eA2BTqrU98q2GmyzwYxaGUnhq6lZ6ygZYqr4L7mE-xoIPmcGEGFGu__IZY0s_ngCbvBGOjq3vPmok2yG45vJiJ4u5Pd8fjxaN6EVmmsPZ1hYAhQ9DZ7A0yOwuYLs45UM8oihiB51tMfVXGrOejSvjY3CPz7YlNCCfEWjWpb4J3WpAnXNz3DNGB9nhvVU0hR_23OHdQ1Cwuh9c_Hsq8w4i7VVk5qsaswqi6bGfj9nXMv_PmNtrm_aLAM"/>
+<div class="absolute bottom-2 right-2 bg-black/60 px-2 py-0.5 rounded text-[10px] text-white font-bold">4:05</div>
+</div>
+<h4 class="font-bold text-sm leading-tight group-hover:text-primary transition-colors">Twinkle Twinkle Little Star</h4>
+</div>
+<div class="group cursor-pointer">
+<div class="relative aspect-video rounded-2xl overflow-hidden mb-3 border-2 border-white dark:border-gray-800 shadow-lg group-hover:scale-105 transition-transform">
+<img alt="Songs" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnxxjZHfQsoFV7CqRPQnNWdANQ91jje7VgO2ExCWkQquYVdhFr0crnMXrA3cHLB6d0Y5Q8Xub9QXYBrc563UuN2dx-yiZF1CkSPuDmrj-6OvvZRyRolJCSNAAhUTCZpRabQNxD_8JgHSxikLA0Ifuyn9g_PSCY-Duiu4UDIqIq3Bfc6R0qKKkW1thNthvqR4QixRv2XCC83SuVnHOwEk5Yz0fiO6lEB-iL4xB_BAx7B0QsCxKfipH5ILz83g5PKTFY4i71fX0xwRE"/>
+<div class="absolute bottom-2 right-2 bg-black/60 px-2 py-0.5 rounded text-[10px] text-white font-bold">3:55</div>
+</div>
+<h4 class="font-bold text-sm leading-tight group-hover:text-primary transition-colors">Old MacDonald Had a Farm</h4>
+</div>
+<div class="group cursor-pointer">
+<div class="relative aspect-video rounded-2xl overflow-hidden mb-3 border-2 border-white dark:border-gray-800 shadow-lg group-hover:scale-105 transition-transform">
+<img alt="Songs" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrlrPjSprrcfJnhMaokIyqCbEVbqfNCscp25Mx2BhCBWFDyhZo_PelYJxSvndSP7hIekodtSEVb7tBK0aOo4f1T6eCJhgFeTHMrCex-Nk4iU2ES54ZB1IXSB5m5bOYdvcnGbrzUUtqSj1hzPqf9c0MHBn-2ZaGciPeYlaow2aFxdGcly3GKwNnWkZVV_KsuvraC8pY-b4Kz_9Q5yagCQc_DJH79ii0bAMOTnjnTPF4S2P1VrFj-TNhuGbqmXIe4PxNvOB27V0cgb4"/>
+<div class="absolute bottom-2 right-2 bg-black/60 px-2 py-0.5 rounded text-[10px] text-white font-bold">2:30</div>
+</div>
+<h4 class="font-bold text-sm leading-tight group-hover:text-primary transition-colors">The Wheels on the Bus</h4>
+</div>
+</div>
+</section>
+</div>
+</main>
+<div class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-white dark:bg-gray-800 px-6 py-3 rounded-full toy-shadow border-2 border-primary/20 flex items-center gap-8 md:hidden z-40">
+<button class="text-primary"><span class="material-symbols-outlined">video_library</span></button>
+<button class="text-gray-400"><span class="material-symbols-outlined">sports_esports</span></button>
+<button class="text-gray-400"><span class="material-symbols-outlined">school</span></button>
+<button class="text-gray-400"><span class="material-symbols-outlined">person</span></button>
+</div>
+</div>
+
+</body></html>

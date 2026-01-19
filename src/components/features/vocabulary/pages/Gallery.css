@@ -665,3 +665,36 @@
 .videos-page .nav-fab .material-symbols-outlined {
     font-size: 28px;
 }
+
+/* Desktop Layout */
+@media (min-width: 1024px) {
+    .videos-page {
+        max-width: 100%;
+        padding-bottom: 40px;
+    }
+
+    .videos-header,
+    .lessons-section,
+    .categories-section,
+    .recommended-section {
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .lesson-card {
+        width: 400px;
+    }
+
+    .recommended-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-4);
+    }
+
+    .modal-content {
+        max-width: 800px;
+        border-radius: var(--radius-2xl);
+        margin: auto;
+    }
+}

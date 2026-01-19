@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import {
     StudentHomePage,
     StudentLoginPage,
+    StudentProfilePage,
 } from './components/features/student'
 
 import {
@@ -29,7 +30,7 @@ import {
 } from './components/features/vocabulary'
 
 // Layouts
-import StudentLayout from './components/shared/layouts/StudentLayout'
+import ResponsiveStudentLayout from './components/shared/layouts/ResponsiveStudentLayout'
 import AdminLayout from './components/shared/layouts/AdminLayout'
 
 function App() {
@@ -40,8 +41,9 @@ function App() {
                 <Route path="/" element={<Navigate to="/student/login" replace />} />
                 <Route path="/student/login" element={<StudentLoginPage />} />
 
-                <Route element={<StudentLayout />}>
+                <Route element={<ResponsiveStudentLayout />}>
                     <Route path="/student/home" element={<StudentHomePage />} />
+                    <Route path="/student/profile" element={<StudentProfilePage />} />
                     <Route path="/student/games" element={<GameSelectionPage />} />
                     <Route path="/student/game/:gameId/detail" element={<GameDetailPage />} />
                     <Route path="/student/game/:gameId" element={<GamePlayPage />} />

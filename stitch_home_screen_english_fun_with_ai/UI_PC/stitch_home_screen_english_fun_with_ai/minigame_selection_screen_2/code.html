@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Desktop Games Selection Grid - Miss Phượng</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#26d9d9",
+                        "background-light": "#f0f7f7",
+                        "background-dark": "#122020",
+                        "accent-yellow": "#FCCD2B",
+                        "accent-pink": "#FF8CBE",
+                        "accent-purple": "#A855F7",
+                        "accent-orange": "#FF8243",
+                        "sidebar-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "2rem",
+                        "3xl": "2.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .material-symbols-outlined {
+            font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24
+        }
+        .card-3d {
+            @apply transition-all duration-300 ease-out;
+            box-shadow: 0 10px 0 #e2e8f0;
+        }
+        .card-3d:hover {
+            @apply -translate-y-2;
+            box-shadow: 0 18px 0 #e2e8f0;
+        }
+        .card-3d-yellow { box-shadow: 0 10px 0 #eab308; }
+        .card-3d-yellow:hover { box-shadow: 0 18px 0 #eab308; }
+        .card-3d-pink { box-shadow: 0 10px 0 #db2777; }
+        .card-3d-pink:hover { box-shadow: 0 18px 0 #db2777; }
+        .card-3d-purple { box-shadow: 0 10px 0 #7e22ce; }
+        .card-3d-purple:hover { box-shadow: 0 18px 0 #7e22ce; }
+        .card-3d-orange { box-shadow: 0 10px 0 #ea580c; }
+        .card-3d-orange:hover { box-shadow: 0 18px 0 #ea580c; }
+        .sidebar-item {
+            @apply flex items-center gap-3 px-4 py-3 rounded-xl transition-colors;
+        }
+        .sidebar-item.active {
+            @apply bg-primary/10 text-primary font-bold;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-[#0f1a1a] dark:text-white">
+<div class="flex h-screen w-full overflow-hidden">
+<aside class="w-[320px] bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 flex flex-col p-6 overflow-y-auto">
+<div class="flex items-center gap-3 mb-10">
+<div class="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-3xl">school</span>
+</div>
+<div>
+<h1 class="font-black text-xl leading-none">Miss Phượng</h1>
+<p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Learning Portal</p>
+</div>
+</div>
+<div class="bg-gray-50 dark:bg-gray-800/50 rounded-3xl p-5 mb-8">
+<div class="flex items-center gap-4 mb-4">
+<div class="relative">
+<div class="w-16 h-16 rounded-2xl bg-accent-yellow border-4 border-white dark:border-gray-800 shadow-sm flex items-center justify-center overflow-hidden">
+<img alt="avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATcJWZZupDtk9zTe6CowI4MM0t9lIk3Sb0vOJCWxnzU2wGMh2dzj04XctF6XHCmXoxUasAGDAz7fde2kbBHZGNkRdQn1SaMSiXDipqtUiHivsPqo9Y89Kdu1RhO7X9nWkhL220ENVk85OeMFmHcvs-i_Ykx4Ncy_VKBmAMiOvwIfAN4Dbt--Jgq5UgRHUQzclJbd66BcbT_9On_0QwcZ0h-ed-9uL1wpiKkc1Rj-RiWegsjsfRk-SgiZ8KC2Wq5blW8l8RDRbTnKw"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-green-500 w-4 h-4 rounded-full border-2 border-white dark:border-gray-800"></div>
+</div>
+<div>
+<h3 class="font-black text-lg">Alex Smith</h3>
+<div class="flex items-center gap-1 text-accent-yellow">
+<span class="material-symbols-outlined text-sm">stars</span>
+<span class="text-sm font-black">Level 12</span>
+</div>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between text-xs font-bold uppercase text-gray-400 px-1">
+<span>XP Progress</span>
+<span>750/1000</span>
+</div>
+<div class="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden p-0.5">
+<div class="h-full w-3/4 bg-primary rounded-full"></div>
+</div>
+</div>
+</div>
+<nav class="space-y-1 mb-8">
+<p class="px-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Main Menu</p>
+<a class="sidebar-item active" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span>All Games</span>
+</a>
+<a class="sidebar-item text-gray-500 hover:bg-gray-50" href="#">
+<span class="material-symbols-outlined text-accent-pink">history</span>
+<span>Last Played</span>
+</a>
+<a class="sidebar-item text-gray-500 hover:bg-gray-50" href="#">
+<span class="material-symbols-outlined text-accent-yellow">emoji_events</span>
+<span>Leaderboard</span>
+</a>
+</nav>
+<div class="mt-auto">
+<div class="bg-accent-purple/10 rounded-2xl p-4 border border-accent-purple/20">
+<p class="text-xs font-bold text-accent-purple uppercase mb-2">Weekly Goal</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-accent-purple">timer</span>
+<span class="font-black">45 / 60 mins</span>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark scroll-smooth">
+<header class="sticky top-0 z-20 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-10 py-8 flex items-center justify-between">
+<div>
+<h2 class="text-4xl font-black tracking-tight mb-1">Select a Game</h2>
+<p class="text-gray-500 font-medium">Ready to learn something new today, Alex?</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-white dark:bg-gray-800 px-6 py-3 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-3">
+<span class="material-symbols-outlined text-accent-yellow text-2xl">database</span>
+<span class="text-xl font-black">1,240</span>
+</div>
+<button class="w-12 h-12 bg-white dark:bg-gray-800 rounded-2xl flex items-center justify-center shadow-sm border border-gray-100">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</header>
+<div class="px-10 pb-20">
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+<div class="group relative cursor-pointer">
+<div class="card-3d card-3d-yellow bg-accent-yellow rounded-3xl p-8 h-80 flex flex-col justify-between overflow-hidden relative border-4 border-white">
+<div class="relative z-10">
+<h3 class="text-white text-3xl font-black drop-shadow-md">Animals</h3>
+<span class="bg-white/30 backdrop-blur-md px-3 py-1 rounded-full text-xs font-black text-white uppercase mt-2 inline-block">12 Levels</span>
+</div>
+<div class="absolute right-[-20px] bottom-[-10px] w-64 h-64 opacity-90 group-hover:scale-110 transition-transform">
+<img alt="Animals Illustration" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_2kT-byY3bM7YlgtQjXq7QjY_QgOGNpewACSIyNodDLsgiWghaKsnA8soJV91nS1HwFAf9W6QSJGhfC_T5M4MKkajXzDVdXvvkSiNy5G2tlyIUcB1HjQmesCP5ycdgAW_25gKcTawX-LtkD1SWkEQegDLv270KoeR7OUzSRuWp4yQGj0CHRq4XnDst1-xJxx71u6Ruij6spd1vrm89uDU_hqF48SKUCC3DHhFqBmf873h8a4uhbLtkzCoUuzjy_vUXdQ4GGOe3I0"/>
+</div>
+<div class="relative z-10 self-start">
+<button class="bg-white text-accent-yellow px-6 py-2.5 rounded-xl font-black text-sm uppercase shadow-lg">Play Now</button>
+</div>
+</div>
+</div>
+<div class="group relative cursor-pointer">
+<div class="card-3d card-3d-pink bg-accent-pink rounded-3xl p-8 h-80 flex flex-col justify-between overflow-hidden relative border-4 border-white">
+<div class="relative z-10">
+<h3 class="text-white text-3xl font-black drop-shadow-md">My Family</h3>
+<span class="bg-white/30 backdrop-blur-md px-3 py-1 rounded-full text-xs font-black text-white uppercase mt-2 inline-block">8 Levels</span>
+</div>
+<div class="absolute right-[-10px] bottom-[-20px] w-56 h-56 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[180px] text-white/40">groups</span>
+</div>
+<div class="relative z-10 self-start">
+<button class="bg-white text-accent-pink px-6 py-2.5 rounded-xl font-black text-sm uppercase shadow-lg">Play Now</button>
+</div>
+</div>
+</div>
+<div class="group relative cursor-pointer">
+<div class="card-3d card-3d-purple bg-accent-purple rounded-3xl p-8 h-80 flex flex-col justify-between overflow-hidden relative border-4 border-white">
+<div class="relative z-10">
+<h3 class="text-white text-3xl font-black drop-shadow-md">Daily Routine</h3>
+<span class="bg-white/30 backdrop-blur-md px-3 py-1 rounded-full text-xs font-black text-white uppercase mt-2 inline-block">15 Levels</span>
+</div>
+<div class="absolute right-[-10px] bottom-[-20px] w-56 h-56 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[180px] text-white/40">schedule</span>
+</div>
+<div class="relative z-10 self-start">
+<button class="bg-white text-accent-purple px-6 py-2.5 rounded-xl font-black text-sm uppercase shadow-lg">Play Now</button>
+</div>
+</div>
+</div>
+<div class="group relative cursor-pointer">
+<div class="card-3d card-3d-orange bg-accent-orange rounded-3xl p-8 h-80 flex flex-col justify-between overflow-hidden relative border-4 border-white">
+<div class="relative z-10">
+<h3 class="text-white text-3xl font-black drop-shadow-md">My House</h3>
+<span class="bg-white/30 backdrop-blur-md px-3 py-1 rounded-full text-xs font-black text-white uppercase mt-2 inline-block">10 Levels</span>
+</div>
+<div class="absolute right-0 bottom-4 w-60 h-60 group-hover:scale-110 transition-transform">
+<div class="w-full h-full bg-center bg-contain bg-no-repeat drop-shadow-2xl" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDLXkdKax3G9CcYbY0A_MGKdCHJ87fHJDQZxoLfzKyxuifthwBdk6yXfULgU8MK2Xx8avFVoPyvT7U58hi0tvTs7hD6LyYGAR3mK3op9o6K22tNuqtc1hRfBt8W7CsGsfAqWV03W7wOn9yjJVGMNrqugZNJIHaeZQW7pgzNud95C0OXWJTxGxv3UlJLaDrVRwgqZGig5VuA8io0nbYB0bkLUrCjCYkOfMFTQ63eY_aZ3gTZpJIfk3EVhaBvMzCHc7OwTV1NtX5kbcE');"></div>
+</div>
+<div class="relative z-10 self-start">
+<div class="bg-white/90 backdrop-blur-sm p-1 rounded-xl flex items-center gap-2 pr-4 shadow-lg border border-white">
+<div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm">check_circle</span>
+</div>
+<span class="text-[10px] font-black uppercase text-gray-700">70% Complete</span>
+</div>
+<button class="mt-4 bg-white text-accent-orange px-6 py-2.5 rounded-xl font-black text-sm uppercase shadow-lg">Continue</button>
+</div>
+</div>
+</div>
+<div class="group relative cursor-pointer">
+<div class="card-3d bg-primary rounded-3xl p-8 h-80 flex flex-col justify-between overflow-hidden relative border-4 border-white shadow-[0_10px_0_#1ba9a9] hover:shadow-[0_18px_0_#1ba9a9]">
+<div class="relative z-10">
+<h3 class="text-white text-3xl font-black drop-shadow-md">Colors</h3>
+<span class="bg-white/30 backdrop-blur-md px-3 py-1 rounded-full text-xs font-black text-white uppercase mt-2 inline-block">5 Levels</span>
+</div>
+<div class="absolute right-[-10px] bottom-[-20px] w-56 h-56 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[180px] text-white/40">palette</span>
+</div>
+<div class="relative z-10 self-start">
+<button class="bg-white text-primary px-6 py-2.5 rounded-xl font-black text-sm uppercase shadow-lg">Play Now</button>
+</div>
+</div>
+</div>
+<div class="group relative cursor-pointer opacity-80">
+<div class="card-3d bg-slate-400 rounded-3xl p-8 h-80 flex flex-col justify-between overflow-hidden relative border-4 border-white shadow-[0_10px_0_#64748b]">
+<div class="relative z-10">
+<h3 class="text-white text-3xl font-black drop-shadow-md">School Items</h3>
+<div class="flex items-center gap-2 mt-2">
+<span class="material-symbols-outlined text-white text-sm">lock</span>
+<span class="text-xs font-black text-white uppercase">Level 15 Needed</span>
+</div>
+</div>
+<div class="absolute right-[-10px] bottom-[-20px] w-56 h-56 flex items-center justify-center">
+<span class="material-symbols-outlined text-[180px] text-white/20">backpack</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
 /* ============================================================================
    SHARED LAYOUT STYLES
    Extracts common layout structure styles from pages
@@ -141,7 +143,7 @@
 }
 
 /* ADMIN LAYOUT */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+/* ADMIN LAYOUT */
 
 .admin-layout {
     font-family: 'Manrope', sans-serif;

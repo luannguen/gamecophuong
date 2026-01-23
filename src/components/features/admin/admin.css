@@ -1,0 +1,285 @@
+/* Admin Dashboard Styling - Vanilla CSS (Restored Aesthetic) */
+:root {
+    --admin-primary: #0d9488;
+    /* Teal-600 */
+    --admin-primary-light: #ccfbf1;
+    /* Teal-100 */
+    --sidebar-bg: #ffffff;
+    --sidebar-text: #4b5563;
+    /* Gray-600 */
+    --sidebar-width: 260px;
+    --header-height: 64px;
+}
+
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 100%);
+    /* Match Teacher Theme */
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* --- Sidebar (Desktop Only) --- */
+.admin-sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: 50;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.05);
+    /* Softer shadow */
+    border-right: 1px solid #f0f0f0;
+}
+
+.sidebar-header {
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: #111827;
+    /* Gray-900 */
+}
+
+.sidebar-logo span:first-child {
+    font-size: 24px;
+}
+
+.sidebar-content {
+    flex: 1;
+    padding: 1.5rem 1rem;
+    overflow-y: auto;
+}
+
+.nav-section-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #9ca3af;
+    /* Gray-400 */
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    padding-left: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 12px;
+    color: var(--sidebar-text);
+    text-decoration: none;
+    margin-bottom: 4px;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    background-color: #f9fafb;
+    color: #1f2937;
+}
+
+.nav-link.active {
+    background-color: var(--admin-primary-light);
+    color: var(--admin-primary);
+}
+
+.nav-link span.material-symbols-outlined {
+    font-size: 24px;
+}
+
+/* --- Footer / Logout --- */
+.sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid #f3f4f6;
+}
+
+.user-profile-mini {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background-color: #f9fafb;
+    border-radius: 16px;
+    margin-bottom: 12px;
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #0d9488, #2dd4bf);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: white;
+    box-shadow: 0 2px 4px rgba(13, 148, 136, 0.2);
+}
+
+.user-info-mini h4 {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #1f2937;
+    font-weight: 600;
+}
+
+.user-info-mini p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: #0d9488;
+    /* Teal-600 */
+}
+
+/* Gamified Logout Button */
+/* Gamified Logout Icon Button */
+.game-logout-btn-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    /* Push to right */
+    background: linear-gradient(to bottom, #ef4444, #dc2626);
+    /* Red-500 to Red-600 */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    /* Slightly square */
+    cursor: pointer;
+    box-shadow: 0 3px 0 #991b1b, 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* 3D Red Shadow */
+    transition: all 0.1s;
+    position: relative;
+    top: 0;
+}
+
+.game-logout-btn-icon:active {
+    top: 3px;
+    box-shadow: 0 0 0 #991b1b, inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.game-logout-btn-icon:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+/* --- Main Content --- */
+.admin-main-wrapper {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.admin-header {
+    height: var(--header-height);
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+}
+
+.header-title h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.admin-content {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+/* --- Mobile Navigation (Bottom Bar) --- */
+.admin-bottom-nav {
+    display: none;
+    /* Hidden on Desktop */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    padding: 8px 0;
+    z-index: 100;
+    justify-content: space-around;
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #6b7280;
+    font-size: 0.75rem;
+    padding: 4px;
+    font-weight: 500;
+}
+
+.mobile-nav-item.active {
+    color: var(--admin-primary);
+}
+
+.mobile-nav-item .material-symbols-outlined {
+    font-size: 24px;
+    margin-bottom: 2px;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .admin-sidebar {
+        display: none;
+        /* Hide Sidebar on Mobile */
+    }
+
+    .admin-main-wrapper {
+        margin-left: 0;
+        margin-bottom: 60px;
+        /* Space for Bottom Nav */
+    }
+
+    .admin-header {
+        padding: 0 1rem;
+    }
+
+    .admin-content {
+        padding: 1rem;
+    }
+
+    .admin-bottom-nav {
+        display: flex;
+        /* Show Bottom Nav on Mobile */
+    }
+}

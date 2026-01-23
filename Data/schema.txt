@@ -10,6 +10,19 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- CORE TABLES
 -- ============================================================================
 
+-- Teachers Table
+CREATE TABLE teachers (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  auth_user_id UUID UNIQUE NOT NULL, -- Link to Supabase auth.users
+  email VARCHAR(255) UNIQUE NOT NULL,
+  full_name VARCHAR(100),
+  phone_number VARCHAR(20),
+  school_name VARCHAR(200),
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- Students Table
 CREATE TABLE students (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -17,6 +30,7 @@ CREATE TABLE students (
   avatar_url TEXT,
   pin_code VARCHAR(6) UNIQUE NOT NULL,
   qr_code VARCHAR(50) UNIQUE NOT NULL,
+  teacher_id UUID REFERENCES teachers(id) ON DELETE SET NULL,
   auth_user_id UUID, -- Link to Supabase auth.users if using auth
   total_score INTEGER DEFAULT 0,
   total_stars INTEGER DEFAULT 0,
@@ -300,8 +314,17 @@ CREATE TRIGGER update_admins_updated_at BEFORE UPDATE ON admins
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- ============================================================================
+-- TRIGGERS for Teachers
+-- ============================================================================
+
+CREATE TRIGGER update_teachers_updated_at BEFORE UPDATE ON teachers
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- ============================================================================
 -- COMMENTS for Documentation
 -- ============================================================================
+
+COMMENT ON TABLE teachers IS 'Teacher accounts who manage students';
 
 COMMENT ON TABLE students IS 'Student accounts with PIN and QR code for quick login';
 COMMENT ON TABLE categories IS 'Learning categories (Animals, Family, etc.)';

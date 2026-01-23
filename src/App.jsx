@@ -8,13 +8,28 @@ import {
 } from './components/features/student'
 
 import {
-    AdminLoginPage,
+
     AdminDashboardPage,
     AdminStudentsPage,
+    AdminTeachersPage,
+    AdminClassesPage,
+    AdminParentsPage,
     AdminGamesPage,
     AdminVocabularyPage,
     AdminVideosPage,
 } from './components/features/admin'
+
+import {
+    TeacherDashboardPage,
+    StudentManagerPage,
+    TeacherParentsPage,
+} from './components/features/teacher'
+
+import {
+    ParentLayout,
+    ParentLoginPage,
+    ParentDashboardPage,
+} from './components/features/parent'
 
 import {
     GamePlayPage,
@@ -32,6 +47,7 @@ import {
 // Layouts
 import ResponsiveStudentLayout from './components/shared/layouts/ResponsiveStudentLayout'
 import AdminLayout from './components/shared/layouts/AdminLayout'
+import TeacherLayout from './components/features/teacher/TeacherLayout'
 
 function App() {
     return (
@@ -54,14 +70,32 @@ function App() {
                 </Route>
 
                 {/* Admin Routes */}
-                <Route path="/admin/login" element={<AdminLoginPage />} />
+                <Route path="/admin/login" element={<Navigate to="/student/login" replace />} />
 
                 <Route element={<AdminLayout />}>
                     <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
                     <Route path="/admin/students" element={<AdminStudentsPage />} />
+                    <Route path="/admin/teachers" element={<AdminTeachersPage />} />
+                    <Route path="/admin/classes" element={<AdminClassesPage />} />
+                    <Route path="/admin/parents" element={<AdminParentsPage />} />
                     <Route path="/admin/games" element={<AdminGamesPage />} />
                     <Route path="/admin/vocabulary" element={<AdminVocabularyPage />} />
                     <Route path="/admin/videos" element={<AdminVideosPage />} />
+                </Route>
+
+                {/* Teacher Routes */}
+                <Route path="/teacher" element={<Navigate to="/teacher/dashboard" replace />} />
+                <Route element={<TeacherLayout />}>
+                    <Route path="/teacher/dashboard" element={<TeacherDashboardPage />} />
+                    <Route path="/teacher/students" element={<StudentManagerPage />} />
+                    <Route path="/teacher/parents" element={<TeacherParentsPage />} />
+                </Route>
+
+                {/* Parent Routes */}
+                <Route path="/parent/login" element={<ParentLoginPage />} />
+                <Route path="/parent" element={<Navigate to="/parent/dashboard" replace />} />
+                <Route element={<ParentLayout />}>
+                    <Route path="/parent/dashboard" element={<ParentDashboardPage />} />
                 </Route>
 
                 {/* 404 */}

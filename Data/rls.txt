@@ -16,6 +16,7 @@ ALTER TABLE challenges ENABLE ROW LEVEL SECURITY;
 ALTER TABLE challenge_participants ENABLE ROW LEVEL SECURITY;
 ALTER TABLE weekly_rankings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE admins ENABLE ROW LEVEL SECURITY;
+ALTER TABLE teachers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE activity_logs ENABLE ROW LEVEL SECURITY;
 
 -- ============================================================================
@@ -30,6 +31,31 @@ BEGIN
     SELECT 1 FROM admins
     WHERE auth_user_id = auth.uid()
     AND is_active = true
+  );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Check if current user is teacher
+CREATE OR REPLACE FUNCTION is_teacher()
+RETURNS BOOLEAN AS $$
+BEGIN
+  RETURN EXISTS (
+    SELECT 1 FROM teachers
+    WHERE auth_user_id = auth.uid()
+    AND is_active = true
+  );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Get teacher ID for current user
+CREATE OR REPLACE FUNCTION get_my_teacher_id()
+RETURNS UUID AS $$
+BEGIN
+  RETURN (
+    SELECT id FROM teachers
+    WHERE auth_user_id = auth.uid()
+    AND is_active = true
+    LIMIT 1
   );
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
@@ -59,6 +85,46 @@ CREATE POLICY "Public can view active students"
 CREATE POLICY "Students can update own profile"
   ON students FOR UPDATE
   USING (auth.uid() = auth_user_id);
+
+-- Teachers can view their own students
+CREATE POLICY "Teachers can view own students"
+  ON students FOR SELECT
+  USING (teacher_id = get_my_teacher_id());
+
+-- Teachers can create students (assigned to them)
+CREATE POLICY "Teachers can create students"
+  ON students FOR INSERT
+  WITH CHECK (teacher_id = get_my_teacher_id());
+
+-- Teachers can update their own students
+CREATE POLICY "Teachers can update own students"
+  ON students FOR UPDATE
+  USING (teacher_id = get_my_teacher_id());
+
+-- Teachers can delete their own students
+CREATE POLICY "Teachers can delete own students"
+  ON students FOR DELETE
+  USING (teacher_id = get_my_teacher_id());
+
+-- Teachers can view their own students
+CREATE POLICY "Teachers can view own students"
+  ON students FOR SELECT
+  USING (teacher_id = get_my_teacher_id());
+
+-- Teachers can create students (assigned to them)
+CREATE POLICY "Teachers can create students"
+  ON students FOR INSERT
+  WITH CHECK (teacher_id = get_my_teacher_id());
+
+-- Teachers can update their own students
+CREATE POLICY "Teachers can update own students"
+  ON students FOR UPDATE
+  USING (teacher_id = get_my_teacher_id());
+
+-- Teachers can delete their own students
+CREATE POLICY "Teachers can delete own students"
+  ON students FOR DELETE
+  USING (teacher_id = get_my_teacher_id());
 
 -- Admins have full access
 CREATE POLICY "Admins have full access to students"
@@ -246,6 +312,25 @@ CREATE POLICY "Public can view rankings"
 -- System/Admins can manage rankings
 CREATE POLICY "Admins can manage rankings"
   ON weekly_rankings FOR ALL
+  USING (is_admin());
+
+-- ============================================================================
+-- TEACHERS TABLE POLICIES
+-- ============================================================================
+
+-- Teachers can view their own profile
+CREATE POLICY "Teachers can view own profile"
+  ON teachers FOR SELECT
+  USING (auth_user_id = auth.uid());
+
+-- Teachers can update their own profile
+CREATE POLICY "Teachers can update own profile"
+  ON teachers FOR UPDATE
+  USING (auth_user_id = auth.uid());
+
+-- Admins can manage teachers
+CREATE POLICY "Admins can manage teachers"
+  ON teachers FOR ALL
   USING (is_admin());
 
 -- ============================================================================

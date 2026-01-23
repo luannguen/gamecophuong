@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Link, useLocation, Outlet } from 'react-router-dom';
+import { Link, useLocation, Outlet, useNavigate } from 'react-router-dom';
 import { IMAGES } from '../../../data/designAssets';
+import { supabase } from '../../../data/supabaseClient';
 import './Layouts.css';
 
 import { useStudentProfile } from '../../features/student/hooks/useStudentProfile';
@@ -8,10 +9,18 @@ import { useStudentProfile } from '../../features/student/hooks/useStudentProfil
 export default function DesktopStudentLayout() {
     const { student } = useStudentProfile();
     const location = useLocation();
+    const navigate = useNavigate();
     const studentName = student?.display_name || student?.name || 'Student';
     const [isFullscreen, setIsFullscreen] = useState(false);
 
     const isActive = (path) => location.pathname.startsWith(path);
+
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+        localStorage.removeItem('current_student');
+        localStorage.removeItem('student_pin');
+        navigate('/student/login');
+    };
 
     const navItems = [
         { path: '/student/home', icon: 'home', label: 'Home' },
@@ -68,6 +77,34 @@ export default function DesktopStudentLayout() {
                         </Link>
                     ))}
                 </nav>
+
+                {/* Logout Button in Sidebar */}
+                <button
+                    onClick={handleLogout}
+                    className="sidebar-logout-btn"
+                    style={{
+                        marginTop: 'auto',
+                        marginBottom: '16px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        padding: '12px 16px',
+                        width: 'calc(100% - 24px)',
+                        marginLeft: '12px',
+                        marginRight: '12px',
+                        border: 'none',
+                        borderRadius: '12px',
+                        background: 'rgba(255, 107, 107, 0.1)',
+                        color: '#ff6b6b',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                        fontWeight: '500',
+                        transition: 'all 0.2s'
+                    }}
+                >
+                    <span className="material-symbols-outlined">logout</span>
+                    <span>Logout</span>
+                </button>
 
                 {/* User Profile Section - Enhanced */}
                 <Link to="/student/profile" className="sidebar-profile">

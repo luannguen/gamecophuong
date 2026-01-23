@@ -54,7 +54,7 @@ class StudentRepository extends BaseRepository {
     }
 
     async getAll() {
-        return this.baseGetAll();
+        return super.getAll();
     }
 
     async delete(id) {

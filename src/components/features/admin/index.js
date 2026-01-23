@@ -19,4 +19,7 @@ export { default as AdminStudentsPage } from './pages/Students';
 export { default as AdminGamesPage } from './pages/Games';
 export { default as AdminVocabularyPage } from './pages/Vocabulary';
 export { default as AdminVideosPage } from './pages/Videos';
-export { default as AdminLoginPage } from './pages/Login';
+export { default as AdminTeachersPage } from './pages/Teachers';
+export { default as AdminClassesPage } from './pages/Classes';
+export { default as AdminParentsPage } from './pages/Parents';
+

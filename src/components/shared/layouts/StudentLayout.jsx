@@ -1,15 +1,26 @@
-import { Link, useLocation, Outlet } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useLocation, Outlet, useNavigate } from 'react-router-dom';
 import { IMAGES } from '../../../data/designAssets';
-import './Layouts.css'; // We will create this
+import { supabase } from '../../../data/supabaseClient';
+import './Layouts.css';
 
 import { useStudentProfile } from '../../features/student/hooks/useStudentProfile';
 
 export default function StudentLayout() {
     const { student } = useStudentProfile();
     const location = useLocation();
+    const navigate = useNavigate();
+    const [showMenu, setShowMenu] = useState(false);
     const studentName = student?.display_name?.split(' ')[0] || student?.name?.split(' ')[0] || 'Student';
 
     const isActive = (path) => location.pathname.startsWith(path);
+
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+        localStorage.removeItem('current_student');
+        localStorage.removeItem('student_pin');
+        navigate('/student/login');
+    };
 
     return (
         <div className="student-layout">
@@ -19,7 +30,7 @@ export default function StudentLayout() {
             {/* Top App Bar */}
             <header className="top-bar">
                 <div className="user-info">
-                    <div className="avatar-ring">
+                    <div className="avatar-ring" onClick={() => setShowMenu(!showMenu)} style={{ cursor: 'pointer' }}>
                         <div
                             className="avatar-image"
                             style={{ backgroundImage: `url(${IMAGES.mascotKoala})` }}
@@ -30,9 +41,14 @@ export default function StudentLayout() {
                         <h2 className="greeting-title">Ready for Fun?</h2>
                     </div>
                 </div>
-                <button className="icon-btn">
-                    <span className="material-symbols-outlined">notifications</span>
-                </button>
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <Link to="/student/profile" className="icon-btn" title="Profile">
+                        <span className="material-symbols-outlined">person</span>
+                    </Link>
+                    <button className="icon-btn" onClick={handleLogout} title="Logout" style={{ color: '#ff6b6b' }}>
+                        <span className="material-symbols-outlined">logout</span>
+                    </button>
+                </div>
             </header>
 
             {/* Main Content Area */}

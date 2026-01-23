@@ -49,18 +49,30 @@ class AdminRepository extends BaseRepository {
 
     async getDashboardStats() {
         try {
-            // Load specific stats
-            const [students, games] = await Promise.all([
+            // Fetch counts
+            const [students, teachers, classes, games] = await Promise.all([
                 this.supabase.from('students').select('*', { count: 'exact', head: true }).eq('is_active', true),
+                this.supabase.from('teachers').select('*', { count: 'exact', head: true }).eq('is_active', true),
+                this.supabase.from('classes').select('*', { count: 'exact', head: true }).eq('is_active', true),
                 this.supabase.from('mini_games').select('*', { count: 'exact', head: true }).eq('is_active', true)
             ]);
 
+            // Fetch recent activities (optional, using profiles)
+            const { data: recentJoin } = await this.supabase
+                .from('students')
+                .select('id, display_name, created_at')
+                .order('created_at', { ascending: false })
+                .limit(5);
+
             return success({
                 totalStudents: students.count || 0,
+                totalTeachers: teachers.count || 0,
+                totalClasses: classes.count || 0,
                 activeGames: games.count || 0,
-                // Add more as needed
+                recentStudents: recentJoin || []
             });
         } catch (error) {
+            console.error('Stats Error:', error);
             return failure(error.message);
         }
     }

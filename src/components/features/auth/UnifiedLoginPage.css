@@ -1,0 +1,491 @@
+/* ============================================================================
+   Unified Login Page - Based on Original Student Login Design
+   Using Spline Sans, Material Symbols, correct colors from mockups
+   ============================================================================ */
+
+.unified-login-page {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background-color: var(--color-bg-light);
+    position: relative;
+    overflow: hidden;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* Background Gradient Effect */
+.unified-login-page .bg-gradient-effect {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.unified-login-page .bg-gradient-effect::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -20%;
+    width: 60%;
+    height: 50%;
+    background: rgba(38, 217, 217, 0.08);
+    border-radius: 50%;
+    filter: blur(80px);
+}
+
+.unified-login-page .bg-gradient-effect::after {
+    content: '';
+    position: absolute;
+    bottom: -20%;
+    left: -20%;
+    width: 60%;
+    height: 50%;
+    background: rgba(255, 140, 190, 0.06);
+    border-radius: 50%;
+    filter: blur(80px);
+}
+
+/* Decorative Circles */
+.unified-login-page .deco-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid rgba(38, 217, 217, 0.1);
+    pointer-events: none;
+}
+
+.unified-login-page .deco-1 {
+    width: 200px;
+    height: 200px;
+    top: -60px;
+    right: -60px;
+}
+
+.unified-login-page .deco-2 {
+    width: 120px;
+    height: 120px;
+    bottom: 100px;
+    left: -40px;
+    border-color: rgba(255, 140, 190, 0.1);
+}
+
+.unified-login-page .deco-3 {
+    width: 80px;
+    height: 80px;
+    top: 40%;
+    right: -20px;
+    border-color: rgba(252, 205, 43, 0.15);
+}
+
+/* Back Button */
+.unified-login-page .back-btn {
+    position: absolute;
+    top: var(--space-6);
+    left: var(--space-4);
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-xl);
+    background: white;
+    border: none;
+    box-shadow: var(--shadow-toy);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all var(--transition-base);
+}
+
+.unified-login-page .back-btn:hover {
+    transform: scale(1.05);
+}
+
+.unified-login-page .back-btn .material-symbols-outlined {
+    font-size: 20px;
+    color: var(--color-text-primary);
+}
+
+/* Container */
+.unified-login-page .login-container {
+    position: relative;
+    z-index: 5;
+    padding: var(--space-6);
+    padding-top: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Brand Section */
+.unified-login-page .brand-section {
+    text-align: center;
+    margin-bottom: var(--space-6);
+}
+
+.unified-login-page .logo-container {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    margin: 0 auto var(--space-4);
+}
+
+.unified-login-page .logo-mascot {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    z-index: 2;
+    box-shadow: var(--shadow-lg);
+}
+
+.unified-login-page .logo-ring {
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 4px solid var(--color-primary);
+    opacity: 0.3;
+    animation: pulse-ring 2s ease-out infinite;
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.1;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+}
+
+.unified-login-page .brand-title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-1) 0;
+    letter-spacing: -0.02em;
+}
+
+.unified-login-page .brand-subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+/* Mascot Speech Bubble */
+.unified-login-page .mascot-speech {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    background: white;
+    padding: var(--space-4);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-toy);
+    margin-bottom: var(--space-6);
+    width: 100%;
+    border-left: 4px solid var(--color-primary);
+}
+
+.unified-login-page .speech-avatar {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+}
+
+.unified-login-page .speech-avatar .avatar-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid var(--color-primary);
+}
+
+.unified-login-page .speech-content {
+    flex: 1;
+}
+
+.unified-login-page .speech-greeting {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin: 0 0 2px 0;
+}
+
+.unified-login-page .speech-message {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Login Card */
+.unified-login-page .login-card {
+    width: 100%;
+    background: white;
+    border-radius: var(--radius-2xl);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-toy);
+}
+
+/* Tabs */
+.unified-login-page .login-tabs {
+    display: flex;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+    background: var(--color-bg-light);
+    border-radius: var(--radius-xl);
+    padding: 4px;
+}
+
+.unified-login-page .tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border: none;
+    border-radius: var(--radius-lg);
+    background: transparent;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.unified-login-page .tab .material-symbols-outlined {
+    font-size: 18px;
+}
+
+.unified-login-page .tab.active {
+    background: white;
+    color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Form */
+.unified-login-page .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.unified-login-page .form-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    text-align: center;
+    margin: 0 0 var(--space-2) 0;
+}
+
+/* Input Groups */
+.unified-login-page .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.unified-login-page .input-group label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+}
+
+.unified-login-page .input-group label .material-symbols-outlined {
+    font-size: 18px;
+    color: var(--color-primary);
+}
+
+.unified-login-page .input-group input {
+    width: 100%;
+    padding: var(--space-4);
+    border: 2px solid rgba(38, 217, 217, 0.2);
+    border-radius: var(--radius-xl);
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    background: var(--color-bg-light);
+    transition: all var(--transition-base);
+    box-sizing: border-box;
+    /* IMPORTANT fix */
+}
+
+.unified-login-page .input-group input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(38, 217, 217, 0.1);
+}
+
+.unified-login-page .input-group input::placeholder {
+    color: var(--color-text-tertiary);
+}
+
+.unified-login-page .pin-input {
+    text-align: center;
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.5em;
+}
+
+/* Error Message */
+.unified-login-page .error-message {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    background: #FEE2E2;
+    border: 1px solid #FECACA;
+    border-radius: var(--radius-lg);
+    color: #DC2626;
+    font-size: var(--font-size-sm);
+}
+
+.unified-login-page .error-message .material-symbols-outlined {
+    font-size: 18px;
+}
+
+/* Submit Button */
+.unified-login-page .submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    width: 100%;
+    padding: var(--space-4) var(--space-6);
+    background: var(--color-primary);
+    border: none;
+    border-radius: var(--radius-xl);
+    font-family: var(--font-family);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: white;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-btn);
+    margin-top: var(--space-4);
+}
+
+.unified-login-page .submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+.unified-login-page .submit-btn:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 var(--color-primary-dark);
+}
+
+.unified-login-page .submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.unified-login-page .submit-btn .material-symbols-outlined {
+    font-size: 22px;
+}
+
+.unified-login-page .submit-btn .spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Hint Text */
+.unified-login-page .login-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+    margin: 0;
+}
+
+.unified-login-page .login-hint .material-symbols-outlined {
+    font-size: 16px;
+}
+
+/* Footer */
+.unified-login-page .login-footer {
+    margin-top: auto;
+    padding-top: var(--space-8);
+    text-align: center;
+}
+
+.unified-login-page .admin-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.unified-login-page .admin-link:hover {
+    color: var(--color-primary);
+}
+
+.unified-login-page .copyright {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    margin: var(--space-4) 0 0 0;
+    opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+    .unified-login-page .login-container {
+        padding: var(--space-4);
+        padding-top: 72px;
+    }
+
+    .unified-login-page .logo-container {
+        width: 80px;
+        height: 80px;
+    }
+
+    .unified-login-page .brand-title {
+        font-size: var(--font-size-xl);
+    }
+
+    .unified-login-page .login-card {
+        padding: var(--space-4);
+    }
+
+    .unified-login-page .tab {
+        font-size: var(--font-size-xs);
+        padding: var(--space-2);
+    }
+}
+
+@media (min-width: 768px) {
+    .unified-login-page {
+        box-shadow: var(--shadow-xl);
+    }
+}

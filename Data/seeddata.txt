@@ -94,15 +94,26 @@ INSERT INTO mini_games (id, name, slug, game_type, skill_focus, description, max
 ('650e8400-e29b-41d4-a716-446655440008', 'Quick Quiz', 'quick-quiz', 'quiz_game', 'vocabulary', 'Answer questions as fast as you can', 3, 90);
 
 -- ============================================================================
+-- TEACHERS (1 sample teacher)
+-- ============================================================================
+
+INSERT INTO teachers (id, auth_user_id, email, full_name, school_name) VALUES
+('450e8400-e29b-41d4-a716-446655440001', '00000000-0000-0000-0000-000000000001', 'teacher@school.com', 'Ms. Daisy', 'Sunshine Primary School');
+
+-- ============================================================================
 -- STUDENTS (5 sample students for demo)
 -- ============================================================================
 
-INSERT INTO students (id, display_name, pin_code, qr_code, total_score, total_stars) VALUES
+INSERT INTO students (id, display_name, pin_code, qr_code, total_score, total_stars, teacher_id) VALUES
 ('750e8400-e29b-41d4-a716-446655440001', 'Alex', '1234', 'QR-ALEX-001', 2850, 32),
 ('750e8400-e29b-41d4-a716-446655440002', 'Emma', '5678', 'QR-EMMA-002', 3120, 38),
 ('750e8400-e29b-41d4-a716-446655440003', 'Noah', '9876', 'QR-NOAH-003', 2650, 28),
 ('750e8400-e29b-41d4-a716-446655440004', 'Sophia', '4321', 'QR-SOPHIA-004', 3400, 42),
-('750e8400-e29b-41d4-a716-446655440005', 'Liam', '8765', 'QR-LIAM-005', 2980, 35);
+('750e8400-e29b-41d4-a716-446655440001', 'Alex', '1234', 'QR-ALEX-001', 2850, 32, '450e8400-e29b-41d4-a716-446655440001'),
+('750e8400-e29b-41d4-a716-446655440002', 'Emma', '5678', 'QR-EMMA-002', 3120, 38, '450e8400-e29b-41d4-a716-446655440001'),
+('750e8400-e29b-41d4-a716-446655440003', 'Noah', '9876', 'QR-NOAH-003', 2650, 28, '450e8400-e29b-41d4-a716-446655440001'),
+('750e8400-e29b-41d4-a716-446655440004', 'Sophia', '4321', 'QR-SOPHIA-004', 3400, 42, NULL), -- Sophia doesn't have a teacher (home schooling)
+('750e8400-e29b-41d4-a716-446655440005', 'Liam', '8765', 'QR-LIAM-005', 2980, 35, '450e8400-e29b-41d4-a716-446655440001');
 
 -- ============================================================================
 -- VIDEOS (10 sample videos - using placeholder YouTube URLs)

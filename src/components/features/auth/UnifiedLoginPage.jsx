@@ -1,139 +1,84 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { IMAGES } from '../../../../data/designAssets'
-import { useStudentProfile } from '../hooks/useStudentProfile'
-import { authRepository } from '../../../../data/authRepository' // Import Auth Repo for Admin
-import './Login.css'
+import { IMAGES } from '../../../data/designAssets'
+import { useUnifiedAuth } from '../../../hooks/useUnifiedAuth'
+import './UnifiedLoginPage.css'
 
-export default function StudentLogin() {
+export default function UnifiedLoginPage() {
+    // Mode: 'quick' | 'pin' | 'admin'
+    const [loginMode, setLoginMode] = useState('quick')
+    const [error, setError] = useState(null)
+
+    // Student Form State
     const [name, setName] = useState('')
     const [studentClass, setStudentClass] = useState('')
     const [pin, setPin] = useState('')
 
-    // Admin state
+    // Admin/Teacher Form State
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const [loginMode, setLoginMode] = useState('quick') // 'quick' | 'pin' | 'admin'
-    const [error, setError] = useState(null)
-    const [isGlobalLoading, setIsGlobalLoading] = useState(false) // Local loading state for Admin login
+    const { loginWithPin, quickLogin, loginWithEmail, demoLogin, isLoading } = useUnifiedAuth()
 
-    const navigate = useNavigate()
-    const { login, quickLogin, isLoading: isStudentLoading } = useStudentProfile()
-
-    const isLoading = isStudentLoading || isGlobalLoading;
-
-    // Clear error on mode switch
+    // Clear error when mode changes
     useEffect(() => {
         setError(null)
     }, [loginMode])
 
-    // Validate Email Helper
-    const validateEmail = (email) => {
-        return String(email)
-            .toLowerCase()
-            .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-            );
-    };
-
-    const handleAdminLogin = async (e) => {
-        e.preventDefault()
-
-        const cleanEmail = email.trim();
-        const cleanPassword = password; // Passwords can have spaces
-
-        if (!cleanEmail || !cleanPassword) {
-            setError('Vui lòng nhập email và mật khẩu')
-            return
-        }
-
-        if (!validateEmail(cleanEmail)) {
-            setError('Email không hợp lệ. Vui lòng kiểm tra lại.')
-            return;
-        }
-
-        if (cleanPassword.length < 6) {
-            setError('Mật khẩu phải có ít nhất 6 ký tự')
-            return;
-        }
-
-        setError(null)
-        setIsGlobalLoading(true)
-
-        try {
-            const result = await authRepository.login(cleanEmail, cleanPassword)
-            if (result.success) {
-                // Redirect based on role
-                const role = result.data?.role
-                const path = authRepository.getRedirectPath(role)
-                navigate(path)
-            } else {
-                setError(result.error || 'Đăng nhập thất bại')
-                setPassword('') // Clear password on failure for security
-            }
-        } catch (err) {
-            setError(err.message || 'Lỗi hệ thống')
-        } finally {
-            setIsGlobalLoading(false)
-        }
-    }
-
     const handleQuickLogin = async (e) => {
         e.preventDefault()
-
-        const cleanName = name.trim().replace(/[^a-zA-Z0-9\sÀ-ỹ]/g, ''); // Sanitize: Allow letters, numbers, spaces, Vietnamese chars
-
-        if (!cleanName) {
-            setError('Vui lòng nhập tên hợp lệ (chữ cái và số)')
+        if (!name.trim()) {
+            setError('Vui lòng nhập tên của bạn')
             return
         }
-
         setError(null)
-        const result = await quickLogin(cleanName, studentClass.trim())
-
-        if (!result.success) {
-            setError('Đã có lỗi xảy ra. Vui lòng thử lại.')
-        }
+        const result = await quickLogin(name.trim(), studentClass)
+        if (!result.success) setError('Đã có lỗi xảy ra. Vui lòng thử lại.')
     }
 
     const handlePinLogin = async (e) => {
         e.preventDefault()
-
         if (pin.length !== 4) {
             setError('Vui lòng nhập đầy đủ 4 số PIN')
             return
         }
-
         setError(null)
-        const result = await login(pin)
-
+        const result = await loginWithPin(pin)
         if (!result.success) {
-            if (result.error === 'Invalid PIN code') {
-                setError('Mã PIN không đúng. Vui lòng thử lại.')
-            } else {
-                setError('Đã có lỗi xảy ra. Vui lòng thử lại.')
-            }
+            setError(result.error || 'Mã PIN không đúng')
             setPin('')
         }
     }
 
-    // Toggle between Student (Quick/Pin) and Admin modes
+    const handleAdminLogin = async (e) => {
+        e.preventDefault()
+        if (!email || !password) {
+            setError('Vui lòng nhập email và mật khẩu')
+            return
+        }
+        setError(null)
+        const result = await loginWithEmail(email, password)
+        if (!result.success) {
+            setError(result.error)
+        }
+    }
+
+    const handleDemoLogin = async () => {
+        setError(null);
+        await demoLogin('admin');
+    }
+
     const toggleAdminMode = () => {
         if (loginMode === 'admin') {
             setLoginMode('quick')
         } else {
             setLoginMode('admin')
         }
-        setError(null);
-        setEmail('');
-        setPassword('');
     }
 
     const isStudentMode = loginMode === 'quick' || loginMode === 'pin';
 
     return (
-        <div className="login-page">
+        <div className="unified-login-page">
             {/* Background Gradient Effect */}
             <div className="bg-gradient-effect"></div>
 
@@ -142,8 +87,9 @@ export default function StudentLogin() {
             <div className="deco-circle deco-2"></div>
             <div className="deco-circle deco-3"></div>
 
-            {/* Back button */}
-            {/* Disabled logic for now to keep UI clean or maybe navigate home */}
+            {/* Back button (only if history exists, but here acts as reset or exit) 
+                For now we keep it to match design, maybe to go back to home if landing exists 
+            */}
             {/* <button className="back-btn" onClick={() => window.history.back()}>
                 <span className="material-symbols-outlined">arrow_back_ios_new</span>
             </button> */}
@@ -162,7 +108,7 @@ export default function StudentLogin() {
                     <p className="brand-subtitle">Learn English with Miss Phượng</p>
                 </div>
 
-                {/* Mascot Speech Bubble */}
+                {/* Mascot Speech Bubble - Changed text based on mode */}
                 <div className="mascot-speech">
                     <div className="speech-avatar">
                         <div
@@ -174,9 +120,8 @@ export default function StudentLogin() {
                         <p className="speech-greeting">Hi there! 👋</p>
                         <p className="speech-message">
                             {loginMode === 'admin'
-                                ? "Welcome back, Teacher! Please login to continue."
-                                : "I'm Miss Phượng's helper. Let's get you ready for the game!"
-                            }
+                                ? "This area is for Teachers and Parents only."
+                                : "I'm Miss Phượng's helper. Let's get you ready for the game!"}
                         </p>
                     </div>
                 </div>
@@ -184,19 +129,19 @@ export default function StudentLogin() {
                 {/* Login Card */}
                 <div className="login-card toy-shadow">
 
-                    {/* Tabs - Only for Student Mode */}
+                    {/* TABS - Only visible in student modes */}
                     {isStudentMode && (
                         <div className="login-tabs">
                             <button
                                 className={`tab ${loginMode === 'quick' ? 'active' : ''}`}
-                                onClick={() => { setLoginMode('quick'); setError(null) }}
+                                onClick={() => setLoginMode('quick')}
                             >
                                 <span className="material-symbols-outlined">bolt</span>
                                 Quick Start
                             </button>
                             <button
                                 className={`tab ${loginMode === 'pin' ? 'active' : ''}`}
-                                onClick={() => { setLoginMode('pin'); setError(null) }}
+                                onClick={() => setLoginMode('pin')}
                             >
                                 <span className="material-symbols-outlined">lock</span>
                                 PIN Login
@@ -204,14 +149,15 @@ export default function StudentLogin() {
                         </div>
                     )}
 
-                    {/* Admin Title - Only for Admin Mode */}
+                    {/* Admin Title - Only visible in admin mode */}
                     {!isStudentMode && (
-                        <h3 className="form-title" style={{ marginBottom: '20px' }}>
-                            Teacher / Admin Access
+                        <h3 className="form-title" style={{ marginBottom: '24px' }}>
+                            <span className="material-symbols-outlined" style={{ verticalAlign: 'middle', marginRight: '8px' }}>admin_panel_settings</span>
+                            Admin Access
                         </h3>
                     )}
 
-                    {/* Logic Render Forms */}
+                    {/* QUICK LOGIN FORM */}
                     {loginMode === 'quick' && (
                         <form onSubmit={handleQuickLogin} className="login-form">
                             <h3 className="form-title">What's your name?</h3>
@@ -258,6 +204,7 @@ export default function StudentLogin() {
                                     </>
                                 )}
                             </button>
+
                             <p className="login-hint">
                                 <span className="material-symbols-outlined">info</span>
                                 No password needed. Just have fun!
@@ -265,6 +212,7 @@ export default function StudentLogin() {
                         </form>
                     )}
 
+                    {/* PIN LOGIN FORM */}
                     {loginMode === 'pin' && (
                         <form onSubmit={handlePinLogin} className="login-form">
                             <h3 className="form-title">Enter your secret PIN</h3>
@@ -309,6 +257,7 @@ export default function StudentLogin() {
                         </form>
                     )}
 
+                    {/* ADMIN LOGIN FORM */}
                     {loginMode === 'admin' && (
                         <form onSubmit={handleAdminLogin} className="login-form">
                             <div className="input-group">
@@ -354,21 +303,27 @@ export default function StudentLogin() {
                                 )}
                             </button>
 
+                            {/* Demo Login for Admin because user had database error */}
+                            <div style={{ marginTop: '10px', textAlign: 'center' }}>
+                                <button
+                                    type="button"
+                                    onClick={handleDemoLogin}
+                                    style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: '12px' }}
+                                >
+                                    (Dev: Click here for Demo Login)
+                                </button>
+                            </div>
                         </form>
                     )}
                 </div>
 
-                {/* Footer - Toggle Mode */}
+                {/* Footer - Switch Mode */}
                 <div className="login-footer">
-                    <button
-                        onClick={toggleAdminMode}
-                        className="admin-link"
-                        style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
-                    >
+                    <button onClick={toggleAdminMode} className="admin-link">
                         <span className="material-symbols-outlined">
                             {loginMode === 'admin' ? 'school' : 'admin_panel_settings'}
                         </span>
-                        {loginMode === 'admin' ? 'Back to Student Login' : 'Teacher / Admin Login'}
+                        {loginMode === 'admin' ? 'Back to Student Login' : 'Admin Login'}
                     </button>
                     <p className="copyright">© 2024 Miss Phượng Learning App</p>
                 </div>

@@ -1,0 +1,41 @@
+============================================
+English Fun with AI - Account Information
+============================================
+
+ADMIN ACCOUNT
+-------------
+Email:    admin@cophuong.com
+Password: 123456
+URL:      /admin/login
+Role:     super_admin
+UUID:     6414ef7a-3131-4ebc-bbc3-643ae192b183
+
+TEACHER ACCOUNT
+---------------
+Email:    teacher@school.com
+Password: 123456
+URL:      /teacher/dashboard
+Role:     teacher
+UUID:     05654759-3401-4c1f-8318-3982223b6f01
+
+PARENT ACCOUNT
+--------------
+Email:    parent@family.com
+Password: 123456
+URL:      /parent/login
+Role:     parent
+Children: Alex, Emma
+
+STUDENT ACCOUNTS (Login via PIN)
+--------------------------------
+Name     | PIN  | QR Code
+---------|------|------------
+Alex     | 1234 | QR-ALEX-001
+Emma     | 5678 | QR-EMMA-002
+Noah     | 9876 | QR-NOAH-003
+Sophia   | 4321 | QR-SOPHIA-004
+Liam     | 8765 | QR-LIAM-005
+
+============================================
+Last Updated: 2026-01-23
+============================================

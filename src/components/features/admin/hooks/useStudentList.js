@@ -74,6 +74,33 @@ export function useStudentList() {
         }
     };
 
+    const createStudent = async (data) => {
+        try {
+            const result = await studentRepository.create(data);
+            if (result.success) {
+                // Optimistic or reload
+                loadStudents();
+                return { success: true };
+            }
+            return { success: false, error: result.error };
+        } catch (err) {
+            return { success: false, error: err.message };
+        }
+    };
+
+    const updateStudent = async (id, data) => {
+        try {
+            const result = await studentRepository.update(id, data);
+            if (result.success) {
+                loadStudents();
+                return { success: true };
+            }
+            return { success: false, error: result.error };
+        } catch (err) {
+            return { success: false, error: err.message };
+        }
+    };
+
     return {
         students,
         classes,
@@ -84,6 +111,8 @@ export function useStudentList() {
         isLoading,
         error,
         handleDelete,
+        createStudent,
+        updateStudent,
         refresh: loadStudents
     };
 }

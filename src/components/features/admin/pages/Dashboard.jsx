@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { IMAGES } from '../../../../data/designAssets'
 import { adminRepository } from '../data/adminRepository'
 import './Dashboard.css'
 
@@ -12,9 +11,6 @@ const FALLBACK_ACTIVITY = [
 ]
 
 export default function AdminDashboard() {
-    // Auth handled by Layout/Hook
-    // const { admin } = useAdminAuth(); 
-
     const [stats, setStats] = useState({
         totalStudents: 1240,
         activeGames: 12,
@@ -46,105 +42,155 @@ export default function AdminDashboard() {
     }
 
     if (isLoading) {
-        return <div className="loading"><div className="spinner"></div></div>
+        return (
+            <div className="flex items-center justify-center h-full min-h-[400px]">
+                <div className="spinner"></div>
+            </div>
+        )
     }
 
     return (
-        <div className="admin-content">
-            {/* Welcome Section */}
-            <section className="welcome-section">
-                <h1>Welcome, Miss Phượng</h1>
-                <p>Here's what's happening today.</p>
-            </section>
+        <div className="dashboard-content">
+            {/* Page Header */}
+            <header className="page-header">
+                <div className="header-content">
+                    <h1>Dashboard</h1>
+                    <p>Welcome back, Miss Phượng. Here's what's happening today.</p>
+                </div>
+                <div className="header-actions">
+                    <button className="btn-icon">
+                        <span className="material-symbols-outlined">refresh</span>
+                    </button>
+                    <button className="btn-icon">
+                        <span className="material-symbols-outlined">settings</span>
+                    </button>
+                    <button className="btn-primary">
+                        <span className="material-symbols-outlined">download</span>
+                        Export Report
+                    </button>
+                </div>
+            </header>
 
             {/* Stats Grid */}
             <section className="stats-grid">
                 <div className="stat-card">
-                    <p className="stat-label">TOTAL STUDENTS</p>
-                    <div className="stat-value">
+                    <div className="stat-header">
+                        <span className="stat-label">Total Students</span>
+                        <span className="material-symbols-outlined stat-icon">school</span>
+                    </div>
+                    <div className="stat-value-wrapper">
                         <span className="stat-number">{stats.totalStudents.toLocaleString()}</span>
-                        <span className="stat-change positive">+5%</span>
+                        <span className="stat-badge">+5%</span>
+                    </div>
+                    <div className="stat-trend trend-up">
+                        <span className="material-symbols-outlined text-sm">trending_up</span>
+                        <span>Active this month</span>
                     </div>
                 </div>
+
                 <div className="stat-card">
-                    <p className="stat-label">ACTIVE GAMES</p>
-                    <div className="stat-value">
+                    <div className="stat-header">
+                        <span className="stat-label">Active Games</span>
+                        <span className="material-symbols-outlined stat-icon">sports_esports</span>
+                    </div>
+                    <div className="stat-value-wrapper">
                         <span className="stat-number">{stats.activeGames}</span>
-                        <span className="stat-badge">LIVE</span>
+                        <span className="stat-badge">Live</span>
+                    </div>
+                    <div className="stat-trend trend-up">
+                        <span className="material-symbols-outlined text-sm">bolt</span>
+                        <span>Running smoothly</span>
                     </div>
                 </div>
+
                 <div className="stat-card">
-                    <p className="stat-label">AVG. SCORE</p>
-                    <div className="stat-value">
+                    <div className="stat-header">
+                        <span className="stat-label">Avg. Score</span>
+                        <span className="material-symbols-outlined stat-icon">analytics</span>
+                    </div>
+                    <div className="stat-value-wrapper">
                         <span className="stat-number">{stats.avgScore}%</span>
-                        <span className="stat-change positive">+2.1%</span>
+                        <span className="stat-badge">+2.1%</span>
+                    </div>
+                    <div className="stat-trend trend-up">
+                        <span className="material-symbols-outlined text-sm">trending_up</span>
+                        <span>Better than last week</span>
                     </div>
                 </div>
+
                 <div className="stat-card">
-                    <p className="stat-label">ENGAGEMENT</p>
-                    <div className="stat-value">
+                    <div className="stat-header">
+                        <span className="stat-label">Engagement</span>
+                        <span className="material-symbols-outlined stat-icon">group</span>
+                    </div>
+                    <div className="stat-value-wrapper">
                         <span className="stat-number">{stats.engagement}</span>
-                        <span className="stat-change positive">+12%</span>
+                        <span className="stat-badge">+12%</span>
+                    </div>
+                    <div className="stat-trend trend-up">
+                        <span className="material-symbols-outlined text-sm">trending_up</span>
+                        <span>High activity</span>
                     </div>
                 </div>
             </section>
 
-            {/* Weekly Engagement Chart */}
+            {/* Charts & Activity */}
             <section className="chart-section">
+                {/* Main Component: Chart */}
                 <div className="chart-card">
                     <div className="chart-header">
-                        <div>
+                        <div className="chart-title">
                             <h3>Weekly Engagement</h3>
-                            <p className="chart-subtitle">Student activity across all modules</p>
+                            <p>Student activity across all modules</p>
                         </div>
-                        <div className="chart-stat">
-                            <span className="chart-number">450</span>
-                            <span className="chart-label">LAST 7 DAYS</span>
+                        <div className="text-right">
+                            <span className="text-2xl font-bold text-gray-800">450</span>
+                            <span className="text-xs text-gray-500 block uppercase font-bold">Last 7 Days</span>
                         </div>
                     </div>
-                    <div className="chart-container">
-                        <svg className="chart-svg" viewBox="0 0 472 150" preserveAspectRatio="none">
+                    <div className="chart-area">
+                        <svg className="w-full h-full" viewBox="0 0 472 150" preserveAspectRatio="none">
                             <defs>
                                 <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
-                                    <stop offset="0%" stopColor="#1a545b" stopOpacity="0.2"></stop>
-                                    <stop offset="100%" stopColor="#1a545b" stopOpacity="0"></stop>
+                                    <stop offset="0%" stopColor="#0ea5e9" stopOpacity="0.2"></stop>
+                                    <stop offset="100%" stopColor="#0ea5e9" stopOpacity="0"></stop>
                                 </linearGradient>
                             </defs>
                             <path d={`${CHART_PATH}V150H0V109Z`} fill="url(#chartGradient)"></path>
-                            <path d={CHART_PATH} fill="none" stroke="#1a545b" strokeLinecap="round" strokeWidth="3"></path>
+                            <path d={CHART_PATH} fill="none" stroke="#0ea5e9" strokeLinecap="round" strokeWidth="3"></path>
                         </svg>
                     </div>
-                    <div className="chart-days">
+                    <div className="flex justify-between mt-8 px-2">
                         {['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'].map(day => (
-                            <span key={day}>{day}</span>
+                            <span key={day} className="text-xs font-bold text-gray-400">{day}</span>
                         ))}
                     </div>
                 </div>
-            </section>
 
-            {/* Recent Activity */}
-            <section className="activity-section">
-                <div className="section-header">
-                    <h3>Recent Activity</h3>
-                    <button className="view-all-btn">View all</button>
-                </div>
-                <div className="activity-list">
-                    {activities.map(activity => (
-                        <div key={activity.id} className="activity-item">
-                            <div className={`activity-icon ${activity.color}`}>
-                                <span className="material-symbols-outlined">{activity.icon}</span>
+                {/* Side Component: Activity */}
+                <div className="activity-card">
+                    <div className="activity-header">
+                        <h3>Recent Activity</h3>
+                        <button className="view-all">View all</button>
+                    </div>
+                    <div className="activity-list">
+                        {activities.map(activity => (
+                            <div key={activity.id} className="activity-item">
+                                <div className={`activity-icon-wrapper ${activity.color}`}>
+                                    <span className="material-symbols-outlined">{activity.icon}</span>
+                                </div>
+                                <div className="activity-info">
+                                    <p className="activity-text">
+                                        {activity.type === 'score' ? `${activity.student} scored ${activity.score}` :
+                                            activity.type === 'register' ? `${activity.student} Registered` :
+                                                `${activity.student} Updated`}
+                                    </p>
+                                    <p className="activity-detail">{activity.detail}</p>
+                                </div>
+                                <span className="activity-time">{activity.time}</span>
                             </div>
-                            <div className="activity-content">
-                                <p className="activity-title">
-                                    {activity.type === 'score' ? `${activity.student} scored ${activity.score}` :
-                                        activity.type === 'register' ? `${activity.student} Registered` :
-                                            `${activity.student} Updated`}
-                                </p>
-                                <p className="activity-detail">{activity.detail}</p>
-                            </div>
-                            <span className="activity-time">{activity.time}</span>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </section>
         </div>

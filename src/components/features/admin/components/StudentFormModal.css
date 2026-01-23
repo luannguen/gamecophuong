@@ -1,0 +1,306 @@
+/* ============================================================================
+   Student Form Modal - Premium Design
+   ============================================================================ */
+
+.student-form-container {
+    padding: 8px 0;
+    font-family: 'Manrope', sans-serif;
+}
+
+/* Error Message */
+.form-error {
+    padding: 12px 16px;
+    background-color: #fef2f2;
+    border: 1px solid #fee2e2;
+    border-radius: 12px;
+    color: #dc2626;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.form-error .material-symbols-outlined {
+    font-size: 20px;
+}
+
+/* Avatar Section */
+.avatar-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.avatar-wrapper {
+    position: relative;
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    border: 4px solid white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background-color: #f9fafb;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-placeholder {
+    color: #e5e7eb;
+    font-size: 48px;
+}
+
+.avatar-edit-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+    cursor: pointer;
+}
+
+.avatar-wrapper:hover .avatar-edit-overlay {
+    opacity: 1;
+}
+
+.avatar-edit-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: white;
+    border: 1px solid #f3f4f6;
+    color: #4b5563;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+.avatar-edit-btn:hover {
+    background: #f9fafb;
+    transform: scale(1.05);
+}
+
+.avatar-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6b7280;
+}
+
+/* Form Grid */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+@media (min-width: 640px) {
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.col-span-2 {
+    grid-column: span 1;
+}
+
+@media (min-width: 640px) {
+    .col-span-2 {
+        grid-column: span 2;
+    }
+}
+
+/* Form Groups */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #374151;
+    margin-left: 4px;
+}
+
+.form-input-wrapper {
+    position: relative;
+}
+
+.form-input,
+.form-select {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    color: #111827;
+    transition: all 0.2s;
+}
+
+.form-input:focus,
+.form-select:focus {
+    outline: none;
+    background-color: white;
+    border-color: #10b981;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+.form-input::placeholder {
+    color: #9ca3af;
+}
+
+.form-select {
+    appearance: none;
+    cursor: pointer;
+    padding-right: 40px;
+}
+
+.select-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #9ca3af;
+}
+
+/* Gender Toggle */
+.gender-toggle {
+    display: flex;
+    padding: 4px;
+    background-color: #f3f4f6;
+    border-radius: 12px;
+}
+
+.gender-btn {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: capitalize;
+}
+
+.gender-btn.active {
+    background-color: white;
+    color: #059669;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* PIN Input */
+.pin-input-group {
+    display: flex;
+    gap: 12px;
+}
+
+.pin-input-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    font-size: 20px;
+}
+
+.form-input.has-icon {
+    padding-left: 48px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.btn-generate {
+    padding: 0 16px;
+    background-color: #ecfdf5;
+    color: #059669;
+    border: 1px solid #d1fae5;
+    border-radius: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-generate:hover {
+    background-color: #d1fae5;
+}
+
+/* Footer Actions */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    width: 100%;
+}
+
+.btn-cancel {
+    padding: 10px 24px;
+    background-color: #f3f4f6;
+    color: #4b5563;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+    background-color: #e5e7eb;
+}
+
+.btn-submit {
+    padding: 10px 24px;
+    background: linear-gradient(135deg, #10b981 0%, #0d9488 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+    transition: all 0.2s;
+}
+
+.btn-submit:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}

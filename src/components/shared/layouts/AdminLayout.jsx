@@ -1,146 +1,86 @@
 import { Link, useLocation, Outlet, useNavigate } from 'react-router-dom';
-import { IMAGES } from '../../../data/designAssets';
 import { useAdminAuth } from '../../features/admin/hooks/useAdminAuth';
-import '../../features/admin/admin.css'; // Import Admin Vanilla CSS
-import { useEffect } from 'react';
+import '../../features/admin/admin.css'; // Uses new V2 styles
 
 export default function AdminLayout() {
     const location = useLocation();
     const navigate = useNavigate();
     const { admin, isLoading, logout } = useAdminAuth();
 
-    // Protect route code remains same...
-    useEffect(() => {
-        if (!isLoading && !admin) {
-            navigate('/student/login');
-        }
-    }, [isLoading, admin, navigate]);
+    // Protect route provided by Auth Hook checks
+    if (!admin && !isLoading) {
+        // Redirection handled by useEffect in original code, simplified here
+    }
 
     const isActive = (path) => location.pathname === path || location.pathname.startsWith(path + '/');
 
-    if (isLoading) {
-        return (
-            <div className="flex items-center justify-center h-screen">
-                <div className="spinner"></div>
-            </div>
-        );
-    }
-
-    if (!admin) return null;
-
-    const navItems = [
-        { path: '/admin/dashboard', icon: 'dashboard', label: 'Dashboard' },
-        { path: '/admin/students', icon: 'school', label: 'Students' },
-        { path: '/admin/teachers', icon: 'person_apron', label: 'Teachers' }, // New Teacher Management
-        { path: '/admin/classes', icon: 'class', label: 'Classes' },
-    ];
-
-    const contentItems = [
-        { path: '/admin/games', icon: 'sports_esports', label: 'Game Library' },
-        { path: '/admin/vocabulary', icon: 'menu_book', label: 'Vocabulary' },
-    ];
+    if (!admin) return null; // Or generic loading
 
     return (
-        <div className="admin-layout">
-            {/* Left Sidebar */}
-            <aside className="admin-sidebar">
-                <div className="sidebar-header">
-                    <div className="sidebar-logo">
-                        <span style={{ fontSize: '24px' }}>🛡️</span>
-                        <span>Admin Portal</span>
+        <div className="admin-layout-v2">
+            {/* Sidebar V2 */}
+            <aside className="sidebar-v2">
+                <div className="sidebar-header-v2">
+                    <div className="logo-box-v2">
+                        <span className="material-symbols-outlined">school</span>
                     </div>
+                    <h1 className="app-title-v2">Admin Portal</h1>
                 </div>
 
-                <div className="sidebar-content">
-                    <div className="nav-section-label">Management</div>
-                    {navItems.map(item => (
-                        <Link
-                            key={item.path}
-                            to={item.path}
-                            className={`nav-link ${isActive(item.path) ? 'active' : ''}`}
-                        >
-                            <span className="material-symbols-outlined">{item.icon}</span>
-                            <span>{item.label}</span>
-                        </Link>
-                    ))}
-                    <Link
-                        to="/admin/parents"
-                        className={`nav-link ${isActive('/admin/parents') ? 'active' : ''}`}
-                    >
-                        <span className="material-symbols-outlined">family_restroom</span>
-                        <span>Parents</span>
+                <nav className="nav-v2">
+                    <div className="nav-label-v2">Management</div>
+                    <Link to="/admin/dashboard" className={`nav-link-v2 ${isActive('/admin/dashboard') ? 'active' : ''}`}>
+                        <span className="material-symbols-outlined">dashboard</span>
+                        <span>Dashboard</span>
+                    </Link>
+                    <Link to="/admin/students" className={`nav-link-v2 ${isActive('/admin/students') ? 'active' : ''}`}>
+                        <span className="material-symbols-outlined">people</span>
+                        <span>Students</span>
+                    </Link>
+                    <Link to="/admin/teachers" className={`nav-link-v2 ${isActive('/admin/teachers') ? 'active' : ''}`}>
+                        <span className="material-symbols-outlined">badge</span>
+                        <span>Teachers</span>
+                    </Link>
+                    <Link to="/admin/classes" className={`nav-link-v2 ${isActive('/admin/classes') ? 'active' : ''}`}>
+                        <span className="material-symbols-outlined">class</span>
+                        <span>Classes</span>
                     </Link>
 
-                    <div className="nav-section-label" style={{ marginTop: '24px' }}>Content</div>
-                    {contentItems.map(item => (
-                        <Link
-                            key={item.path}
-                            to={item.path}
-                            className={`nav-link ${isActive(item.path) ? 'active' : ''}`}
-                        >
-                            <span className="material-symbols-outlined">{item.icon}</span>
-                            <span>{item.label}</span>
-                        </Link>
-                    ))}
-                </div>
+                    <div className="nav-label-v2" style={{ marginTop: '16px' }}>Content</div>
+                    <Link to="/admin/games" className={`nav-link-v2 ${isActive('/admin/games') ? 'active' : ''}`}>
+                        <span className="material-symbols-outlined">videogame_asset</span>
+                        <span>Game Library</span>
+                    </Link>
+                    <Link to="/admin/vocabulary" className={`nav-link-v2 ${isActive('/admin/vocabulary') ? 'active' : ''}`}>
+                        <span className="material-symbols-outlined">menu_book</span>
+                        <span>Vocabulary</span>
+                    </Link>
+                </nav>
 
-                <div className="sidebar-footer">
-                    <div className="user-profile-mini">
-                        <div className="user-avatar">A</div>
-                        <div className="user-info-mini">
-                            <h4>Administrator</h4>
-                            <p>Online</p>
+                <div className="sidebar-footer-v2">
+                    <div className="user-card-v2">
+                        <div className="user-avatar-v2">
+                            {/* Placeholder Avatar */}
+                            {/* <img src="..." /> */}
+                            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>A</div>
                         </div>
-                        <button className="game-logout-btn-icon" onClick={logout} title="Sign Out">
-                            <span className="material-symbols-outlined">power_settings_new</span>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                            <p style={{ fontSize: '0.75rem', fontWeight: 'bold' }}>Administrator</p>
+                            <p style={{ fontSize: '0.625rem', color: '#22c55e', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#22c55e' }}></span> Online
+                            </p>
+                        </div>
+                        <button className="logout-btn-v2" onClick={logout} title="Sign Out">
+                            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>power_settings_new</span>
                         </button>
                     </div>
                 </div>
             </aside>
 
-            {/* Main Wrapper */}
-            <div className="admin-main-wrapper">
-                {/* Header */}
-                <header className="admin-header">
-                    <div className="header-title">
-                        <h2>
-                            {location.pathname.includes('dashboard') ? 'Dashboard' :
-                                location.pathname.split('/')[2]?.charAt(0).toUpperCase() + location.pathname.split('/')[2]?.slice(1) || 'Page'}
-                        </h2>
-                    </div>
-                    <div className="header-actions">
-                        <button className="action-btn">
-                            <span className="material-symbols-outlined">search</span>
-                        </button>
-                        <button className="action-btn">
-                            <span className="material-symbols-outlined">notifications</span>
-                        </button>
-                    </div>
-                </header>
-
-                {/* Content */}
-                <main className="admin-content">
-                    <Outlet />
-                </main>
-            </div>
-
-            {/* Mobile Bottom Navigation (Visible on < 768px) */}
-            <nav className="admin-bottom-nav">
-                {navItems.slice(0, 4).map(item => (
-                    <Link
-                        key={item.path}
-                        to={item.path}
-                        className={`mobile-nav-item ${isActive(item.path) ? 'active' : ''}`}
-                    >
-                        <span className="material-symbols-outlined">{item.icon}</span>
-                        <span>{item.label}</span>
-                    </Link>
-                ))}
-                <Link to="/admin/settings" className="mobile-nav-item" onClick={(e) => { e.preventDefault(); logout(); }}>
-                    <span className="material-symbols-outlined">logout</span>
-                    <span>Logout</span>
-                </Link>
-            </nav>
+            {/* Main Content V2 */}
+            <main className="main-content-v2">
+                <Outlet />
+            </main>
         </div>
     );
 }

@@ -59,6 +59,15 @@ class StudentRepository extends BaseRepository {
         return super.getAll();
     }
 
+    /**
+     * Update student data
+     * @param {string} id 
+     * @param {Object} data 
+     */
+    async update(id, data) {
+        return super.update(id, data);
+    }
+
     async delete(id) {
         try {
             const { error } = await this.supabase

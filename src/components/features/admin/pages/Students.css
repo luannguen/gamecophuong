@@ -123,45 +123,34 @@
     outline: none;
 }
 
-.filter-chips {
-    display: flex;
-    gap: var(--space-2);
-    overflow-x: auto;
-    padding-bottom: var(--space-1);
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+.filter-dropdown-container {
+    width: 100%;
 }
 
-.filter-chips::-webkit-scrollbar {
-    display: none;
-}
-
-.chip {
-    flex-shrink: 0;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    gap: var(--space-1);
+.class-filter-select {
+    width: 100%;
+    height: 44px;
     padding: 0 var(--space-4);
-    border-radius: var(--radius-full);
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    font-family: inherit;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    background: white;
+    border-radius: var(--radius-xl);
     border: 1px solid #e9f1ef;
+    background-color: white;
     color: #101917;
+    font-family: inherit;
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2334b292'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 24px;
+    transition: border-color 0.2s;
 }
 
-.chip.active {
-    background: #34b292;
+.class-filter-select:focus {
+    outline: none;
     border-color: #34b292;
-    color: white;
-}
-
-.chip .material-symbols-outlined {
-    font-size: 18px;
+    box-shadow: 0 0 0 2px rgba(52, 178, 146, 0.1);
 }
 
 /* ============================================

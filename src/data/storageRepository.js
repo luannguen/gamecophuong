@@ -17,9 +17,9 @@ export const storageRepository = {
                 return failure('Invalid file type. Only images are allowed.', ErrorCodes.VALIDATION_ERROR);
             }
 
-            // Validate file size (max 2MB)
-            if (file.size > 2 * 1024 * 1024) {
-                return failure('File size too large. Max 2MB.', ErrorCodes.VALIDATION_ERROR);
+            // Validate file size (max 10MB)
+            if (file.size > 10 * 1024 * 1024) {
+                return failure('File size too large. Max 10MB.', ErrorCodes.VALIDATION_ERROR);
             }
 
             const fileExt = file.name.split('.').pop();

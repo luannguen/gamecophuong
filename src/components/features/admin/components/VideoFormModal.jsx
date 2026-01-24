@@ -1,16 +1,36 @@
 import { useState, useEffect } from 'react';
-import { VIDEO_CATEGORIES } from '../../../../data/designAssets';
+import { categoryRepository } from '../data/categoryRepository';
 
 export default function VideoFormModal({ isOpen, onClose, onSubmit, initialData = null }) {
     const [formData, setFormData] = useState({
         title: '',
-        url: '',
+        video_url: '',
+        thumbnail_url: '',
+        description: '',
         duration: '',
         level: 'Beginner',
-        category: 'Animals', // Default
-        thumbnail_url: ''
+        category: 'General',
+        is_featured: false
     });
+    const [categories, setCategories] = useState([]);
     const [error, setError] = useState(null);
+
+    useEffect(() => {
+        if (isOpen) {
+            loadCategories();
+        }
+    }, [isOpen]);
+
+    const loadCategories = async () => {
+        const result = await categoryRepository.getAll();
+        if (result.success && result.data.length > 0) {
+            setCategories(result.data);
+            // Only set default if not editing
+            if (!initialData) {
+                setFormData(prev => ({ ...prev, category: result.data[0].name }));
+            }
+        }
+    };
 
     useEffect(() => {
         if (initialData) {
@@ -19,7 +39,7 @@ export default function VideoFormModal({ isOpen, onClose, onSubmit, initialData 
                 video_url: initialData.video_url || '',
                 duration: initialData.duration || '',
                 level: initialData.level || 'Beginner',
-                category: initialData.category || 'Animals',
+                category: initialData.category || (categories[0]?.name || 'Animals'),
                 thumbnail_url: initialData.thumbnail_url || '',
                 description: initialData.description || '',
                 is_featured: initialData.is_featured || false
@@ -28,16 +48,18 @@ export default function VideoFormModal({ isOpen, onClose, onSubmit, initialData 
             setFormData({
                 title: '',
                 video_url: '',
+                thumbnail_url: '',
+                description: '',
                 duration: '',
                 level: 'Beginner',
-                category: 'Animals',
+                category: categories[0]?.name || 'Animals',
                 thumbnail_url: '',
                 description: '',
                 is_featured: false
             });
         }
         setError(null);
-    }, [initialData, isOpen]);
+    }, [initialData, isOpen, categories]);
 
     if (!isOpen) return null;
 
@@ -136,9 +158,13 @@ export default function VideoFormModal({ isOpen, onClose, onSubmit, initialData 
                                 value={formData.category}
                                 onChange={e => setFormData({ ...formData, category: e.target.value })}
                             >
-                                {VIDEO_CATEGORIES.map(cat => (
-                                    <option key={cat.id} value={cat.name}>{cat.name}</option>
-                                ))}
+                                {categories.length > 0 ? (
+                                    categories.map(cat => (
+                                        <option key={cat.id} value={cat.name}>{cat.name}</option>
+                                    ))
+                                ) : (
+                                    <option value="General">General</option>
+                                )}
                             </select>
                         </div>
                         <div>

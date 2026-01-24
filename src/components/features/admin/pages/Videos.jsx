@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useVideoList } from '../hooks/useVideoList';
 import VideoFormModal from '../components/VideoFormModal';
 import VideoPreviewModal from '../components/VideoPreviewModal';
+import CategoryManagerModal from '../components/CategoryManagerModal';
 import { useToast } from '../../../shared/hooks/useToast';
 import { useConfirmDialog } from '../../../shared/hooks/useConfirmDialog';
 
@@ -19,6 +20,7 @@ export default function AdminVideosPage() {
     const [activeTab, setActiveTab] = useState('all');
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isCategoryManagerOpen, setIsCategoryManagerOpen] = useState(false);
     const [editingVideo, setEditingVideo] = useState(null);
     const [previewVideo, setPreviewVideo] = useState(null);
     const { showToast } = useToast();
@@ -88,6 +90,15 @@ export default function AdminVideosPage() {
                     </p>
                 </div>
                 <div className="flex items-center gap-3">
+                    {/* Category Manager Button */}
+                    <button
+                        onClick={() => setIsCategoryManagerOpen(true)}
+                        className="hidden md:flex items-center gap-2 px-4 py-2.5 bg-slate-100 text-slate-600 rounded-xl font-bold hover:bg-slate-200 transition-all border border-slate-200"
+                    >
+                        <span className="material-symbols-outlined">category</span>
+                        Manage Categories
+                    </button>
+
                     {/* Search Input (Integrated) */}
                     <div className="relative hidden md:block">
                         <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
@@ -243,8 +254,8 @@ export default function AdminVideosPage() {
                                                 {video.category || 'General'}
                                             </span>
                                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${video.level === 'Beginner' ? 'text-green-600 border-green-200 bg-green-50' :
-                                                    video.level === 'Intermediate' ? 'text-yellow-600 border-yellow-200 bg-yellow-50' :
-                                                        'text-red-600 border-red-200 bg-red-50'
+                                                video.level === 'Intermediate' ? 'text-yellow-600 border-yellow-200 bg-yellow-50' :
+                                                    'text-red-600 border-red-200 bg-red-50'
                                                 }`}>
                                                 {video.level}
                                             </span>
@@ -296,6 +307,11 @@ export default function AdminVideosPage() {
                 onClose={() => setIsModalOpen(false)}
                 onSubmit={editingVideo ? handleUpdate : handleCreate}
                 initialData={editingVideo}
+            />
+
+            <CategoryManagerModal
+                isOpen={isCategoryManagerOpen}
+                onClose={() => setIsCategoryManagerOpen(false)}
             />
 
             <VideoPreviewModal

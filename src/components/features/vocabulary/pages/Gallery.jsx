@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { IMAGES, VIDEO_CATEGORIES } from '../../../../data/designAssets'
-import { videoRepository } from '../../admin/data/videoRepository' // Use shared repo or move to shared
+import { videoRepository } from '../../admin/data/videoRepository'
+import { categoryRepository } from '../../admin/data/categoryRepository'
 import './Gallery.css'
 
 export default function VideoGallery() {
     const [selectedVideo, setSelectedVideo] = useState(null)
     const [videos, setVideos] = useState([])
+    const [categories, setCategories] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const navigate = useNavigate()
 
@@ -15,18 +17,25 @@ export default function VideoGallery() {
         if (!student) {
             navigate('/student/login')
         }
-        loadVideos()
+        loadData()
     }, [navigate])
 
-    const loadVideos = async () => {
+    const loadData = async () => {
         setIsLoading(true)
         try {
-            const result = await videoRepository.getAll()
-            if (result.success) {
-                setVideos(result.data || [])
+            const [videoResult, categoryResult] = await Promise.all([
+                videoRepository.getAll(),
+                categoryRepository.getAll()
+            ])
+
+            if (videoResult.success) {
+                setVideos(videoResult.data || [])
+            }
+            if (categoryResult.success) {
+                setCategories(categoryResult.data || [])
             }
         } catch (error) {
-            console.error('Failed to load videos', error)
+            console.error('Failed to load data', error)
         } finally {
             setIsLoading(false)
         }
@@ -59,7 +68,7 @@ export default function VideoGallery() {
                     <div className="lessons-carousel no-scrollbar">
                         {videos.filter(v => v.is_featured).length > 0 ? (
                             videos.filter(v => v.is_featured).map(video => {
-                                const catConfig = VIDEO_CATEGORIES.find(c => c.name === video.category) || VIDEO_CATEGORIES[0];
+                                const catConfig = categories.find(c => c.name === video.category) || { color: '#ccc', icon: 'movie' };
                                 return (
                                     <div
                                         key={video.id}
@@ -94,7 +103,7 @@ export default function VideoGallery() {
                         <h2>Categories</h2>
                     </div>
                     <div className="categories-scroll no-scrollbar">
-                        {VIDEO_CATEGORIES.map(cat => (
+                        {categories.map(cat => (
                             <div key={cat.id} className="category-item">
                                 <div className="category-icon toy-shadow">
                                     <span
@@ -123,7 +132,7 @@ export default function VideoGallery() {
                             ) : (
                                 videos.map(video => {
                                     // Find category config for coloring
-                                    const catConfig = VIDEO_CATEGORIES.find(c => c.name === video.category) || VIDEO_CATEGORIES[0];
+                                    const catConfig = categories.find(c => c.name === video.category) || { color: '#ccc', icon: 'movie' };
 
                                     return (
                                         <div

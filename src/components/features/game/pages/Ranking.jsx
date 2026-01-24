@@ -59,94 +59,103 @@ export default function WeeklyRanking() {
     const topThree = rankings.slice(0, 3)
     const restRankings = rankings.slice(3)
 
+    // Helper to render avatar (Image or Emoji)
+    const renderAvatar = (avatarUrl) => {
+        if (!avatarUrl) return '👤';
+        // Check if it's a URL (simple check)
+        if (avatarUrl.includes('/') || avatarUrl.includes('http')) {
+            return <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-full" />;
+        }
+        return <span className="text-2xl">{avatarUrl}</span>;
+    }
+
     if (isLoading) {
         return <div className="loading"><div className="spinner"></div></div>
     }
 
     return (
-        <div className="ranking-page">
+        <div className="ranking-page bg-slate-50 min-h-full p-6">
             {/* Header */}
-            <header className="ranking-header">
-                <button className="back-btn" onClick={() => navigate('/student/home')}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M19 12H5M12 19l-7-7 7-7" />
-                    </svg>
-                </button>
-                <h1>Weekly Ranking</h1>
-                <div className="header-spacer"></div>
+            <header className="mb-8 flex items-center justify-between">
+                <h1 className="text-3xl font-black text-slate-800">Weekly Ranking</h1>
             </header>
 
             {/* Podium */}
-            <section className="podium-section">
-                <div className="podium">
+            <section className="podium-section mb-12">
+                <div className="podium flex items-end justify-center gap-4 h-64">
                     {/* 2nd Place */}
                     {topThree[1] && (
-                        <div className="podium-item second">
-                            <div className="podium-avatar">
-                                <span className="crown">🥈</span>
-                                <div className="avatar-circle">{topThree[1].avatar}</div>
+                        <div className="podium-item second flex flex-col items-center">
+                            <div className="relative mb-2">
+                                <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-2xl">🥈</span>
+                                <div className="size-16 rounded-full border-4 border-slate-300 overflow-hidden bg-white shadow-md">
+                                    {renderAvatar(topThree[1].avatar)}
+                                </div>
                             </div>
-                            <p className="podium-name">{topThree[1].name}</p>
-                            <p className="podium-stars">⭐ {topThree[1].stars}</p>
-                            <div className="podium-bar second-bar">2</div>
+                            <div className="flex flex-col items-center justify-end w-24 h-32 bg-slate-300 rounded-t-xl p-2 shadow-inner">
+                                <p className="font-bold text-slate-700 text-sm truncate w-full text-center">{topThree[1].name}</p>
+                                <p className="text-xs font-bold text-slate-600 mb-1">⭐ {topThree[1].stars}</p>
+                                <span className="text-3xl font-black text-white opacity-50">2</span>
+                            </div>
                         </div>
                     )}
 
                     {/* 1st Place */}
                     {topThree[0] && (
-                        <div className="podium-item first">
-                            <div className="podium-avatar">
-                                <span className="crown">👑</span>
-                                <div className="avatar-circle winner">{topThree[0].avatar}</div>
+                        <div className="podium-item first flex flex-col items-center z-10">
+                            <div className="relative mb-2">
+                                <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-4xl animate-bounce">👑</span>
+                                <div className="size-24 rounded-full border-4 border-yellow-400 overflow-hidden bg-white shadow-lg ring-4 ring-yellow-400/30">
+                                    {renderAvatar(topThree[0].avatar)}
+                                </div>
                             </div>
-                            <p className="podium-name">{topThree[0].name}</p>
-                            <p className="podium-stars">⭐ {topThree[0].stars}</p>
-                            <div className="podium-bar first-bar">1</div>
+                            <div className="flex flex-col items-center justify-end w-28 h-40 bg-gradient-to-b from-yellow-300 to-yellow-500 rounded-t-xl p-2 shadow-lg">
+                                <p className="font-bold text-white text-base truncate w-full text-center">{topThree[0].name}</p>
+                                <p className="text-sm font-bold text-yellow-50 mb-1">⭐ {topThree[0].stars}</p>
+                                <span className="text-4xl font-black text-white opacity-50">1</span>
+                            </div>
                         </div>
                     )}
 
                     {/* 3rd Place */}
                     {topThree[2] && (
-                        <div className="podium-item third">
-                            <div className="podium-avatar">
-                                <span className="crown">🥉</span>
-                                <div className="avatar-circle">{topThree[2].avatar}</div>
+                        <div className="podium-item third flex flex-col items-center">
+                            <div className="relative mb-2">
+                                <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-2xl">🥉</span>
+                                <div className="size-16 rounded-full border-4 border-orange-300 overflow-hidden bg-white shadow-md">
+                                    {renderAvatar(topThree[2].avatar)}
+                                </div>
                             </div>
-                            <p className="podium-name">{topThree[2].name}</p>
-                            <p className="podium-stars">⭐ {topThree[2].stars}</p>
-                            <div className="podium-bar third-bar">3</div>
+                            <div className="flex flex-col items-center justify-end w-24 h-24 bg-orange-300 rounded-t-xl p-2 shadow-inner">
+                                <p className="font-bold text-orange-900 text-sm truncate w-full text-center">{topThree[2].name}</p>
+                                <p className="text-xs font-bold text-orange-800 mb-1">⭐ {topThree[2].stars}</p>
+                                <span className="text-3xl font-black text-white opacity-50">3</span>
+                            </div>
                         </div>
                     )}
                 </div>
             </section>
 
             {/* Rankings List */}
-            <section className="rankings-list">
+            <section className="rankings-list space-y-3 max-w-2xl mx-auto pb-20">
                 {restRankings.map(student => (
                     <div
                         key={student.id}
-                        className={`ranking-card ${currentStudent?.id === student.id ? 'current-user' : ''}`}
+                        className={`flex items-center gap-4 p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow ${currentStudent?.id === student.id ? 'ring-2 ring-teal-500 bg-teal-50' : ''
+                            }`}
                     >
-                        <span className="rank-number">{student.rank}</span>
-                        <div className="rank-avatar">{student.avatar}</div>
-                        <span className="rank-name">{student.name}</span>
-                        <span className="rank-stars">⭐ {student.stars}</span>
+                        <span className="font-black text-slate-400 w-8 text-center text-lg">{student.rank}</span>
+                        <div className="size-10 rounded-full bg-slate-100 overflow-hidden border border-slate-200">
+                            {renderAvatar(student.avatar)}
+                        </div>
+                        <span className="font-bold text-slate-700 flex-1">{student.name}</span>
+                        <div className="flex items-center gap-1 bg-yellow-100 px-2 py-1 rounded-lg">
+                            <span className="text-yellow-500 text-xs">⭐</span>
+                            <span className="font-bold text-yellow-700 text-sm">{student.stars}</span>
+                        </div>
                     </div>
                 ))}
             </section>
-
-            {/* Current User Card (if not in top rankings) */}
-            {currentStudent && !rankings.find(r => r.id === currentStudent.id) && (
-                <div className="current-user-card">
-                    <div className="user-info">
-                        <span className="user-rank">#{currentStudent.rank || '?'}</span>
-                        <div className="user-avatar">👤</div>
-                        <span className="user-name">{currentStudent.name} (You)</span>
-                    </div>
-                    <span className="user-stars">⭐ {currentStudent.total_stars || 0}</span>
-                </div>
-            )}
-
             {/* Bottom Navigation */}
             <nav className="bottom-nav">
                 <Link to="/student/home" className="nav-item">

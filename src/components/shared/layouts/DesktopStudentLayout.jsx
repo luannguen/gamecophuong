@@ -3,6 +3,8 @@ import { Link, useLocation, Outlet, useNavigate } from 'react-router-dom';
 import { IMAGES } from '../../../data/designAssets';
 import { supabase } from '../../../data/supabaseClient';
 import { useStudentProfile } from '../../features/student/hooks/useStudentProfile';
+import { useSoundEffects } from '../../features/student/hooks/useSoundEffects'; // Import Sound Hook
+import '../../features/student/styles/game-effects.css'; // Import Game CSS
 
 export default function DesktopStudentLayout() {
     const { student } = useStudentProfile();
@@ -11,9 +13,13 @@ export default function DesktopStudentLayout() {
     const studentName = student?.display_name || student?.name || 'Student';
     const [isFullscreen, setIsFullscreen] = useState(false);
 
+    // Sound Effects
+    const { playHover, playClick } = useSoundEffects();
+
     const isActive = (path) => location.pathname.startsWith(path);
 
     const handleLogout = async () => {
+        playClick(); // SFX
         await supabase.auth.signOut();
         localStorage.removeItem('current_student');
         localStorage.removeItem('student_pin');
@@ -36,6 +42,7 @@ export default function DesktopStudentLayout() {
     }, []);
 
     const toggleFullscreen = useCallback(async () => {
+        playClick(); // SFX
         try {
             if (!document.fullscreenElement) {
                 await document.documentElement.requestFullscreen();
@@ -45,18 +52,18 @@ export default function DesktopStudentLayout() {
         } catch (err) {
             console.error('Fullscreen error:', err);
         }
-    }, []);
+    }, [playClick]);
 
     return (
         <div className="flex h-screen bg-slate-50 font-sans text-slate-800 overflow-hidden">
             {/* Sidebar */}
-            <aside className="w-64 bg-white flex flex-col flex-shrink-0 border-r border-slate-100 z-20">
+            <aside className="w-64 bg-white flex flex-col flex-shrink-0 border-r border-slate-100 z-20 shadow-sm relative">
                 {/* Brand */}
-                <div className="p-6 flex items-center gap-3">
-                    <div className="size-10 rounded-xl bg-teal-400 flex items-center justify-center text-white shadow-lg shadow-teal-400/30">
+                <div className="p-6 flex items-center gap-3 hover-pop cursor-default" onMouseEnter={playHover}>
+                    <div className="size-10 rounded-xl bg-teal-400 flex items-center justify-center text-white shadow-lg shadow-teal-400/30 animate-neon-pulse">
                         <span className="material-symbols-outlined text-2xl">school</span>
                     </div>
-                    <span className="text-xl font-black bg-gradient-to-r from-teal-500 to-pink-500 bg-clip-text text-transparent">
+                    <span className="text-xl font-black bg-gradient-to-r from-teal-500 to-pink-500 bg-clip-text text-transparent text-gradient-flow">
                         English Fun
                     </span>
                 </div>
@@ -69,18 +76,20 @@ export default function DesktopStudentLayout() {
                             <Link
                                 key={item.path}
                                 to={item.path}
-                                className={`flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group ${active
-                                        ? 'bg-cyan-50 text-cyan-600 font-bold shadow-sm'
+                                onClick={playClick}
+                                onMouseEnter={playHover}
+                                className={`flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group hover-pop-sm ${active
+                                        ? 'bg-cyan-50 text-cyan-600 font-bold shadow-sm ring-1 ring-cyan-100'
                                         : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium'
                                     }`}
                             >
-                                <span className={`material-symbols-outlined text-[24px] ${active ? 'text-cyan-500 fill-current' : 'text-slate-400 group-hover:text-slate-500'
+                                <span className={`material-symbols-outlined text-[24px] ${active ? 'text-cyan-500 fill-current animate-bounce' : 'text-slate-400 group-hover:text-slate-500'
                                     }`} style={active ? { fontVariationSettings: "'FILL' 1" } : {}}>
                                     {item.icon}
                                 </span>
                                 <span>{item.label}</span>
                                 {active && (
-                                    <span className="ml-auto text-[10px] text-yellow-400 material-symbols-outlined">stars</span>
+                                    <span className="ml-auto text-[10px] text-yellow-400 material-symbols-outlined animate-spin-slow">stars</span>
                                 )}
                             </Link>
                         );
@@ -92,17 +101,23 @@ export default function DesktopStudentLayout() {
                     {/* Logout */}
                     <button
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-red-50 text-red-500 hover:bg-red-100 transition-colors font-bold text-sm"
+                        onMouseEnter={playHover}
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-red-50 text-red-500 hover:bg-red-100 transition-colors font-bold text-sm hover-pop-sm"
                     >
                         <span className="material-symbols-outlined text-xl">logout</span>
                         <span>Logout</span>
                     </button>
 
                     {/* Profile Card */}
-                    <Link to="/student/profile" className="block p-4 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer relative overflow-hidden group">
+                    <Link
+                        to="/student/profile"
+                        onClick={playClick}
+                        onMouseEnter={playHover}
+                        className="block p-4 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer relative overflow-hidden group hover-pop"
+                    >
                         <div className="flex items-center gap-3 relative z-10">
                             <div className="relative">
-                                <div className="size-12 rounded-2xl bg-slate-100 overflow-hidden border-2 border-white shadow-sm">
+                                <div className="size-12 rounded-2xl bg-slate-100 overflow-hidden border-2 border-white shadow-sm group-hover:rotate-12 transition-transform">
                                     <img src={IMAGES.mascotKoala} alt="Avatar" className="w-full h-full object-cover" />
                                 </div>
                                 <div className="absolute -bottom-1 -right-1 bg-yellow-400 text-white text-[10px] font-black px-1.5 py-0.5 rounded-full ring-2 ring-white">

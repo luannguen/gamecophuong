@@ -9,6 +9,7 @@ export default function VideoGallery() {
     const [selectedVideo, setSelectedVideo] = useState(null)
     const [videos, setVideos] = useState([])
     const [categories, setCategories] = useState([])
+    const [selectedCategory, setSelectedCategory] = useState(null) // Filter state
     const [isLoading, setIsLoading] = useState(true)
     const navigate = useNavigate()
 
@@ -103,12 +104,36 @@ export default function VideoGallery() {
                         <h2>Categories</h2>
                     </div>
                     <div className="categories-scroll no-scrollbar">
+                        {/* 'All' Option */}
+                        <div
+                            className={`category-item ${selectedCategory === null ? 'active' : ''}`}
+                            onClick={() => setSelectedCategory(null)}
+                        >
+                            <div
+                                className="category-icon toy-shadow"
+                                style={{
+                                    backgroundColor: selectedCategory === null ? '#1f2937' : 'white',
+                                    color: selectedCategory === null ? 'white' : undefined
+                                }}
+                            >
+                                <span className="material-symbols-outlined">grid_view</span>
+                            </div>
+                            <span className="category-name">All</span>
+                        </div>
+
                         {categories.map(cat => (
-                            <div key={cat.id} className="category-item">
-                                <div className="category-icon toy-shadow">
+                            <div
+                                key={cat.id}
+                                className={`category-item ${selectedCategory === cat.name ? 'active' : ''}`}
+                                onClick={() => setSelectedCategory(cat.name)}
+                            >
+                                <div className="category-icon toy-shadow" style={{
+                                    backgroundColor: selectedCategory === cat.name ? cat.color : undefined,
+                                    color: selectedCategory === cat.name ? 'white' : undefined
+                                }}>
                                     <span
                                         className="material-symbols-outlined"
-                                        style={{ color: cat.color }}
+                                        style={{ color: selectedCategory === cat.name ? 'white' : cat.color }}
                                     >{cat.icon}</span>
                                 </div>
                                 <span className="category-name">{cat.name}</span>
@@ -127,10 +152,10 @@ export default function VideoGallery() {
                         </div>
                     ) : (
                         <div className="recommended-list">
-                            {videos.length === 0 ? (
-                                <p className="text-slate-500 text-center col-span-3">No videos available yet.</p>
+                            {videos.filter(v => !selectedCategory || v.category === selectedCategory).length === 0 ? (
+                                <p className="text-slate-500 text-center col-span-3">No videos found for this category.</p>
                             ) : (
-                                videos.map(video => {
+                                videos.filter(v => !selectedCategory || v.category === selectedCategory).map(video => {
                                     // Find category config for coloring
                                     const catConfig = categories.find(c => c.name === video.category) || { color: '#ccc', icon: 'movie' };
 

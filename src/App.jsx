@@ -5,6 +5,7 @@ import {
     StudentHomePage,
     StudentLoginPage,
     StudentProfilePage,
+    TopicDetailPage,
 } from './components/features/student'
 
 import {
@@ -59,6 +60,7 @@ function App() {
 
                 <Route element={<ResponsiveStudentLayout />}>
                     <Route path="/student/home" element={<StudentHomePage />} />
+                    <Route path="/student/topic/:topicId" element={<TopicDetailPage />} />
                     <Route path="/student/profile" element={<StudentProfilePage />} />
                     <Route path="/student/games" element={<GameSelectionPage />} />
                     <Route path="/student/game/:gameId/detail" element={<GameDetailPage />} />

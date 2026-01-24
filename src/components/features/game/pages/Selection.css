@@ -16,7 +16,8 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    max-width: 480px;
+    width: 100%;
+    /* Full width by default */
     margin: 0 auto;
     background: var(--color-background);
     font-family: 'Spline Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -320,21 +321,23 @@
 /* === Topics Grid === */
 .topics-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    /* Mobile friendly base */
     gap: 16px;
     padding: 0 16px;
 }
 
 .topic-card {
     background: white;
-    border-radius: 16px;
-    padding: 12px;
+    border-radius: 20px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
     text-decoration: none;
     border-bottom: 4px solid transparent;
     transition: transform 0.2s;
+    height: 100%;
 }
 
 .topic-card:active {
@@ -342,11 +345,16 @@
 }
 
 .topic-illustration {
-    width: 96px;
-    height: 96px;
+    width: 100%;
+    height: 100%;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+    transition: transform 0.3s;
+}
+
+.topic-card:hover .topic-illustration {
+    transform: scale(1.1);
 }
 
 /* === Favorites === */
@@ -501,7 +509,8 @@
     }
 
     .topics-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 24px;
     }
 
     .surprise-btn {

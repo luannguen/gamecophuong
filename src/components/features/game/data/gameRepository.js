@@ -9,18 +9,68 @@ export const gameRepository = {
      * Get all active games
      * @returns {Promise<Result<MiniGameDTO[]>>}
      */
-    async getAll() {
+    /**
+     * Get active games, optionally filtered by topic
+     * @param {string} [topicId] - Optional topic ID filter
+     * @returns {Promise<Result<MiniGameDTO[]>>}
+     */
+    async getAll(topicId = null) {
         try {
-            const { data, error } = await supabase
+            let query = supabase
                 .from('mini_games')
-                .select('*')
+                .select('*, video_categories(name, color, icon)')
                 .eq('is_active', true)
-                .order('name');
+                .order('created_at', { ascending: false });
+
+            if (topicId) {
+                query = query.eq('topic_id', topicId);
+            }
+
+            const { data, error } = await query;
 
             if (error) throw error;
             return success(data || []);
         } catch (error) {
             console.error('Error fetching games:', error);
+            return failure(ErrorCodes.DATABASE_ERROR, error.message);
+        }
+    },
+
+    /**
+     * Create a new game
+     * @param {Object} gameData 
+     */
+    async create(gameData) {
+        try {
+            const { data, error } = await supabase
+                .from('mini_games')
+                .insert([gameData])
+                .select()
+                .single();
+
+            if (error) throw error;
+            return success(data);
+        } catch (error) {
+            console.error('Error creating game:', error);
+            return failure(ErrorCodes.DATABASE_ERROR, error.message);
+        }
+    },
+
+    /**
+    * Delete a game
+    * @param {string} id 
+    */
+    async delete(id) {
+        try {
+            const { error } = await supabase
+                .from('mini_games')
+                .delete()
+                .eq('id', id);
+
+            if (error) throw error;
+            return success(true);
+        } catch (error) {
+            console.error('Error deleting game:', error);
             return failure(ErrorCodes.DATABASE_ERROR, error.message);
         }
     },
@@ -34,7 +84,7 @@ export const gameRepository = {
         try {
             const { data, error } = await supabase
                 .from('mini_games')
-                .select('*')
+                .select('*, video_categories(*)')
                 .eq('id', gameId)
                 .single();
 
@@ -59,26 +109,6 @@ export const gameRepository = {
             return success(null);
         } catch (error) {
             console.error('Error saving score:', error);
-            return failure(ErrorCodes.DATABASE_ERROR, error.message);
-        }
-    },
-
-    /**
-     * Get vocabulary for a game
-     * @param {string} gameId 
-     * @returns {Promise<Result<Array>>}
-     */
-    async getGameVocabulary(gameId) {
-        try {
-            const { data, error } = await supabase
-                .from('game_vocabulary')
-                .select('vocabulary(*)')
-                .eq('game_id', gameId);
-
-            if (error) throw error;
-            return success(data?.map(gv => gv.vocabulary) || []);
-        } catch (error) {
-            console.error('Error fetching vocabulary:', error);
             return failure(ErrorCodes.DATABASE_ERROR, error.message);
         }
     },

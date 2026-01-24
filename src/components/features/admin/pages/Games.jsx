@@ -1,169 +1,194 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { supabase } from '../../../../data/supabaseClient'
-import { IMAGES } from '../../../../data/designAssets'
-import './Games.css'
-
-// Game modules with images from mockup
-const GAME_MODULES = [
-    { id: 1, name: 'Animals', skill: 'Listening', skillIcon: 'hearing', wordCount: 24, image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDP2B_YKvQjZpPdgqhYeb3JEpLdTiWl8MYqG7igxGJIocsDqVAfcfRF9XKRfoPY1xNQ88SiPh61XjCGjq1GA_Tt94TEXI6N0w_odP72ra9uCehJ-8qp9xDENRcAFP0uvYO9LxrMuEgCtRBnhOGtpY0jcJv51V8N6yLub703wAaMqEzraHmcyUt1U1v5rUuEQxa0Y5M-w9IQcGuX8eMK5FedfAxK7fkff8SO9FxyaqT3Mz1oAQ6jaroZKkMTCG54qDdRWC361aUzQDU' },
-    { id: 2, name: 'Family', skill: 'Speaking', skillIcon: 'record_voice_over', wordCount: 15, image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAlDxR7C3_vLQN95kUCHrufcJeu7orvvTEscElUJzFX-j3hxAvDxPl8D1n_nkQ1qxKEERZMKdWTuxKMqF0xWNjbNQ14kTRlWB7NNKYhtRuBfamYmgbahUzdAdRP2UMeLqGFf5KwegkmksmrlhRVzDzwH04UQ7lN8pm_B1oSMC_PqJaxtzHX1mdwVGtU8tIS-CNP-9vzuInWl5XFP7DG_SOUi2Hcqlcrk0Mo_hlVlgi6Zrg69nRrvGJEVyAVuQ0Lkbc47k6LUFko35w' },
-    { id: 3, name: 'Fruits', skill: 'Reading', skillIcon: 'auto_stories', wordCount: 12, image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDx6-N2rAXSrwFq-26Y55lmm2tMKnfML6QL6SDUScpCMSUbHZheQhausPbtrNwtisiifpfQrCAPn9DFE52N8oNQvmPzd45JapdGqY2YUtdkkPuZJ6-sgreHoWdNN-bZCDXju8ayZl3-Ynw7Pkuc_Jg6hz0KzsStusaq8eu56A_YBE42ZYvz4QFJdImdNPPJTgWBn8FXgtYYCp2A0QYcRLCqsffisEosd-rw6d9yiXfhv7WBI7sbNsJTqjs6rQxIFqNH65b5a3kMqF4' },
-    { id: 4, name: 'School', skill: 'General', skillIcon: 'star', wordCount: 30, image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAs4UEenaAPcJeTtGieLaRAKUqXuA_ExjnAmGOna36XFwyMBEztsyvTdVlXTO4P2DJ0BByyqDk5ppEqIbMjOfOsYu2VaOdbmxNjOeCxPgBUTiyRRt-H1j1bvEswgXZnKQZCR1iaFubCOOWFquHD0y9YQz6DOOc7uT_6WttcLd_Z5IcLkVyTSeAHOe2mkcHDDBGbuZ7AovO48iUaEKCX6MZj6YxmJOzogNpmn9ACg5AYmUK6CmYyynv5kWjMsgROXVRILvOP8WL7q4U' },
-]
-
-const QUICK_ACTIONS = [
-    { id: 1, title: 'Edit Game Flow', desc: 'Adjust difficulty & rewards', icon: 'account_tree' },
-    { id: 2, title: 'Engagement Reports', desc: 'See which games are popular', icon: 'analytics' },
-]
+import { gameRepository } from '../../game/data/gameRepository'
+import { categoryRepository } from '../data/categoryRepository'
+import GameFormModal from '../components/GameFormModal'
+import { useToast } from '../../../shared/hooks/useToast'
+import { useConfirmDialog } from '../../../shared/hooks/useConfirmDialog'
 
 export default function AdminGames() {
-    const [modules, setModules] = useState(GAME_MODULES)
-    const [stats, setStats] = useState({ totalGames: 12, activeVocab: 142 })
+    const [games, setGames] = useState([])
+    const [categories, setCategories] = useState([])
+    const [selectedCategory, setSelectedCategory] = useState('all')
     const [isLoading, setIsLoading] = useState(true)
-    const navigate = useNavigate()
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [stats, setStats] = useState({ total: 0, listening: 0, speaking: 0 })
+
+    // Custom Hooks (assuming these exist from previous tasks)
+    const { showToast } = useToast()
+    const { confirm } = useConfirmDialog()
 
     useEffect(() => {
-        loadGames()
+        loadData()
     }, [])
 
-    const loadGames = async () => {
-        try {
-            const { data, count: gamesCount } = await supabase
-                .from('mini_games')
-                .select('*', { count: 'exact' })
+    const loadData = async () => {
+        setIsLoading(true)
+        const [gamesRes, catsRes] = await Promise.all([
+            gameRepository.getAll(),
+            categoryRepository.getAll()
+        ])
 
-            const { count: vocabCount } = await supabase
-                .from('vocabulary')
-                .select('*', { count: 'exact', head: true })
+        if (gamesRes.success) {
+            setGames(gamesRes.data)
+            // Calc stats
+            const total = gamesRes.data.length
+            const listening = gamesRes.data.filter(g => g.type === 'listening').length
+            const speaking = gamesRes.data.filter(g => g.type === 'speaking').length
+            setStats({ total, listening, speaking })
+        }
+        if (catsRes.success) {
+            setCategories(catsRes.data)
+        }
+        setIsLoading(false)
+    }
 
-            if (data?.length) {
-                setModules(data.map(g => ({
-                    ...g,
-                    skill: g.skill_focus || 'General',
-                    skillIcon: 'star',
-                    wordCount: 0,
-                    image: g.thumbnail_url || GAME_MODULES[0].image
-                })))
+    const handleDelete = async (id, title) => {
+        const confirmed = await confirm({
+            title: 'Delete Game',
+            message: `Are you sure you want to delete "${title}"?`,
+            type: 'danger',
+            confirmText: 'Delete'
+        })
+
+        if (confirmed) {
+            const result = await gameRepository.delete(id)
+            if (result.success) {
+                showToast('Game deleted successfully', 'success')
+                loadData()
+            } else {
+                showToast('Failed to delete game', 'error')
             }
-
-            setStats({
-                totalGames: gamesCount || 12,
-                activeVocab: vocabCount || 142
-            })
-            setIsLoading(false)
-        } catch (error) {
-            console.error('Error loading games:', error)
-            setIsLoading(false)
         }
     }
 
-    const handleDelete = async (gameId) => {
-        if (!confirm('Bạn có chắc muốn xóa game này?')) return
-        try {
-            await supabase.from('mini_games').delete().eq('id', gameId)
-            loadGames()
-        } catch (error) {
-            console.error('Error deleting game:', error)
-        }
-    }
+    const filteredGames = selectedCategory === 'all'
+        ? games
+        : games.filter(g => g.topic_id === selectedCategory)
 
-    if (isLoading) {
-        return <div className="loading"><div className="spinner"></div></div>
-    }
+    if (isLoading) return <div className="flex items-center justify-center h-full"><div className="animate-spin size-8 border-4 border-blue-600 border-t-transparent rounded-full"></div></div>
 
     return (
-        <div className="admin-games-page">
-            {/* Header has been removed as it is now in AdminLayout */}
-
-            <div className="games-main-content">
-                {/* Stats Cards */}
-                <section className="stats-row">
-                    <div className="stat-card">
-                        <p className="stat-label">TOTAL GAMES</p>
-                        <p className="stat-number">{stats.totalGames}</p>
-                    </div>
-                    <div className="stat-card primary">
-                        <p className="stat-label">ACTIVE VOCAB</p>
-                        <p className="stat-number">{stats.activeVocab}</p>
-                    </div>
-                </section>
-
-                {/* Section Header */}
-                <div className="section-header">
-                    <h2>Current Modules</h2>
-                    <button className="view-all-btn">
-                        View All <span className="material-symbols-outlined">arrow_forward</span>
-                    </button>
+        <div className="p-8 max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500">
+            {/* Header & Stats */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 className="text-3xl font-black text-slate-800 tracking-tight">Game Management</h1>
+                    <p className="text-slate-500 font-medium">Create and organize interactive learning activities</p>
                 </div>
-
-                {/* Game Modules Grid */}
-                <section className="modules-grid">
-                    {modules.map(module => (
-                        <div key={module.id} className="module-card">
-                            <div
-                                className="module-image"
-                                style={{ backgroundImage: `url(${module.image})` }}
-                            >
-                                <button
-                                    className="delete-btn"
-                                    onClick={() => handleDelete(module.id)}
-                                >
-                                    <span className="material-symbols-outlined">delete</span>
-                                </button>
-                            </div>
-                            <div className="module-content">
-                                <h3>{module.name}</h3>
-                                <div className="module-meta">
-                                    <div className="skill-tag">
-                                        <span className="material-symbols-outlined">{module.skillIcon}</span>
-                                        <span>Skill: {module.skill}</span>
-                                    </div>
-                                    <div className="word-count">
-                                        <span className="material-symbols-outlined">menu_book</span>
-                                        <span>{module.wordCount} Words</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="module-actions">
-                                <button className="manage-btn">Manage</button>
-                                <button className="settings-btn-small">
-                                    <span className="material-symbols-outlined">settings</span>
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                </section>
-
-                {/* Quick Actions */}
-                <section className="quick-actions">
-                    <h3>Quick Actions</h3>
-                    <div className="actions-list">
-                        {QUICK_ACTIONS.map(action => (
-                            <div key={action.id} className="action-item">
-                                <div className="action-left">
-                                    <div className="action-icon">
-                                        <span className="material-symbols-outlined">{action.icon}</span>
-                                    </div>
-                                    <div className="action-text">
-                                        <p className="action-title">{action.title}</p>
-                                        <p className="action-desc">{action.desc}</p>
-                                    </div>
-                                </div>
-                                <span className="material-symbols-outlined chevron">chevron_right</span>
-                            </div>
-                        ))}
+                <div className="flex gap-4">
+                    <div className="bg-white px-4 py-2 rounded-xl border border-slate-100 shadow-sm">
+                        <span className="block text-xs font-bold text-slate-400 uppercase">Total</span>
+                        <span className="text-xl font-black text-slate-800">{stats.total}</span>
                     </div>
-                </section>
+                    <div className="bg-blue-50 px-4 py-2 rounded-xl border border-blue-100 shadow-sm">
+                        <span className="block text-xs font-bold text-blue-400 uppercase">Listening</span>
+                        <span className="text-xl font-black text-blue-600">{stats.listening}</span>
+                    </div>
+                </div>
             </div>
 
-            {/* Fixed Bottom Action */}
-            <div className="bottom-action">
-                <button className="create-btn">
+            {/* Filter & Actions */}
+            <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-slate-100 sticky top-4 z-10 backdrop-blur-md bg-white/90">
+                <div className="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-2 sm:pb-0 custom-scrollbar">
+                    <button
+                        onClick={() => setSelectedCategory('all')}
+                        className={`px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap transition-all ${selectedCategory === 'all' ? 'bg-slate-800 text-white shadow-lg' : 'bg-slate-50 text-slate-500 hover:bg-slate-100'}`}
+                    >
+                        All Topics
+                    </button>
+                    {categories.map(cat => (
+                        <button
+                            key={cat.id}
+                            onClick={() => setSelectedCategory(cat.id)}
+                            className={`px-3 py-2 rounded-lg font-bold text-sm whitespace-nowrap transition-all flex items-center gap-2 ${selectedCategory === cat.id ? 'bg-white ring-2 ring-offset-1 ring-blue-500 text-slate-800 shadow-md' : 'bg-white border border-slate-200 text-slate-600 hover:border-slate-300'}`}
+                        >
+                            <span className="material-symbols-outlined text-[18px]" style={{ color: cat.color }}>{cat.icon}</span>
+                            {cat.name}
+                        </button>
+                    ))}
+                </div>
+                <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="w-full sm:w-auto px-6 py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2"
+                >
                     <span className="material-symbols-outlined">add_circle</span>
-                    Create New Game
+                    New Game
                 </button>
             </div>
+
+            {/* Games Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredGames.length > 0 ? (
+                    filteredGames.map(game => (
+                        <div key={game.id} className="group bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 relative overflow-hidden">
+                            {/* Topic Badge */}
+                            <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-slate-50 border border-slate-100 px-2 py-1 rounded-lg z-10">
+                                <span className="material-symbols-outlined text-[16px]" style={{ color: game.video_categories?.color }}>
+                                    {game.video_categories?.icon || 'category'}
+                                </span>
+                                <span className="text-[10px] font-bold text-slate-600 uppercase tracking-wide">
+                                    {game.video_categories?.name || 'Unknown'}
+                                </span>
+                            </div>
+
+                            {/* Icon / Content */}
+                            <div className="flex items-start gap-4 mb-4">
+                                <div className={`size-14 rounded-2xl flex items-center justify-center text-white shadow-md ${game.type === 'listening' ? 'bg-indigo-500 shadow-indigo-200' :
+                                        game.type === 'speaking' ? 'bg-rose-500 shadow-rose-200' :
+                                            game.type === 'vocabulary' ? 'bg-emerald-500 shadow-emerald-200' : 'bg-amber-500 shadow-amber-200'
+                                    }`}>
+                                    <span className="material-symbols-outlined text-3xl">
+                                        {game.type === 'listening' ? 'hearing' :
+                                            game.type === 'speaking' ? 'record_voice_over' :
+                                                game.type === 'vocabulary' ? 'menu_book' : 'extension'}
+                                    </span>
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-lg text-slate-800 leading-tight mb-1 line-clamp-1">{game.title}</h3>
+                                    <p className="text-sm text-slate-400 font-medium">{game.subtitle || 'Practice Game'}</p>
+                                </div>
+                            </div>
+
+                            {/* Footer Info */}
+                            <div className="flex items-center justify-between pt-4 border-t border-slate-50">
+                                <div className="flex items-center gap-1 text-slate-400 text-xs font-bold">
+                                    <span className="material-symbols-outlined text-base">star</span>
+                                    {game.star_reward} Stars
+                                </div>
+                                <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <button
+                                        className="size-8 rounded-lg bg-slate-50 text-slate-400 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-center transition-colors"
+                                        title="Edit (Coming Soon)"
+                                    >
+                                        <span className="material-symbols-outlined text-lg">edit</span>
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(game.id, game.title)}
+                                        className="size-8 rounded-lg bg-slate-50 text-slate-400 hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-colors"
+                                        title="Delete"
+                                    >
+                                        <span className="material-symbols-outlined text-lg">delete</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <div className="col-span-full py-20 text-center">
+                        <div className="bg-slate-50 size-24 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <span className="material-symbols-outlined text-5xl text-slate-300">sports_esports</span>
+                        </div>
+                        <h3 className="text-xl font-bold text-slate-700">No Games Found</h3>
+                        <p className="text-slate-400 max-w-xs mx-auto mt-2">Create a new game to get started with this topic.</p>
+                    </div>
+                )}
+            </div>
+
+            <GameFormModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onUpdate={loadData}
+            />
         </div>
     )
 }

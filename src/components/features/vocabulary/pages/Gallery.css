@@ -6,7 +6,8 @@
     min-height: 100vh;
     min-height: 100dvh;
     background-color: var(--color-bg-light);
-    max-width: 480px;
+    width: 100%;
+    /* Full width */
     margin: 0 auto;
     padding-bottom: 120px;
 }
@@ -192,6 +193,14 @@
     align-items: center;
     gap: var(--space-2);
     min-width: 72px;
+    cursor: pointer;
+    /* Enable click cursor */
+    user-select: none;
+    transition: transform 0.2s;
+}
+
+.category-item:active {
+    transform: scale(0.95);
 }
 
 .category-icon {

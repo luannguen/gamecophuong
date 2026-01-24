@@ -2,8 +2,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation, Outlet, useNavigate } from 'react-router-dom';
 import { IMAGES } from '../../../data/designAssets';
 import { supabase } from '../../../data/supabaseClient';
-import './Layouts.css';
-
 import { useStudentProfile } from '../../features/student/hooks/useStudentProfile';
 
 export default function DesktopStudentLayout() {
@@ -29,17 +27,14 @@ export default function DesktopStudentLayout() {
         { path: '/student/rankings', icon: 'leaderboard', label: 'Ranking' },
     ];
 
-    // Handle fullscreen change events
     useEffect(() => {
         const handleFullscreenChange = () => {
             setIsFullscreen(!!document.fullscreenElement);
         };
-
         document.addEventListener('fullscreenchange', handleFullscreenChange);
         return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
     }, []);
 
-    // Toggle fullscreen
     const toggleFullscreen = useCallback(async () => {
         try {
             if (!document.fullscreenElement) {
@@ -53,121 +48,118 @@ export default function DesktopStudentLayout() {
     }, []);
 
     return (
-        <div className={`desktop-student-layout ${isFullscreen ? 'is-fullscreen' : ''}`}>
-            {/* Sidebar Navigation */}
-            <aside className="desktop-sidebar">
-                {/* Logo / Brand */}
-                <div className="sidebar-brand">
-                    <div className="brand-icon">
-                        <span className="material-symbols-outlined">school</span>
+        <div className="flex h-screen bg-slate-50 font-sans text-slate-800 overflow-hidden">
+            {/* Sidebar */}
+            <aside className="w-64 bg-white flex flex-col flex-shrink-0 border-r border-slate-100 z-20">
+                {/* Brand */}
+                <div className="p-6 flex items-center gap-3">
+                    <div className="size-10 rounded-xl bg-teal-400 flex items-center justify-center text-white shadow-lg shadow-teal-400/30">
+                        <span className="material-symbols-outlined text-2xl">school</span>
                     </div>
-                    <span className="brand-text">English Fun</span>
+                    <span className="text-xl font-black bg-gradient-to-r from-teal-500 to-pink-500 bg-clip-text text-transparent">
+                        English Fun
+                    </span>
                 </div>
 
-                {/* Navigation Menu */}
-                <nav className="sidebar-nav">
-                    {navItems.map((item) => (
-                        <Link
-                            key={item.path}
-                            to={item.path}
-                            className={`sidebar-nav-item ${isActive(item.path) ? 'active' : ''}`}
-                        >
-                            <span className="material-symbols-outlined">{item.icon}</span>
-                            <span className="nav-label">{item.label}</span>
-                        </Link>
-                    ))}
+                {/* Nav */}
+                <nav className="flex-1 px-4 py-2 space-y-1 overflow-y-auto">
+                    {navItems.map((item) => {
+                        const active = isActive(item.path);
+                        return (
+                            <Link
+                                key={item.path}
+                                to={item.path}
+                                className={`flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group ${active
+                                        ? 'bg-cyan-50 text-cyan-600 font-bold shadow-sm'
+                                        : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium'
+                                    }`}
+                            >
+                                <span className={`material-symbols-outlined text-[24px] ${active ? 'text-cyan-500 fill-current' : 'text-slate-400 group-hover:text-slate-500'
+                                    }`} style={active ? { fontVariationSettings: "'FILL' 1" } : {}}>
+                                    {item.icon}
+                                </span>
+                                <span>{item.label}</span>
+                                {active && (
+                                    <span className="ml-auto text-[10px] text-yellow-400 material-symbols-outlined">stars</span>
+                                )}
+                            </Link>
+                        );
+                    })}
                 </nav>
 
-                {/* Logout Button in Sidebar */}
-                <button
-                    onClick={handleLogout}
-                    className="sidebar-logout-btn"
-                    style={{
-                        marginTop: 'auto',
-                        marginBottom: '16px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '12px',
-                        padding: '12px 16px',
-                        width: 'calc(100% - 24px)',
-                        marginLeft: '12px',
-                        marginRight: '12px',
-                        border: 'none',
-                        borderRadius: '12px',
-                        background: 'rgba(255, 107, 107, 0.1)',
-                        color: '#ff6b6b',
-                        cursor: 'pointer',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                        transition: 'all 0.2s'
-                    }}
-                >
-                    <span className="material-symbols-outlined">logout</span>
-                    <span>Logout</span>
-                </button>
+                {/* Footer Actions */}
+                <div className="p-4 space-y-4">
+                    {/* Logout */}
+                    <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-red-50 text-red-500 hover:bg-red-100 transition-colors font-bold text-sm"
+                    >
+                        <span className="material-symbols-outlined text-xl">logout</span>
+                        <span>Logout</span>
+                    </button>
 
-                {/* User Profile Section - Enhanced */}
-                <Link to="/student/profile" className="sidebar-profile">
-                    <div className="profile-avatar-wrapper">
-                        <div className="profile-avatar">
-                            <div
-                                className="avatar-image"
-                                style={{ backgroundImage: `url(${IMAGES.mascotKoala})` }}
-                            ></div>
+                    {/* Profile Card */}
+                    <Link to="/student/profile" className="block p-4 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer relative overflow-hidden group">
+                        <div className="flex items-center gap-3 relative z-10">
+                            <div className="relative">
+                                <div className="size-12 rounded-2xl bg-slate-100 overflow-hidden border-2 border-white shadow-sm">
+                                    <img src={IMAGES.mascotKoala} alt="Avatar" className="w-full h-full object-cover" />
+                                </div>
+                                <div className="absolute -bottom-1 -right-1 bg-yellow-400 text-white text-[10px] font-black px-1.5 py-0.5 rounded-full ring-2 ring-white">
+                                    LVL 5
+                                </div>
+                            </div>
+                            <div>
+                                <p className="font-bold text-slate-800 text-sm">{studentName}</p>
+                                <div className="flex items-center gap-2 mt-0.5">
+                                    <div className="flex items-center gap-1 text-[10px] font-bold text-yellow-500 bg-yellow-50 px-1.5 py-0.5 rounded">
+                                        <span className="material-symbols-outlined text-[12px] filled">emoji_events</span>
+                                        150
+                                    </div>
+                                    <div className="flex items-center gap-1 text-[10px] font-bold text-pink-500 bg-pink-50 px-1.5 py-0.5 rounded">
+                                        <span className="material-symbols-outlined text-[12px] filled">stars</span>
+                                        320
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div className="avatar-level-badge">
-                            <span>5</span>
-                        </div>
-                    </div>
-                    <div className="profile-info">
-                        <p className="profile-name">{studentName}</p>
-                        <div className="profile-stats">
-                            <span className="stat-item">
-                                <span className="material-symbols-outlined">emoji_events</span>
-                                <span>150</span>
-                            </span>
-                            <span className="stat-item">
-                                <span className="material-symbols-outlined">stars</span>
-                                <span>320</span>
-                            </span>
-                        </div>
-                    </div>
-                    <div className="profile-achievements-btn">
-                        <span className="material-symbols-outlined">military_tech</span>
-                    </div>
-                </Link>
+                    </Link>
+                </div>
             </aside>
 
-            {/* Main Content Area */}
-            <div className="desktop-main-wrapper">
-                {/* Top Header */}
-                <header className="desktop-header">
-                    <div className="header-greeting">
-                        <h1 className="header-title">Hi {studentName.split(' ')[0]}! 👋</h1>
-                        <p className="header-subtitle">Ready for some fun learning today?</p>
+            {/* Main Content */}
+            <div className="flex-1 flex flex-col h-screen overflow-hidden relative">
+                {/* Header */}
+                <header className="flex-shrink-0 h-20 px-8 flex items-center justify-between z-10">
+                    <div>
+                        <h1 className="text-2xl font-black text-slate-800 flex items-center gap-2">
+                            Hi {studentName.split(' ')[0]}!
+                            <span className="animate-wave origin-bottom-right inline-block">👋</span>
+                        </h1>
+                        <p className="text-slate-400 text-sm font-medium">Ready for some fun learning today?</p>
                     </div>
-                    <div className="header-actions">
-                        <button className="header-icon-btn">
-                            <span className="material-symbols-outlined">search</span>
+                    <div className="flex items-center gap-3">
+                        <button className="size-10 rounded-xl bg-white text-slate-400 hover:text-cyan-500 hover:shadow-md transition-all flex items-center justify-center">
+                            <span className="material-symbols-outlined text-xl">search</span>
                         </button>
-                        <button className="header-icon-btn">
-                            <span className="material-symbols-outlined">notifications</span>
-                            <span className="notification-badge">3</span>
+                        <button className="size-10 rounded-xl bg-white text-slate-400 hover:text-pink-500 hover:shadow-md transition-all flex items-center justify-center relative">
+                            <span className="material-symbols-outlined text-xl">notifications</span>
+                            <span className="absolute top-2 right-2.5 size-2 bg-red-500 rounded-full border border-white"></span>
                         </button>
                         <button
-                            className="header-icon-btn fullscreen-btn"
                             onClick={toggleFullscreen}
-                            title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+                            className={`size-10 rounded-xl transition-all flex items-center justify-center ${isFullscreen ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/30' : 'bg-teal-500 text-white hover:shadow-md'
+                                }`}
                         >
-                            <span className="material-symbols-outlined">
+                            <span className="material-symbols-outlined text-xl">
                                 {isFullscreen ? 'fullscreen_exit' : 'fullscreen'}
                             </span>
                         </button>
                     </div>
                 </header>
 
-                {/* Main Content */}
-                <main className="desktop-main">
+                {/* Scrollable Page Content */}
+                <main className="flex-1 overflow-y-auto px-8 pb-8 custom-scrollbar relative">
                     <Outlet />
                 </main>
             </div>

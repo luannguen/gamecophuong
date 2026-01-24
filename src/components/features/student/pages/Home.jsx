@@ -1,106 +1,134 @@
-import { Link } from 'react-router-dom'
-import { IMAGES } from '../../../../data/designAssets'
-import './Home.css'
+import { Link } from 'react-router-dom';
+import { IMAGES } from '../../../../data/designAssets';
 
 export default function StudentHome() {
-    // We can access student data from context or hook if needed, 
-    // but Layout handles the main user info display.
-    // If we need student data here for logic, we can use useStudentProfile.
-
     return (
-        <div className="home-page-content">
-            {/* Hero Banner Section */}
-            <section className="hero-banner">
-                <div className="hero-decoration circle-1"></div>
-                <div className="hero-decoration circle-2"></div>
-                <div className="hero-content">
-                    <h1 className="hero-title">Let's Play & Learn English!</h1>
-                    <button className="hero-btn">
-                        <span className="material-symbols-outlined">rocket_launch</span>
-                        Start Adventure
-                    </button>
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+
+            {/* Hero Banner */}
+            <section className="relative w-full h-[320px] rounded-[2.5rem] overflow-hidden bg-gradient-to-r from-teal-400 to-emerald-400 shadow-xl shadow-teal-500/20 group">
+                {/* Background Decor */}
+                <div className="absolute top-0 right-0 w-[60%] h-full bg-white/10 skew-x-12 translate-x-1/4 rounded-bl-[100px]"></div>
+                <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+
+                {/* Content */}
+                <div className="absolute inset-0 flex items-center px-16 z-10">
+                    <div className="max-w-lg space-y-8">
+                        <h1 className="text-5xl font-black text-white leading-[1.15] drop-shadow-sm">
+                            Let's Play & Learn
+                            <br />
+                            English!
+                        </h1>
+                        <button className="bg-white text-teal-600 px-8 py-3.5 rounded-2xl font-black text-lg shadow-lg shadow-teal-700/20 hover:scale-105 hover:bg-teal-50 hover:text-teal-700 transition-all flex items-center gap-2 group-hover:shadow-xl">
+                            <span className="material-symbols-outlined filled animate-pulse">rocket_launch</span>
+                            Start Adventure
+                        </button>
+                    </div>
                 </div>
-                <div
-                    className="hero-mascot"
-                    style={{ backgroundImage: `url(${IMAGES.heroMascot})` }}
-                ></div>
+
+                {/* Mascot Image (Right) */}
+                <div className="absolute bottom-0 right-16 z-10 w-[400px] h-[350px] flex items-end justify-center pointer-events-none">
+                    {/* Using background image to contain/cover properly if image isn't perfectly transparent */}
+                    <img
+                        src={IMAGES.heroMascot}
+                        alt="Mascot"
+                        className="h-full w-auto object-contain drop-shadow-2xl transition-transform duration-700 group-hover:scale-110 group-hover:-translate-y-2 group-hover:rotate-2"
+                    />
+                </div>
             </section>
 
-            {/* Section Header */}
-            <div className="section-header">
-                <h2>Miss Phượng's Choice</h2>
-                <span className="view-all">View All</span>
-            </div>
+            {/* Miss Phuong's Choice */}
+            <section className="space-y-4">
+                <div className="flex items-center justify-between px-2">
+                    <h2 className="text-xl font-black text-slate-800 tracking-tight">Miss Phượng's Choice</h2>
+                    <Link to="/student/games" className="text-sm font-bold text-cyan-500 hover:text-cyan-600 hover:underline">View All</Link>
+                </div>
 
-            {/* Activity Grid */}
-            <div className="activity-grid">
-                {/* Play Games Card */}
-                <Link to="/student/games" className="activity-card games-card">
-                    <div className="card-info">
-                        <div className="card-icon-row">
-                            <div className="card-icon games-icon">
-                                <span className="material-symbols-outlined">sports_esports</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Game Card */}
+                    <Link to="/student/games" className="group relative h-[300px] bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-cyan-500/10 hover:-translate-y-1 transition-all overflow-hidden flex items-center">
+                        <div className="w-1/2 p-10 flex flex-col justify-center gap-4 relative z-10">
+                            <div className="size-14 rounded-2xl bg-cyan-50 flex items-center justify-center text-cyan-500 mb-2 group-hover:bg-cyan-500 group-hover:text-white transition-colors duration-300">
+                                <span className="material-symbols-outlined text-3xl">sports_esports</span>
                             </div>
-                            <p className="card-title">Play Games</p>
+                            <div>
+                                <h3 className="text-2xl font-black text-slate-800 mb-2">Play Games</h3>
+                                <p className="text-sm text-slate-500 leading-relaxed font-medium">AI-powered interactive English puzzles.</p>
+                            </div>
+                            <div className="mt-2 inline-flex items-center gap-1 text-cyan-500 font-bold bg-cyan-50 w-fit px-4 py-2 rounded-xl group-hover:bg-cyan-500 group-hover:text-white transition-colors">
+                                Play Now <span className="material-symbols-outlined text-sm">chevron_right</span>
+                            </div>
                         </div>
-                        <p className="card-description">AI-powered interactive English games for fun learning.</p>
-                        <button className="card-btn games-btn">
-                            Play Now <span className="material-symbols-outlined">chevron_right</span>
-                        </button>
-                    </div>
-                    <div
-                        className="card-image"
-                        style={{ backgroundImage: `url(${IMAGES.gameController})` }}
-                    ></div>
-                </Link>
+                        <div className="w-1/2 h-full bg-cyan-50/50 flex items-center justify-center relative">
+                            {/* Decorative Blob */}
+                            <div className="absolute size-40 bg-cyan-200/50 rounded-full blur-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-125 transition-transform duration-700"></div>
+                            {/* Icon Placeholder or Image */}
+                            <div className="size-24 bg-white rounded-[2rem] shadow-lg flex items-center justify-center z-10 group-hover:rotate-6 transition-transform duration-500 text-cyan-500">
+                                <span className="material-symbols-outlined text-5xl">gamepad</span>
+                            </div>
+                        </div>
+                    </Link>
 
-                {/* Watch & Learn Card */}
-                <Link to="/student/videos" className="activity-card videos-card">
-                    <div className="card-info">
-                        <div className="card-icon-row">
-                            <div className="card-icon videos-icon">
-                                <span className="material-symbols-outlined">smart_display</span>
+                    {/* Video Card */}
+                    <Link to="/student/videos" className="group relative h-[300px] bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-pink-500/10 hover:-translate-y-1 transition-all overflow-hidden flex items-center">
+                        <div className="w-1/2 p-10 flex flex-col justify-center gap-4 relative z-10">
+                            <div className="size-14 rounded-2xl bg-pink-50 flex items-center justify-center text-pink-500 mb-2 group-hover:bg-pink-500 group-hover:text-white transition-colors duration-300">
+                                <span className="material-symbols-outlined text-3xl">smart_display</span>
                             </div>
-                            <p className="card-title">Watch & Learn</p>
+                            <div>
+                                <h3 className="text-2xl font-black text-slate-800 mb-2">Watch & Learn</h3>
+                                <p className="text-sm text-slate-500 leading-relaxed font-medium">Animated lessons and stories with subs.</p>
+                            </div>
+                            <div className="mt-2 inline-flex items-center gap-1 text-pink-500 font-bold bg-pink-50 w-fit px-4 py-2 rounded-xl group-hover:bg-pink-500 group-hover:text-white transition-colors">
+                                Watch <span className="material-symbols-outlined text-sm">chevron_right</span>
+                            </div>
                         </div>
-                        <p className="card-description">Animated lessons and stories with Miss Phượng.</p>
-                        <button className="card-btn videos-btn">
-                            Watch <span className="material-symbols-outlined">chevron_right</span>
-                        </button>
-                    </div>
-                    <div
-                        className="card-image"
-                        style={{ backgroundImage: `url(${IMAGES.tvPlay})` }}
-                    ></div>
-                </Link>
+                        <div className="w-1/2 h-full bg-pink-50/50 flex items-center justify-center relative">
+                            {/* Decorative Blob */}
+                            <div className="absolute size-40 bg-pink-200/50 rounded-full blur-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-125 transition-transform duration-700"></div>
+                            <div className="size-24 bg-white rounded-[2rem] shadow-lg flex items-center justify-center z-10 group-hover:-rotate-6 transition-transform duration-500 text-pink-500">
+                                <span className="material-symbols-outlined text-5xl">monitor</span>
+                            </div>
+                        </div>
+                    </Link>
+                </div>
+            </section>
 
-                {/* Weekly Challenge Card */}
-                <div className="challenge-card">
-                    <div className="challenge-blur"></div>
-                    <div className="challenge-header">
-                        <div className="challenge-info">
-                            <div className="challenge-badge">
-                                <span className="material-symbols-outlined">trophy</span>
-                                <span className="challenge-label">Active Challenge</span>
-                            </div>
-                            <h3 className="challenge-title">Grammar Master Quest</h3>
-                        </div>
-                        <div className="challenge-timer">
-                            <span className="material-symbols-outlined">schedule</span>
-                            <span>2d 14h left</span>
-                        </div>
+            {/* Footer Banner - Quest */}
+            <section className="relative w-full h-32 rounded-[2rem] overflow-hidden bg-yellow-400 shadow-lg shadow-yellow-500/20 flex items-center justify-between px-10 group cursor-pointer hover:brightness-105 transition-all">
+                {/* Background Pattern */}
+                <div className="absolute inset-0 bg-[url('/pattern-grid.svg')] opacity-10"></div>
+
+                {/* Left: Info */}
+                <div className="flex items-center gap-6 z-10">
+                    <div className="size-16 rounded-full bg-yellow-300/50 flex items-center justify-center border-4 border-yellow-200 text-white shadow-inner">
+                        <span className="material-symbols-outlined text-3xl font-bold">emoji_events</span>
                     </div>
-                    <div className="challenge-footer">
-                        <div className="challenge-avatars">
-                            <div className="mini-avatar" style={{ backgroundImage: `url(${IMAGES.avatars[0]})` }}></div>
-                            <div className="mini-avatar" style={{ backgroundImage: `url(${IMAGES.avatars[1]})` }}></div>
-                            <div className="mini-avatar" style={{ backgroundImage: `url(${IMAGES.avatars[2]})` }}></div>
-                            <div className="mini-avatar more">+42</div>
-                        </div>
-                        <button className="join-btn">Join Now</button>
+                    <div>
+                        <div className="text-[10px] font-black uppercase tracking-widest text-yellow-800 mb-1 opacity-70">Active Challenge</div>
+                        <h3 className="text-3xl font-black text-slate-900 leading-none">Grammar Master Quest</h3>
                     </div>
                 </div>
-            </div>
+
+                {/* Center: Timer (Hidden on small screens) */}
+                <div className="hidden md:flex items-center gap-2 bg-yellow-500/30 px-4 py-2 rounded-full border border-yellow-500/20">
+                    <span className="material-symbols-outlined text-yellow-900 text-lg">schedule</span>
+                    <span className="text-sm font-bold text-yellow-900">2d 14h left</span>
+                </div>
+
+                {/* Right: Button */}
+                <div className="z-10">
+                    <button className="bg-slate-900 text-white px-8 py-3 rounded-xl font-bold shadow-xl hover:scale-105 transition-transform flex items-center gap-2">
+                        Join Now
+                    </button>
+                </div>
+
+                {/* Decor Overlay */}
+                <div className="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-yellow-300 to-transparent opacity-50"></div>
+            </section>
+
+            {/* Spacer */}
+            <div className="h-8"></div>
         </div>
-    )
+    );
 }

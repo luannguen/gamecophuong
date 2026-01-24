@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { classRepository } from '../../admin/data/classRepository';
+import { useImageUpload } from '../../../shared/hooks/useImageUpload';
 import '../admin.css'; // Ensure V2 styles are available
 
 export default function StudentFormModal({
@@ -11,6 +12,9 @@ export default function StudentFormModal({
     allStudents = []
 }) {
     const isEdit = !!initialData;
+    const { uploadImage, isUploading: isUploadingImage } = useImageUpload();
+    const fileInputRef = useRef(null);
+
     const [formData, setFormData] = useState({
         display_name: '',
         class_id: '',
@@ -18,8 +22,11 @@ export default function StudentFormModal({
         gender: 'male',
         avatar_url: ''
     });
+
     const [classes, setClasses] = useState([]);
     const [error, setError] = useState('');
+    const [pendingFile, setPendingFile] = useState(null);
+    const [previewUrl, setPreviewUrl] = useState('');
 
     useEffect(() => {
         if (isOpen) {
@@ -32,6 +39,7 @@ export default function StudentFormModal({
                     gender: initialData.gender || 'male',
                     avatar_url: initialData.avatar_url || ''
                 });
+                setPreviewUrl(initialData.avatar_url || '');
             } else {
                 setFormData({
                     display_name: '',
@@ -40,14 +48,20 @@ export default function StudentFormModal({
                     gender: 'male',
                     avatar_url: ''
                 });
+                setPreviewUrl('');
             }
+            setPendingFile(null);
             setError('');
         }
     }, [isOpen, initialData]);
 
     const fetchClasses = async () => {
-        const { data } = await classRepository.getActiveClasses();
-        if (data) setClasses(data);
+        try {
+            const { data } = await classRepository.getActiveClasses();
+            if (data) setClasses(data);
+        } catch (err) {
+            console.error("Failed to load classes", err);
+        }
     };
 
     const handleChange = (e) => {
@@ -55,7 +69,32 @@ export default function StudentFormModal({
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            // Validate locally (optional, also handled in repository)
+            if (!file.type.startsWith('image/')) {
+                setError("Only image files are allowed");
+                return;
+            }
+            if (file.size > 2 * 1024 * 1024) { // 2MB
+                setError("Image must be smaller than 2MB");
+                return;
+            }
+
+            setPendingFile(file);
+            // Create local preview
+            const objectUrl = URL.createObjectURL(file);
+            setPreviewUrl(objectUrl);
+            setError('');
+        }
+    };
+
+    const handleTriggerFile = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Validation
@@ -74,8 +113,21 @@ export default function StudentFormModal({
             return setError('This PIN is already taken. Please choose another one.');
         }
 
+        let finalAvatarUrl = formData.avatar_url;
+
+        // Upload image if selected
+        if (pendingFile) {
+            const uploadedUrl = await uploadImage(pendingFile);
+            if (!uploadedUrl) {
+                setError('Failed to upload avatar image. Please try again.');
+                return;
+            }
+            finalAvatarUrl = uploadedUrl;
+        }
+
         const payload = {
             ...formData,
+            avatar_url: finalAvatarUrl,
             qr_code: formData.pin_code // Default logic
         };
 
@@ -98,6 +150,8 @@ export default function StudentFormModal({
     };
 
     if (!isOpen) return null;
+
+    const isBusy = isSubmitting || isUploadingImage;
 
     return (
         <div className="modal-overlay-v2">
@@ -123,15 +177,28 @@ export default function StudentFormModal({
                     <div className="modal-avatar-section-v2">
                         <div className="avatar-wrapper-v2 group">
                             <div className="avatar-circle-v2">
-                                {formData.avatar_url ? (
-                                    <img src={formData.avatar_url} alt="Avatar" className="avatar-img-v2" />
+                                {previewUrl ? (
+                                    <img src={previewUrl} alt="Avatar" className="avatar-img-v2" />
                                 ) : (
                                     <span className="material-symbols-outlined avatar-placeholder-icon-v2">person</span>
                                 )}
                             </div>
-                            <button className="btn-camera-v2" title="Change Avatar">
+                            <button
+                                type="button"
+                                className="btn-camera-v2"
+                                title="Change Avatar"
+                                onClick={handleTriggerFile}
+                                disabled={isBusy}
+                            >
                                 <span className="material-symbols-outlined text-sm">photo_camera</span>
                             </button>
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                className="hidden"
+                                accept="image/png, image/jpeg, image/jpg, image/webp"
+                                onChange={handleFileChange}
+                            />
                         </div>
                         <span className="avatar-label-v2">Profile Photo</span>
                     </div>
@@ -147,6 +214,7 @@ export default function StudentFormModal({
                                 onChange={handleChange}
                                 className="form-input-v2"
                                 placeholder="Student Name"
+                                disabled={isBusy}
                             />
                         </div>
 
@@ -160,6 +228,7 @@ export default function StudentFormModal({
                                         value={formData.class_id}
                                         onChange={handleChange}
                                         className="form-select-v2"
+                                        disabled={isBusy}
                                     >
                                         <option value="">Select Class</option>
                                         {classes.map(cls => (
@@ -179,6 +248,7 @@ export default function StudentFormModal({
                                             type="button"
                                             onClick={() => setFormData(p => ({ ...p, gender: g }))}
                                             className={`gender-btn-v2 ${formData.gender === g ? 'active' : ''}`}
+                                            disabled={isBusy}
                                         >
                                             {g.charAt(0).toUpperCase() + g.slice(1)}
                                         </button>
@@ -201,9 +271,10 @@ export default function StudentFormModal({
                                         className="form-input-v2 has-icon"
                                         placeholder="0000"
                                         maxLength={6}
+                                        disabled={isBusy}
                                     />
                                 </div>
-                                <button type="button" onClick={generatePin} className="btn-generate-v2">
+                                <button ref={null} type="button" onClick={generatePin} className="btn-generate-v2" disabled={isBusy}>
                                     <span className="material-symbols-outlined text-lg">refresh</span>
                                     <span className="hidden sm:inline">Generate</span>
                                 </button>
@@ -214,10 +285,10 @@ export default function StudentFormModal({
 
                 {/* Footer */}
                 <div className="modal-footer-v2">
-                    <button onClick={handleSubmit} disabled={isSubmitting} className="btn-save-v2">
-                        {isSubmitting ? 'Saving...' : 'Save Changes'}
+                    <button onClick={handleSubmit} disabled={isBusy} className="btn-save-v2">
+                        {isBusy ? (isUploadingImage ? 'Uploading...' : 'Saving...') : 'Save Changes'}
                     </button>
-                    <button onClick={onClose} disabled={isSubmitting} className="btn-cancel-v2">
+                    <button onClick={onClose} disabled={isBusy} className="btn-cancel-v2">
                         Cancel
                     </button>
                 </div>

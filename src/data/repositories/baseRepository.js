@@ -73,4 +73,47 @@ export class BaseRepository {
             return failure(error.message, ErrorCodes.SERVER_ERROR);
         }
     }
+
+    /**
+     * Generic update
+     * @param {string|number} id 
+     * @param {object} item 
+     * @returns {Promise<import('../types').Result<any>>}
+     */
+    async update(id, item) {
+        try {
+            const { data, error } = await this.supabase
+                .from(this.tableName)
+                .update(item)
+                .eq('id', id)
+                .select()
+                .single();
+
+            if (error) throw error;
+            return success(data);
+        } catch (error) {
+            console.error(`[BaseRepo] update ${this.tableName} error:`, error);
+            return failure(error.message, ErrorCodes.SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Generic delete
+     * @param {string|number} id 
+     * @returns {Promise<import('../types').Result<boolean>>}
+     */
+    async delete(id) {
+        try {
+            const { error } = await this.supabase
+                .from(this.tableName)
+                .delete()
+                .eq('id', id);
+
+            if (error) throw error;
+            return success(true);
+        } catch (error) {
+            console.error(`[BaseRepo] delete ${this.tableName} error:`, error);
+            return failure(error.message, ErrorCodes.SERVER_ERROR);
+        }
+    }
 }

@@ -45,6 +45,10 @@ export default function AdminLayout() {
                         <span className="material-symbols-outlined">class</span>
                         <span>Classes</span>
                     </Link>
+                    <Link to="/admin/parents" className={`nav-link-v2 ${isActive('/admin/parents') ? 'active' : ''}`}>
+                        <span className="material-symbols-outlined">family_restroom</span>
+                        <span>Parents</span>
+                    </Link>
 
                     <div className="nav-label-v2" style={{ marginTop: '16px' }}>Content</div>
                     <Link to="/admin/games" className={`nav-link-v2 ${isActive('/admin/games') ? 'active' : ''}`}>

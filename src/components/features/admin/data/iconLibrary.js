@@ -1,72 +1,61 @@
 /**
  * Comprehensive list of Material Symbols for English Learning App
  * Categorized for easier selection in Admin UI
+ * UPDATED: Optimized for standard Material Icons support to prevent text rendering issues
+ * SAFE LIST V3
  */
 
 export const ICON_LIBRARY = {
     "Animals & Nature": [
-        "pets", "cruelty_free", "nature", "forest", "landscape", "sunny", "bedtime", "wb_twilight",
-        "water_drop", "air", "cyclone", "flood", "tsunami", "volcano", "park", "grass",
-        "emoji_nature", "hive", "catching_pokemon", "rabbit", "cat", "dog", "fish_bowl", "bird",
-        "bug_report", "spider", "flutter_dash", "savings", "egg", "nest_cam_wired_stand"
+        "pets", "nature", "nature_people", "landscape", "wb_sunny", "brightness_3", "wb_cloudy",
+        "opacity", "filter_drama", "waves", "terrain", "park", "spa", "local_florist",
+        "bug_report", "child_friendly", "favorite", "star_rate"
     ],
     "School & Education": [
-        "school", "menu_book", "import_contacts", "auto_stories", "history_edu", "edit", "draw",
-        "brush", "palette", "ruler", "square_foot", "architecture", "science", "biotech",
-        "calculate", "functions", "abacus", "lightbulb", "psychology", "psychology_alt",
-        "quiz", "assignment", "checklist", "grade", "award_star", "workspace_premium",
-        "backpack", "book", "library_books", "cast_for_education", "language", "translate"
+        "school", "menu_book", "import_contacts", "history_edu", "edit", "brush",
+        "palette", "square_foot", "science", "biotech", "calculate", "functions",
+        "lightbulb", "psychology", "assignment", "grade", "star", "workspace_premium",
+        "class", "book", "library_books", "cast_for_education", "language", "translate"
     ],
     "Food & Drink": [
-        "restaurant", "restaurant_menu", "lunch_dining", "dinner_dining", "breakfast_dining",
-        "local_cafe", "coffee", "liquor", "local_bar", "tapas", "ramen_dining", "kitchen",
-        "soup_kitchen", "bakery_dining", "cake", "celebration", "icecream", "egg_alt",
-        "nutrition", "fastfood", "pizza", "cookie", "set_meal", "rice_bowl", "kebab_dining",
-        "emoji_food_beverage", "takeout_dining", "blender", "microwave", "coffee_maker"
+        "restaurant", "restaurant_menu", "local_dining", "lunch_dining", "breakfast_dining",
+        "local_cafe", "local_bar", "kitchen", "cake", "icecream", "fastfood", "local_pizza",
+        "local_drink", "set_meal", "emoji_food_beverage", "free_breakfast"
     ],
     "Sports & Activities": [
         "sports_soccer", "sports_basketball", "sports_tennis", "sports_volleyball", "sports_rugby",
         "sports_baseball", "sports_golf", "sports_cricket", "sports_mma", "sports_motorsports",
-        "pool", "surfing", "kitesurfing", "kayaking", "rowing", "scuba_diving", "hiking",
-        "directions_bike", "directions_run", "directions_walk", "fitness_center", "self_improvement",
-        "skateboarding", "snowboarding", "sledding", "downhill_skiing", "roller_skating", "paragliding"
+        "pool", "surfing", "rowing", "hiking", "directions_bike", "directions_run",
+        "directions_walk", "fitness_center", "self_improvement"
     ],
     "Travel & Vehicles": [
-        "flight", "flight_takeoff", "flight_land", "connecting_airports", "rocket", "rocket_launch",
+        "flight", "flight_takeoff", "flight_land", "airplanemode_active", "rocket",
         "directions_car", "directions_bus", "tram", "train", "subway", "directions_boat",
-        "two_wheeler", "pedal_bike", "moped", "electric_scooter", "airport_shuttle", "rv_hookup",
-        "agriculture", "fire_truck", "local_taxi", "commute", "traffic", "map", "explore",
-        "compass_calibration", "push_pin", "place", "castle", "stadium", "church", "mosque", "synagogue", "temple_buddhist"
+        "motorcycle", "airport_shuttle", "rv_hookup", "agriculture", "local_shipping", "local_taxi",
+        "commute", "traffic", "map", "explore", "place", "my_location", "navigation"
     ],
     "Music & Arts": [
-        "music_note", "music_video", "headphones", "piano", "mic", "mic_external_on", "speaker",
-        "radio", "album", "library_music", "queue_music", "playlist_play", "movie", "movie_filter",
-        "theaters", "videocam", "photo_camera", "photo_library", "collections", "image",
-        "brush", "format_paint", "contrast", "crop", "blur_on", "filter_vintage"
+        "music_note", "music_video", "headset", "mic", "speaker", "radio", "album",
+        "library_music", "queue_music", "movie", "movie_filter", "theaters", "videocam",
+        "camera_alt", "photo_library", "collections", "image", "brush", "filter_frames", "color_lens"
     ],
     "Technology": [
-        "computer", "laptop", "smartphone", "tablet", "watch", "smart_display", "tv",
-        "videogame_asset", "sports_esports", "mouse", "keyboard", "memory", "router", "wifi",
-        "battery_full", "power", "bolt", "electric_bolt", "settings", "build", "construction",
-        "print", "scanner", "usb", "sd_card", "sim_card", "headset_mic"
+        "computer", "laptop", "smartphone", "tablet", "watch", "tv", "videogame_asset",
+        "mouse", "keyboard", "memory", "router", "wifi", "battery_full", "power",
+        "settings", "build", "print", "scanner", "usb", "sd_card", "sim_card"
     ],
     "Family & People": [
-        "family_history", "diversity_1", "diversity_2", "diversity_3", "groups", "group", "person",
-        "person_apron", "face", "face_2", "face_3", "face_4", "face_5", "face_6",
-        "baby_changing_station", "child_care", "elderly", "accessibility", "escalator_warning",
-        "pregnant_woman", "waving_hand", "handshake", "sentiment_satisfied", "sentiment_very_satisfied",
-        "sentiment_dissatisfied", "mood", "mood_bad", "emoji_emotions", "psychology"
+        "family_restroom", "groups", "group", "person", "face", "child_care",
+        "accessibility", "pregnant_woman", "sentiment_satisfied", "sentiment_very_satisfied",
+        "sentiment_dissatisfied", "mood", "mood_bad", "emoji_emotions", "people"
     ],
     "Home & Living": [
-        "home", "cottage", "apartment", "gite", "cabin", "castle", "house", "roofing",
-        "chair", "bed", "living", "table_restaurant", "shower", "bathtub", "bathroom",
-        "kitchen", "door_front", "window", "light", "lamp", "curtains", "yard", "garage",
-        "deck", "fence", "balcony", "countertops", "blinds", "nest_cam_indoor"
+        "home", "apartment", "house", "weekend", "king_bed", "bathtub",
+        "kitchen", "meeting_room", "lightbulb_outline", "deck", "fence", "balcony"
     ],
     "Clothes & Accessories": [
-        "checkroom", "styler", "shopping_bag", "shopping_cart", "store", "watch", "diamond",
-        "local_mall", "umbrella", "dry_cleaning", "laundry", "wash", "iron", "style",
-        "badge", "military_tech", "roller_skates", "ice_skates"
+        "checkroom", "shopping_bag", "shopping_cart", "store", "watch",
+        "local_mall", "umbrella", "local_laundry_service", "style", "loyalty"
     ]
 };
 

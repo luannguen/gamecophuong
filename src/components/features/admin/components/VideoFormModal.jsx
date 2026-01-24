@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { VIDEO_CATEGORIES } from '../../../../data/designAssets';
 
 export default function VideoFormModal({ isOpen, onClose, onSubmit, initialData = null }) {
     const [formData, setFormData] = useState({
@@ -135,14 +136,9 @@ export default function VideoFormModal({ isOpen, onClose, onSubmit, initialData 
                                 value={formData.category}
                                 onChange={e => setFormData({ ...formData, category: e.target.value })}
                             >
-                                <option value="Animals">Animals</option>
-                                <option value="Family">Family</option>
-                                <option value="Routines">Routines</option>
-                                <option value="Songs">Songs</option>
-                                <option value="Grammar">Grammar</option>
-                                <option value="Short Stories">Short Stories</option>
-                                <option value="Social Science">Social Science</option>
-                                <option value="Music">Music</option>
+                                {VIDEO_CATEGORIES.map(cat => (
+                                    <option key={cat.id} value={cat.name}>{cat.name}</option>
+                                ))}
                             </select>
                         </div>
                         <div>

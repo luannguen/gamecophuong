@@ -49,40 +49,42 @@ export default function VideoGallery() {
             </header>
 
             <main className="videos-main">
-                {/* New Lessons Section */}
+                {/* New Lessons Section (Featured) */}
                 <section className="lessons-section">
                     <div className="section-header">
                         <h2>New Lessons</h2>
-                        <span className="see-all">See All</span>
                     </div>
 
                     {/* Horizontal Scroll Carousel */}
                     <div className="lessons-carousel no-scrollbar">
-                        <div className="lesson-card featured" style={{ backgroundColor: 'var(--color-primary)' }}>
-                            <div
-                                className="lesson-bg"
-                                style={{ backgroundImage: `url(${IMAGES.tvPlay})` }}
-                            ></div>
-                            <div className="lesson-overlay"></div>
-                            <div className="play-button">
-                                <span className="material-symbols-outlined">play_arrow</span>
-                            </div>
-                            <div className="lesson-info">
-                                <span className="featured-badge">Featured</span>
-                                <h3>Adventure in the Jungle</h3>
-                            </div>
-                        </div>
-
-                        <div className="lesson-card" style={{ backgroundColor: 'var(--color-secondary-pink)' }}>
-                            <div
-                                className="lesson-bg"
-                                style={{ backgroundImage: `url(${IMAGES.gameController})`, opacity: 0.8 }}
-                            ></div>
-                            <div className="lesson-overlay"></div>
-                            <div className="lesson-info">
-                                <h3>Numbers & Colors Party</h3>
-                            </div>
-                        </div>
+                        {videos.filter(v => v.is_featured).length > 0 ? (
+                            videos.filter(v => v.is_featured).map(video => {
+                                const catConfig = VIDEO_CATEGORIES.find(c => c.name === video.category) || VIDEO_CATEGORIES[0];
+                                return (
+                                    <div
+                                        key={video.id}
+                                        className="lesson-card featured cursor-pointer hover:scale-95 transition-transform"
+                                        style={{ backgroundColor: catConfig.color }}
+                                        onClick={() => setSelectedVideo(video)}
+                                    >
+                                        <div
+                                            className="lesson-bg"
+                                            style={{ backgroundImage: `url(${video.thumbnail_url || IMAGES.tvPlay})` }}
+                                        ></div>
+                                        <div className="lesson-overlay"></div>
+                                        <div className="play-button">
+                                            <span className="material-symbols-outlined">play_arrow</span>
+                                        </div>
+                                        <div className="lesson-info">
+                                            <span className="featured-badge">Featured</span>
+                                            <h3>{video.title}</h3>
+                                        </div>
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <p className="text-slate-400 text-sm ml-4">No new lessons yet.</p>
+                        )}
                     </div>
                 </section>
 
@@ -119,46 +121,50 @@ export default function VideoGallery() {
                             {videos.length === 0 ? (
                                 <p className="text-slate-500 text-center col-span-3">No videos available yet.</p>
                             ) : (
-                                videos.map(video => (
-                                    <div
-                                        key={video.id}
-                                        className="video-card toy-shadow cursor-pointer hover:scale-105 transition-transform"
-                                        onClick={() => setSelectedVideo(video)}
-                                    >
-                                        <div className="video-thumbnail">
-                                            <div
-                                                className="thumbnail-bg"
-                                                style={{ backgroundImage: `url(${video.thumbnail_url || IMAGES.tvPlay})` }}
-                                            ></div>
-                                            <div className="thumbnail-overlay">
-                                                <span className="material-symbols-outlined">play_circle</span>
+                                videos.map(video => {
+                                    // Find category config for coloring
+                                    const catConfig = VIDEO_CATEGORIES.find(c => c.name === video.category) || VIDEO_CATEGORIES[0];
+
+                                    return (
+                                        <div
+                                            key={video.id}
+                                            className="video-card toy-shadow cursor-pointer hover:scale-105 transition-transform"
+                                            onClick={() => setSelectedVideo(video)}
+                                        >
+                                            <div className="video-thumbnail">
+                                                <div
+                                                    className="thumbnail-bg"
+                                                    style={{ backgroundImage: `url(${video.thumbnail_url || IMAGES.tvPlay})` }}
+                                                ></div>
+                                                <div className="thumbnail-overlay">
+                                                    <span className="material-symbols-outlined">play_circle</span>
+                                                </div>
+                                            </div>
+                                            <div className="video-info">
+                                                <h4>{video.title}</h4>
+                                                <p className="video-duration">
+                                                    <span className="material-symbols-outlined">schedule</span>
+                                                    {video.duration || 'N/A'}
+                                                </p>
+                                                <div className="video-meta">
+                                                    {/* Category Badge */}
+                                                    <span
+                                                        className="level-badge flex items-center gap-1"
+                                                        style={{
+                                                            backgroundColor: `${catConfig.color}15`, // 15% opacity
+                                                            color: catConfig.color
+                                                        }}
+                                                    >
+                                                        <span className="material-symbols-outlined text-[14px]">{catConfig.icon}</span>
+                                                        {video.category || 'General'}
+                                                    </span>
+
+                                                    {/* Play Text if available or keep generic */}
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="video-info">
-                                            <h4>{video.title}</h4>
-                                            <p className="video-duration">
-                                                <span className="material-symbols-outlined">schedule</span>
-                                                {video.duration || 'N/A'}
-                                            </p>
-                                            <div className="video-meta">
-                                                <span
-                                                    className="level-badge"
-                                                    style={{
-                                                        backgroundColor:
-                                                            video.level === 'Beginner' ? '#F0FDF4' : // green-50
-                                                                video.level === 'Intermediate' ? '#FEFCE8' : // yellow-50
-                                                                    '#FEF2F2', // red-50
-                                                        color:
-                                                            video.level === 'Beginner' ? '#16A34A' : // green-600
-                                                                video.level === 'Intermediate' ? '#CA8A04' : // yellow-600
-                                                                    '#DC2626' // red-600
-                                                    }}
-                                                >{video.level}</span>
-                                                <button className="play-now-btn">Play Now</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))
+                                    );
+                                })
                             )}
                         </div>
                     )}

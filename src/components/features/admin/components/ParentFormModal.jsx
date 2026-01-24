@@ -9,12 +9,11 @@ export default function ParentFormModal({
     onClose,
     onSubmit,
     initialData = null,
-    isSubmitting = false,
-    defaultTab = 'info'
+    isSubmitting = false
 }) {
     const isEdit = !!initialData;
 
-    // Parent Info State
+    // --- State: General Info ---
     const [formData, setFormData] = useState({
         full_name: '',
         email: '',
@@ -23,30 +22,28 @@ export default function ParentFormModal({
         is_active: true
     });
 
-    // Children Management State
-    const [children, setChildren] = useState([]);
+    // --- State: Child Linking ---
+    const [linkedChildren, setLinkedChildren] = useState([]);
+    const [originalChildrenIds, setOriginalChildrenIds] = useState(new Set());
 
-    // New Dropdown State
+    // --- State: Student Discovery ---
     const [classes, setClasses] = useState([]);
     const [selectedClassId, setSelectedClassId] = useState('');
+    const [searchStudentTerm, setSearchStudentTerm] = useState('');
     const [availableStudents, setAvailableStudents] = useState([]);
-    const [selectedStudentId, setSelectedStudentId] = useState('');
     const [isLoadingStudents, setIsLoadingStudents] = useState(false);
 
     const [error, setError] = useState('');
-    const [linkError, setLinkError] = useState('');
-    const [activeTab, setActiveTab] = useState(defaultTab);
 
     useEffect(() => {
         if (isOpen) {
-            // Reset States
-            setSelectedClassId('');
+            // Reset
+            setLinkedChildren([]);
+            setOriginalChildrenIds(new Set());
             setAvailableStudents([]);
-            setSelectedStudentId('');
-            setLinkError('');
-
-            // Load Classes
-            fetchClasses();
+            setSelectedClassId('');
+            setSearchStudentTerm('');
+            setError('');
 
             if (initialData) {
                 setFormData({
@@ -56,9 +53,7 @@ export default function ParentFormModal({
                     address: initialData.address || '',
                     is_active: initialData.is_active ?? true
                 });
-                loadChildren(initialData.id);
-                // Use defaultTab if provided, else 'info'
-                setActiveTab(defaultTab);
+                loadInitialChildren(initialData.id);
             } else {
                 setFormData({
                     full_name: '',
@@ -67,48 +62,54 @@ export default function ParentFormModal({
                     address: '',
                     is_active: true
                 });
-                setChildren([]);
-                setActiveTab('info');
             }
-            setError('');
+
+            loadClasses();
         }
-    }, [isOpen, initialData, defaultTab]);
+    }, [isOpen, initialData]);
 
-    const fetchClasses = async () => {
-        try {
-            const { data } = await classRepository.getActiveClasses();
-            if (data) setClasses(data);
-        } catch (err) {
-            console.error("Failed to load classes", err);
-        }
-    };
+    // Fetch students when filters change
+    useEffect(() => {
+        if (!isOpen) return;
 
-    const loadChildren = async (parentId) => {
-        const result = await parentRepository.getChildren(parentId);
-        if (result.success) {
-            setChildren(result.data);
-        }
-    };
+        const fetchStudents = async () => {
+            if (!selectedClassId && !searchStudentTerm) {
+                setAvailableStudents([]);
+                return;
+            }
 
-    const handleClassChange = async (e) => {
-        const classId = e.target.value;
-        setSelectedClassId(classId);
-        setSelectedStudentId('');
-        setAvailableStudents([]);
-
-        if (classId) {
             setIsLoadingStudents(true);
             try {
-                // Using existing repo function that supports class filtering
-                const result = await adminStudentRepository.getFiltered({ classFilter: classId });
+                const result = await adminStudentRepository.getFiltered({
+                    classFilter: selectedClassId,
+                    search: searchStudentTerm
+                });
+
                 if (result.success) {
                     setAvailableStudents(result.data || []);
                 }
             } catch (err) {
-                console.error("Failed to load students", err);
+                console.error("Failed to search students", err);
             } finally {
                 setIsLoadingStudents(false);
             }
+        };
+
+        const timer = setTimeout(fetchStudents, 300);
+        return () => clearTimeout(timer);
+
+    }, [selectedClassId, searchStudentTerm, isOpen]);
+
+    const loadClasses = async () => {
+        const { data } = await classRepository.getActiveClasses();
+        if (data) setClasses(data);
+    };
+
+    const loadInitialChildren = async (parentId) => {
+        const result = await parentRepository.getChildren(parentId);
+        if (result.success && result.data) {
+            setLinkedChildren(result.data);
+            setOriginalChildrenIds(new Set(result.data.map(c => c.id)));
         }
     };
 
@@ -116,52 +117,49 @@ export default function ParentFormModal({
         const { name, value, type, checked } = e.target;
         setFormData(prev => ({
             ...prev,
-            [name]: type === 'checkbox' ? checked : value
+            [name]: type === 'checkbox' ? type === 'radio' ? (value === 'true') : checked : value
         }));
     };
 
-    const handleAddChild = async () => {
-        if (!selectedStudentId || !initialData?.id) return;
+    const isLinked = (studentId) => linkedChildren.some(c => c.id === studentId);
 
-        // Check if already added
-        if (children.some(c => c.id === selectedStudentId)) {
-            setLinkError('This student is already linked.');
-            return;
-        }
-
-        const result = await parentRepository.linkStudent(initialData.id, selectedStudentId);
-        if (result.success) {
-            loadChildren(initialData.id);
-            // Reset selection to allow adding another from same class easily
-            setSelectedStudentId('');
-            setLinkError('');
+    const toggleStudentLink = (student) => {
+        if (isLinked(student.id)) {
+            setLinkedChildren(prev => prev.filter(c => c.id !== student.id));
         } else {
-            setLinkError('Failed to link student.');
+            setLinkedChildren(prev => [...prev, student]);
         }
     };
 
-    const handleRemoveChild = async (studentId) => {
-        if (!initialData?.id) return;
-        if (!window.confirm('Remove this child?')) return;
-
-        const result = await parentRepository.unlinkStudent(initialData.id, studentId);
-        if (result.success) {
-            loadChildren(initialData.id);
-        }
+    const removeLinkedChild = (studentId) => {
+        setLinkedChildren(prev => prev.filter(c => c.id !== studentId));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
+        if (!formData.full_name?.trim()) return setError('Full name is required');
+        if (!formData.email?.trim()) return setError('Email is required');
 
-        if (!formData.full_name.trim()) return setError('Please enter parent name');
-        if (!formData.email.trim()) return setError('Please enter email');
+        const payload = { ...formData };
+        if (!isEdit) payload.auth_user_id = crypto.randomUUID();
 
-        const payload = {
-            ...formData,
-        };
+        // 1. Sync Links if Edit
+        if (isEdit && initialData.id) {
+            const currentIds = new Set(linkedChildren.map(c => c.id));
+            const toAdd = linkedChildren.filter(c => !originalChildrenIds.has(c.id));
+            const toRemoveIds = [...originalChildrenIds].filter(id => !currentIds.has(id));
 
-        if (!isEdit) {
-            payload.auth_user_id = crypto.randomUUID();
+            try {
+                const promises = [];
+                toAdd.forEach(student => {
+                    promises.push(parentRepository.linkStudent(initialData.id, student.id));
+                });
+                toRemoveIds.forEach(studentId => {
+                    promises.push(parentRepository.unlinkStudent(initialData.id, studentId));
+                });
+                await Promise.all(promises);
+            } catch (err) {
+                console.error("Error syncing children", err);
+            }
         }
 
         onSubmit(payload);
@@ -170,223 +168,277 @@ export default function ParentFormModal({
     if (!isOpen) return null;
 
     return (
-        <div className="modal-overlay-v2">
-            <div className="modal-content-v2" style={{ maxWidth: '600px' }}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(16, 31, 34, 0.6)', backdropFilter: 'blur(4px)' }}>
+            <div className="bg-white w-full max-w-5xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
                 {/* Header */}
-                <div className="modal-header-v2">
-                    <h2 className="modal-title-v2">{isEdit ? 'Edit Parent' : 'Add New Parent'}</h2>
-                    <button type="button" onClick={onClose} className="btn-close-v2">
-                        <span className="material-symbols-outlined">close</span>
+                <div className="flex items-center justify-between px-8 py-6 border-b border-slate-100">
+                    <div className="flex items-center gap-4">
+                        <div className="size-14 rounded-xl bg-cyan-50 flex items-center justify-center text-cyan-500 ring-4 ring-cyan-500/10">
+                            {isEdit ? (
+                                <span className="text-xl font-bold">{initialData?.full_name?.charAt(0).toUpperCase()}</span>
+                            ) : (
+                                <span className="material-symbols-outlined text-2xl">person_add</span>
+                            )}
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-black text-slate-900 leading-tight">
+                                {isEdit ? 'Edit Parent Profile' : 'Add Parent Profile'}
+                            </h3>
+                            <p className="text-sm text-slate-500">
+                                {isEdit ? `Manage ${initialData?.full_name}'s information and student links` : 'Create a new parent account'}
+                            </p>
+                        </div>
+                    </div>
+                    <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
+                        <span className="material-symbols-outlined text-slate-400">close</span>
                     </button>
                 </div>
 
-                {/* Tabs */}
-                {isEdit && (
-                    <div className="flex border-b border-gray-200 mb-4 px-6">
-                        <button
-                            className={`py-2 px-4 text-sm font-medium border-b-2 transition-colors ${activeTab === 'info' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
-                            onClick={() => setActiveTab('info')}
-                        >
-                            Parent Info
-                        </button>
-                        <button
-                            className={`py-2 px-4 text-sm font-medium border-b-2 transition-colors ${activeTab === 'children' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
-                            onClick={() => setActiveTab('children')}
-                        >
-                            Children ({children.length})
-                        </button>
-                    </div>
-                )}
+                {/* Body Grid */}
+                <div className="flex-1 overflow-hidden grid grid-cols-1 md:grid-cols-12">
 
-                {/* Body */}
-                <div className="modal-body-v2">
-                    {error && (
-                        <div className="p-3 mb-4 bg-red-50 text-red-600 rounded-xl text-sm font-medium flex items-center gap-2">
-                            <span className="material-symbols-outlined text-lg">error</span>
-                            {error}
-                        </div>
-                    )}
+                    {/* Left Col: General Info */}
+                    <div className="md:col-span-4 p-8 border-r border-slate-100 space-y-6 overflow-y-auto">
+                        <h4 className="text-xs font-black uppercase tracking-widest text-cyan-500 mb-4">General Information</h4>
 
-                    {activeTab === 'info' ? (
-                        <form onSubmit={handleSubmit} className="form-stack-v2">
-                            {/* Full Name */}
-                            <div className="form-group-v2">
-                                <label className="form-label-v2">Full Name</label>
+                        {error && (
+                            <div className="p-3 bg-red-50 text-red-600 rounded-lg text-xs font-bold mb-4">
+                                {error}
+                            </div>
+                        )}
+
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Full Name</label>
                                 <input
                                     type="text"
                                     name="full_name"
                                     value={formData.full_name}
                                     onChange={handleChange}
-                                    className="form-input-v2"
-                                    placeholder="Parent Name"
+                                    className="w-full bg-slate-50 border-slate-200 rounded-lg text-sm focus:ring-cyan-500 focus:border-cyan-500 px-4 py-2.5 outline-none border transition-all"
+                                    placeholder="e.g. Sarah Jenkins"
                                     disabled={isSubmitting}
                                 />
                             </div>
-
-                            {/* Email */}
-                            <div className="form-group-v2">
-                                <label className="form-label-v2">Email</label>
+                            <div>
+                                <label className="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Email Address</label>
                                 <input
                                     type="email"
                                     name="email"
                                     value={formData.email}
                                     onChange={handleChange}
-                                    className="form-input-v2"
-                                    placeholder="parent@email.com"
+                                    className="w-full bg-slate-50 border-slate-200 rounded-lg text-sm focus:ring-cyan-500 focus:border-cyan-500 px-4 py-2.5 outline-none border transition-all"
+                                    placeholder="e.g. s.jenkins@email.com"
                                     disabled={isSubmitting}
                                 />
                             </div>
-
-                            {/* Phone */}
-                            <div className="form-group-v2">
-                                <label className="form-label-v2">Phone Number</label>
+                            <div>
+                                <label className="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Phone Number</label>
                                 <input
                                     type="tel"
                                     name="phone_number"
                                     value={formData.phone_number}
                                     onChange={handleChange}
-                                    className="form-input-v2"
+                                    className="w-full bg-slate-50 border-slate-200 rounded-lg text-sm focus:ring-cyan-500 focus:border-cyan-500 px-4 py-2.5 outline-none border transition-all"
                                     placeholder="+84..."
                                     disabled={isSubmitting}
                                 />
                             </div>
-
-                            {/* Address */}
-                            <div className="form-group-v2">
-                                <label className="form-label-v2">Address</label>
+                            <div>
+                                <label className="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Address</label>
                                 <input
                                     type="text"
                                     name="address"
                                     value={formData.address}
                                     onChange={handleChange}
-                                    className="form-input-v2"
-                                    placeholder="Home Address"
+                                    className="w-full bg-slate-50 border-slate-200 rounded-lg text-sm focus:ring-cyan-500 focus:border-cyan-500 px-4 py-2.5 outline-none border transition-all"
+                                    placeholder="Address..."
                                     disabled={isSubmitting}
                                 />
                             </div>
 
-                            {/* Status */}
-                            <div className="flex items-center gap-3 pt-2">
-                                <label className="relative inline-flex items-center cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        name="is_active"
-                                        checked={formData.is_active}
-                                        onChange={handleChange}
-                                        className="sr-only peer"
-                                        disabled={isSubmitting}
-                                    />
-                                    <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-admin-primary"></div>
-                                    <span className="ms-3 text-sm font-medium text-slate-700">Active Account</span>
-                                </label>
+                            <div>
+                                <label className="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Account Status</label>
+                                <div className="flex gap-4">
+                                    <label className="flex items-center gap-2 cursor-pointer group">
+                                        <input
+                                            type="radio"
+                                            name="is_active"
+                                            value="true"
+                                            checked={formData.is_active === true}
+                                            onChange={handleChange}
+                                            className="text-cyan-500 focus:ring-cyan-500 h-4 w-4 border-slate-300"
+                                        />
+                                        <span className="text-sm font-medium text-slate-700">Active</span>
+                                    </label>
+                                    <label className="flex items-center gap-2 cursor-pointer group">
+                                        <input
+                                            type="radio"
+                                            name="is_active"
+                                            value="false"
+                                            checked={formData.is_active === false}
+                                            onChange={handleChange}
+                                            className="text-cyan-500 focus:ring-cyan-500 h-4 w-4 border-slate-300"
+                                        />
+                                        <span className="text-sm font-medium text-slate-700">Inactive</span>
+                                    </label>
+                                </div>
                             </div>
+                        </div>
+                    </div>
 
-                            {!isEdit && (
-                                <p className="text-xs text-slate-500 mt-4 text-center">
-                                    Create the parent profile first, then you can add children.
-                                </p>
-                            )}
-                        </form>
-                    ) : (
-                        <div className="space-y-4">
-                            {/* Link Student Section */}
-                            <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <h4 className="text-sm font-bold text-slate-700 mb-3">Link Student</h4>
+                    {/* Right Col: Students */}
+                    <div className="md:col-span-8 p-8 bg-slate-50/50 flex flex-col h-full overflow-hidden">
 
-                                <div className="grid grid-cols-2 gap-3 mb-3">
-                                    <div>
-                                        <label className="text-xs font-semibold text-slate-500 mb-1 block">Class</label>
-                                        <div className="select-wrapper-v2">
-                                            <select
-                                                value={selectedClassId}
-                                                onChange={handleClassChange}
-                                                className="form-select-v2 text-sm"
-                                            >
-                                                <option value="">Select Class</option>
-                                                {classes.map(cls => (
-                                                    <option key={cls.id} value={cls.id}>{cls.name}</option>
-                                                ))}
-                                            </select>
-                                            <span className="material-symbols-outlined select-arrow-v2">expand_more</span>
-                                        </div>
+                        {/* Selected Chips */}
+                        <div className="flex items-center justify-between mb-4">
+                            <h4 className="text-xs font-black uppercase tracking-widest text-cyan-500">Linked Students</h4>
+                            <span className="text-[10px] font-bold bg-cyan-500/10 text-cyan-600 px-2 py-0.5 rounded">
+                                {linkedChildren.length} Students Selected
+                            </span>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 mb-6 min-h-[32px]">
+                            {linkedChildren.length > 0 ? (
+                                linkedChildren.map(child => (
+                                    <div key={child.id} className="flex items-center gap-1.5 bg-white border border-cyan-500/30 rounded-full pl-2.5 pr-1.5 py-1 text-xs font-medium text-slate-700 shadow-sm animate-in zoom-in duration-150">
+                                        <span>{child.display_name}</span>
+                                        <button
+                                            onClick={() => removeLinkedChild(child.id)}
+                                            className="size-4 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-400 transition-colors"
+                                        >
+                                            <span className="material-symbols-outlined text-sm leading-none">close</span>
+                                        </button>
                                     </div>
-                                    <div>
-                                        <label className="text-xs font-semibold text-slate-500 mb-1 block">Student</label>
-                                        <div className="select-wrapper-v2">
-                                            <select
-                                                value={selectedStudentId}
-                                                onChange={(e) => setSelectedStudentId(e.target.value)}
-                                                className="form-select-v2 text-sm"
-                                                disabled={!selectedClassId || isLoadingStudents}
-                                            >
-                                                <option value="">
-                                                    {isLoadingStudents ? 'Loading...' : 'Select Student'}
-                                                </option>
-                                                {availableStudents.map(std => (
-                                                    <option key={std.id} value={std.id}>
-                                                        {std.display_name || std.full_name} ({std.pin_code})
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <span className="material-symbols-outlined select-arrow-v2">expand_more</span>
-                                        </div>
+                                ))
+                            ) : (
+                                <p className="text-xs text-slate-400 italic">No students linked yet.</p>
+                            )}
+                        </div>
+
+                        {/* Search & Filter */}
+                        {!isEdit ? (
+                            <div className="flex-1 flex items-center justify-center flex-col text-slate-400">
+                                <span className="material-symbols-outlined text-4xl mb-2 opacity-50">lock</span>
+                                <p className="text-sm font-medium">Create the parent first to link students.</p>
+                            </div>
+                        ) : (
+                            <>
+                                <div className="flex gap-3 mb-4">
+                                    <div className="relative flex-1">
+                                        <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+                                        <input
+                                            type="text"
+                                            placeholder="Search student by name or PIN..."
+                                            value={searchStudentTerm}
+                                            onChange={(e) => setSearchStudentTerm(e.target.value)}
+                                            className="w-full bg-white border-slate-200 rounded-lg text-sm pl-10 pr-4 py-2.5 focus:ring-cyan-500 focus:border-cyan-500 shadow-sm outline-none border"
+                                        />
+                                    </div>
+                                    <div className="relative w-48">
+                                        <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">filter_list</span>
+                                        <select
+                                            value={selectedClassId}
+                                            onChange={(e) => setSelectedClassId(e.target.value)}
+                                            className="w-full bg-white border-slate-200 rounded-lg text-sm pl-10 pr-4 py-2.5 focus:ring-cyan-500 focus:border-cyan-500 shadow-sm appearance-none cursor-pointer outline-none border"
+                                        >
+                                            <option value="">Filter by Class</option>
+                                            {classes.map(c => (
+                                                <option key={c.id} value={c.id}>{c.name}</option>
+                                            ))}
+                                        </select>
                                     </div>
                                 </div>
 
-                                <button
-                                    onClick={handleAddChild}
-                                    className="w-full btn-primary-v2 justify-center py-2"
-                                    disabled={!selectedStudentId}
-                                >
-                                    <span className="material-symbols-outlined text-sm">link</span>
-                                    Link Selected Student
-                                </button>
-
-                                {linkError && <p className="text-red-500 text-xs mt-2 text-center">{linkError}</p>}
-                            </div>
-
-                            {/* List */}
-                            <div className="space-y-2">
-                                <h4 className="text-sm font-bold text-slate-700">Linked Children</h4>
-                                {children.length === 0 ? (
-                                    <p className="text-sm text-slate-400 italic text-center py-4">No children linked yet.</p>
-                                ) : (
-                                    children.map(child => (
-                                        <div key={child.link_id || child.id} className="p-3 bg-white border border-slate-100 shadow-sm rounded-xl flex items-center justify-between group">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-9 h-9 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 text-lg">
-                                                    <span className="material-symbols-outlined text-[20px]">child_care</span>
-                                                </div>
-                                                <div>
-                                                    <p className="font-bold text-sm text-slate-800">{child.display_name}</p>
-                                                    <p className="text-xs text-slate-500">PIN: {child.pin_code}</p>
-                                                </div>
-                                            </div>
-                                            <button
-                                                onClick={() => handleRemoveChild(child.id)}
-                                                className="text-slate-400 hover:text-red-500 p-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                                                title="Remove Link"
-                                            >
-                                                <span className="material-symbols-outlined text-lg">link_off</span>
-                                            </button>
+                                {/* Student List */}
+                                <div className="flex-1 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
+                                    {(availableStudents.length === 0 && (searchStudentTerm || selectedClassId)) && !isLoadingStudents ? (
+                                        <div className="text-center py-8 text-slate-400">
+                                            <p>No students found.</p>
                                         </div>
-                                    ))
-                                )}
-                            </div>
-                        </div>
-                    )}
+                                    ) : (availableStudents.length === 0 && !searchStudentTerm && !selectedClassId) ? (
+                                        <div className="text-center py-8 text-slate-400 bg-white/50 rounded-xl border border-dashed border-slate-200">
+                                            <p className="text-sm">Select a class or search to find students.</p>
+                                        </div>
+                                    ) : (
+                                        availableStudents.map(student => {
+                                            const active = isLinked(student.id);
+                                            return (
+                                                <div
+                                                    key={student.id}
+                                                    onClick={() => toggleStudentLink(student)}
+                                                    className={`flex items-center justify-between p-3 bg-white border rounded-xl transition-all cursor-pointer group shadow-sm ${active
+                                                            ? 'border-cyan-500 ring-1 ring-cyan-500/20'
+                                                            : 'border-slate-200 hover:border-cyan-500/50 hover:shadow-md'
+                                                        }`}
+                                                >
+                                                    <div className="flex items-center gap-3">
+                                                        <div className={`size-10 rounded-lg flex items-center justify-center font-bold text-sm transition-colors ${active
+                                                                ? 'bg-cyan-50 text-cyan-600'
+                                                                : 'bg-slate-100 text-slate-400 group-hover:bg-cyan-50 group-hover:text-cyan-500'
+                                                            }`}>
+                                                            {student.display_name?.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
+                                                        </div>
+                                                        <div>
+                                                            <p className="text-sm font-bold text-slate-900">{student.display_name}</p>
+                                                            <p className="text-[11px] text-slate-500">
+                                                                {student.class_name || 'No Class'} • PIN: {student.pin_code}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-center gap-3">
+                                                        <div className={`size-5 rounded border flex items-center justify-center transition-all ${active
+                                                                ? 'bg-cyan-500 border-cyan-500'
+                                                                : 'bg-white border-slate-300'
+                                                            }`}>
+                                                            {active && <span className="material-symbols-outlined text-white text-sm">check</span>}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })
+                                    )}
+                                    {isLoadingStudents && (
+                                        <div className="py-4 text-center text-slate-400">
+                                            <span className="material-symbols-outlined animate-spin">progress_activity</span>
+                                        </div>
+                                    )}
+                                </div>
+                            </>
+                        )}
+                    </div>
                 </div>
 
                 {/* Footer */}
-                <div className="modal-footer-v2">
-                    {activeTab === 'info' && (
-                        <button onClick={handleSubmit} disabled={isSubmitting} className="btn-save-v2">
-                            {isSubmitting ? 'Saving...' : 'Save Changes'}
-                        </button>
-                    )}
-                    <button onClick={onClose} disabled={isSubmitting} className="btn-cancel-v2">
-                        Close
+                <div className="px-8 py-5 border-t border-slate-100 bg-white flex justify-between items-center">
+                    <button type="button" className="flex items-center gap-2 text-red-500 hover:text-red-600 font-bold text-sm transition-colors opacity-0 pointer-events-none">
+                        <span className="material-symbols-outlined text-lg">delete</span>
+                        <span>Delete Account</span>
                     </button>
+
+                    <div className="flex gap-3">
+                        <button
+                            onClick={onClose}
+                            className="px-6 py-2.5 rounded-lg border border-slate-200 text-slate-600 font-bold text-sm hover:bg-slate-50 transition-colors"
+                            disabled={isSubmitting}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={handleSubmit}
+                            disabled={isSubmitting}
+                            className="px-8 py-2.5 rounded-lg bg-cyan-500 text-white font-bold text-sm hover:brightness-105 shadow-lg shadow-cyan-500/20 transition-all flex items-center gap-2"
+                        >
+                            {isSubmitting ? (
+                                <>
+                                    <span className="material-symbols-outlined animate-spin text-sm">progress_activity</span>
+                                    Saving...
+                                </>
+                            ) : (
+                                'Save Changes'
+                            )}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

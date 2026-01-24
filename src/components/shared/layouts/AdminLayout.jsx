@@ -10,6 +10,7 @@ export default function AdminLayout() {
     // Protect route provided by Auth Hook checks
     if (!admin && !isLoading) {
         // Redirection handled by useEffect in original code, simplified here
+        return null;
     }
 
     const isActive = (path) => location.pathname === path || location.pathname.startsWith(path + '/');
@@ -24,7 +25,7 @@ export default function AdminLayout() {
                     <div className="logo-box-v2">
                         <span className="material-symbols-outlined">school</span>
                     </div>
-                    <h1 className="app-title-v2">Admin Portal</h1>
+                    <h1 className="app-title-v2">EduManage</h1>
                 </div>
 
                 <nav className="nav-v2">
@@ -37,6 +38,10 @@ export default function AdminLayout() {
                         <span className="material-symbols-outlined">people</span>
                         <span>Students</span>
                     </Link>
+                    <Link to="/admin/parents" className={`nav-link-v2 ${isActive('/admin/parents') ? 'active' : ''}`}>
+                        <span className="material-symbols-outlined">groups</span>
+                        <span>Parents</span>
+                    </Link>
                     <Link to="/admin/teachers" className={`nav-link-v2 ${isActive('/admin/teachers') ? 'active' : ''}`}>
                         <span className="material-symbols-outlined">badge</span>
                         <span>Teachers</span>
@@ -44,10 +49,6 @@ export default function AdminLayout() {
                     <Link to="/admin/classes" className={`nav-link-v2 ${isActive('/admin/classes') ? 'active' : ''}`}>
                         <span className="material-symbols-outlined">class</span>
                         <span>Classes</span>
-                    </Link>
-                    <Link to="/admin/parents" className={`nav-link-v2 ${isActive('/admin/parents') ? 'active' : ''}`}>
-                        <span className="material-symbols-outlined">family_restroom</span>
-                        <span>Parents</span>
                     </Link>
 
                     <div className="nav-label-v2" style={{ marginTop: '16px' }}>Content</div>
@@ -65,7 +66,6 @@ export default function AdminLayout() {
                     <div className="user-card-v2">
                         <div className="user-avatar-v2">
                             {/* Placeholder Avatar */}
-                            {/* <img src="..." /> */}
                             <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>A</div>
                         </div>
                         <div style={{ flex: 1, minWidth: 0 }}>

@@ -17,7 +17,7 @@ export { default as StatsCard } from './ui/StatsCard';
 export { default as AdminDashboardPage } from './pages/Dashboard';
 export { default as AdminStudentsPage } from './pages/Students';
 export { default as AdminGamesPage } from './pages/Games';
-export { default as AdminVocabularyPage } from './pages/Vocabulary';
+export { default as AdminVocabularyPage } from './pages/AdminVocabularyPage';
 export { default as AdminVideosPage } from './pages/Videos';
 export { default as AdminTeachersPage } from './pages/Teachers';
 export { default as AdminClassesPage } from './pages/Classes';

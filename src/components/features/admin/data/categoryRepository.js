@@ -5,15 +5,25 @@ export const categoryRepository = {
     async getAll() {
         try {
             const { data, error } = await supabase
-                .from('video_categories')
+                .from('categories')
                 .select('*')
-                .order('name', { ascending: true }); // Sort alphabetically
+                .order('sort_order', { ascending: true });
 
             if (error) throw error;
-            return { success: true, data };
+
+            // Map fields to match application standard (icon, color)
+            const mappedData = data.map(cat => ({
+                id: cat.id,
+                name: cat.name,
+                icon: cat.icon || 'category', // Fallback
+                color: cat.color_code || '#ccc',
+                image_url: cat.icon_url, // Keep access to original icon_url if needed
+                slug: cat.slug
+            }));
+
+            return { success: true, data: mappedData };
         } catch (error) {
             console.error('Error fetching categories:', error);
-            // Fallback to empty array if table doesn't exist yet (to prevent crash)
             return { success: false, error: error.message, data: [] };
         }
     },
@@ -21,14 +31,32 @@ export const categoryRepository = {
     // Create new category
     async create(categoryData) {
         try {
+            const dbPayload = {
+                name: categoryData.name,
+                icon: categoryData.icon,
+                color_code: categoryData.color,
+                slug: categoryData.name.toLowerCase().replace(/\s+/g, '-'),
+                sort_order: 99
+            };
+
             const { data, error } = await supabase
-                .from('video_categories')
-                .insert([categoryData])
+                .from('categories')
+                .insert([dbPayload])
                 .select()
                 .single();
 
             if (error) throw error;
-            return { success: true, data };
+
+            // Map back
+            const mapped = {
+                id: data.id,
+                name: data.name,
+                icon: data.icon,
+                color: data.color_code,
+                slug: data.slug
+            };
+
+            return { success: true, data: mapped };
         } catch (error) {
             console.error('Error creating category:', error);
             return { success: false, error: error.message };
@@ -39,7 +67,7 @@ export const categoryRepository = {
     async delete(id) {
         try {
             const { error } = await supabase
-                .from('video_categories')
+                .from('categories')
                 .delete()
                 .eq('id', id);
 

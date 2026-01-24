@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Lexend:wght@300;400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Lexend:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
   <link
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
@@ -21,15 +21,27 @@
       theme: {
         extend: {
           colors: {
-            "primary": "#0ea5e9", // Matched with admin-primary (Sky-500)
+            "primary": "#38BDF8",
             "admin-primary": "#0ea5e9",
-            "background-light": "#f6f8f8",
-            "background-dark": "#101f22",
+            "background-light": "#F8FAFC",
+            "background-dark": "#0F172A",
+            accent: {
+              purple: "#A855F7",
+              pink: "#EC4899",
+              orange: "#F97316",
+              teal: "#14B8A6",
+              blue: "#3B82F6"
+            }
           },
           fontFamily: {
-            "display": ["Lexend", "sans-serif"],
+            "display": ["Fredoka", "Lexend", "sans-serif"],
             "sans": ["Inter", "sans-serif"]
-          }
+          },
+          borderRadius: {
+            DEFAULT: "1rem",
+            "xl": "1.5rem",
+            "2xl": "2rem"
+          },
         }
       }
     }

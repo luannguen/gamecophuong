@@ -53,8 +53,6 @@ export default function VideoFormModal({ isOpen, onClose, onSubmit, initialData 
                 duration: '',
                 level: 'Beginner',
                 category: categories[0]?.name || 'Animals',
-                thumbnail_url: '',
-                description: '',
                 is_featured: false
             });
         }

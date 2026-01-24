@@ -1,226 +1,242 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { supabase } from '../../../../data/supabaseClient'
-import './Videos.css'
+import { useState } from 'react';
+import { useVideoList } from '../hooks/useVideoList';
+import VideoFormModal from '../components/VideoFormModal';
+import VideoPreviewModal from '../components/VideoPreviewModal';
+import { useToast } from '../../../shared/hooks/useToast';
+import { useConfirmDialog } from '../../../shared/hooks/useConfirmDialog';
 
-export default function AdminVideos() {
-    const [videos, setVideos] = useState([])
-    const [categories, setCategories] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
-    const [showModal, setShowModal] = useState(false)
-    const [editingVideo, setEditingVideo] = useState(null)
-    const [formData, setFormData] = useState({
-        title: '',
-        description: '',
-        video_url: '',
-        category_id: '',
-        duration_minutes: 5,
-        is_featured: false,
-    })
-    const navigate = useNavigate()
+export default function AdminVideosPage() {
+    const {
+        videos,
+        searchQuery,
+        setSearchQuery,
+        isLoading,
+        createVideo,
+        updateVideo,
+        handleDelete
+    } = useVideoList();
 
-    useEffect(() => {
-        loadData()
-    }, [])
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingVideo, setEditingVideo] = useState(null);
+    const [previewVideo, setPreviewVideo] = useState(null);
+    const { showToast } = useToast();
+    const { confirm } = useConfirmDialog();
 
-    const loadData = async () => {
-        try {
-            const [videosRes, categoriesRes] = await Promise.all([
-                supabase.from('videos').select('*, categories(name)').order('created_at', { ascending: false }),
-                supabase.from('categories').select('*').eq('is_active', true)
-            ])
-
-            setVideos(videosRes.data || [])
-            setCategories(categoriesRes.data || [])
-            setIsLoading(false)
-        } catch (error) {
-            console.error('Error loading videos:', error)
-            setIsLoading(false)
+    // Handlers
+    const handleCreate = async (data) => {
+        const result = await createVideo(data);
+        if (result.success) {
+            showToast('Video created successfully', 'success');
+            return true;
+        } else {
+            showToast(result.error || 'Failed to create', 'error');
+            return false;
         }
-    }
+    };
 
-    const openAddModal = () => {
-        setEditingVideo(null)
-        setFormData({ title: '', description: '', video_url: '', category_id: '', duration_minutes: 5, is_featured: false })
-        setShowModal(true)
-    }
+    const handleUpdate = async (data) => {
+        if (!editingVideo) return false;
+        const result = await updateVideo(editingVideo.id, data);
+        if (result.success) {
+            showToast('Video updated successfully', 'success');
+            return true;
+        } else {
+            showToast(result.error || 'Failed to update', 'error');
+            return false;
+        }
+    };
+
+    const onDeleteClick = async (video) => {
+        const confirmed = await confirm({
+            title: 'Delete Video',
+            message: `Are you sure you want to delete "${video.title}" ? `,
+            type: 'danger',
+            confirmText: 'Delete'
+        });
+
+        if (confirmed) {
+            const success = await handleDelete(video.id);
+            if (success) {
+                showToast('Video deleted', 'success');
+            } else {
+                showToast('Failed to delete', 'error');
+            }
+        }
+    };
 
     const openEditModal = (video) => {
-        setEditingVideo(video)
-        setFormData({
-            title: video.title,
-            description: video.description || '',
-            video_url: video.video_url || '',
-            category_id: video.category_id || '',
-            duration_minutes: video.duration_minutes || 5,
-            is_featured: video.is_featured || false,
-        })
-        setShowModal(true)
-    }
+        setEditingVideo(video);
+        setIsModalOpen(true);
+    };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        try {
-            if (editingVideo) {
-                await supabase.from('videos').update(formData).eq('id', editingVideo.id)
-            } else {
-                await supabase.from('videos').insert(formData)
-            }
-            setShowModal(false)
-            loadData()
-        } catch (error) {
-            console.error('Error saving video:', error)
-        }
-    }
-
-    const deleteVideo = async (id) => {
-        if (!confirm('Are you sure you want to delete this video?')) return
-        try {
-            await supabase.from('videos').delete().eq('id', id)
-            loadData()
-        } catch (error) {
-            console.error('Error deleting video:', error)
-        }
-    }
-
-    const getYouTubeId = (url) => {
-        if (!url) return null
-        const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/)
-        return match ? match[1] : null
-    }
-
-    const getThumbnail = (video) => {
-        if (video.thumbnail_url) return video.thumbnail_url
-        const youtubeId = getYouTubeId(video.video_url)
-        return youtubeId ? `https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg` : null
-    }
-
-    if (isLoading) {
-        return <div className="loading"><div className="spinner"></div></div>
-    }
+    const openCreateModal = () => {
+        setEditingVideo(null);
+        setIsModalOpen(true);
+    };
 
     return (
-        <div className="admin-videos-page">
-            <header className="videos-header">
+        <div className="space-y-6">
+            {/* Header */}
+            {/* Header */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                 <div>
-                    <h1>Video Management</h1>
-                    <p className="text-secondary">{videos.length} videos in library</p>
+                    <h1 className="text-2xl font-black text-slate-900">Video Management</h1>
+                    <p className="text-slate-500 font-medium mt-1">
+                        {videos.length} videos currently in your library
+                    </p>
                 </div>
-                <button className="add-btn" onClick={openAddModal}>
-                    <span className="material-symbols-outlined">add</span>
-                    Add Video
-                </button>
-            </header>
-
-            <div className="videos-grid">
-                {videos.map(video => (
-                    <div key={video.id} className="video-admin-card">
-                        <div className="video-thumbnail">
-                            {getThumbnail(video) ? (
-                                <img src={getThumbnail(video)} alt={video.title} />
-                            ) : (
-                                <div className="thumbnail-placeholder">
-                                    <span className="material-symbols-outlined">movie</span>
-                                </div>
-                            )}
-                            {video.is_featured && (
-                                <span className="featured-badge">⭐ Featured</span>
-                            )}
-                            <span className="duration-badge">{video.duration_minutes || 5} min</span>
-                        </div>
-                        <div className="video-info">
-                            <h3>{video.title}</h3>
-                            <p>{video.description || 'No description'}</p>
-                            <span className="video-category">{video.categories?.name || 'Uncategorized'}</span>
-                        </div>
-                        <div className="video-actions">
-                            <button className="action-btn edit" onClick={() => openEditModal(video)}>
-                                <span className="material-symbols-outlined">edit</span>
-                                Edit
-                            </button>
-                            <button className="action-btn delete" onClick={() => deleteVideo(video.id)}>
-                                <span className="material-symbols-outlined">delete</span>
-                                Delete
-                            </button>
-                        </div>
+                <div className="flex items-center gap-3">
+                    {/* Search Input (Integrated) */}
+                    <div className="relative hidden md:block">
+                        <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            className="pl-10 pr-4 py-2.5 bg-slate-50 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all w-64 font-medium"
+                            value={searchQuery}
+                            onChange={e => setSearchQuery(e.target.value)}
+                        />
                     </div>
-                ))}
+
+                    <button
+                        onClick={openCreateModal}
+                        className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20 active:scale-95"
+                    >
+                        <span className="material-symbols-outlined">add_circle</span>
+                        Add New Video
+                    </button>
+                </div>
             </div>
 
-            {/* Modal */}
-            {showModal && (
-                <div className="modal-overlay" onClick={() => setShowModal(false)}>
-                    <div className="modal" onClick={(e) => e.stopPropagation()}>
-                        <h2>{editingVideo ? 'Edit Video' : 'Add New Video'}</h2>
-                        <form onSubmit={handleSubmit}>
-                            <div className="form-group">
-                                <label>Title</label>
-                                <input
-                                    type="text"
-                                    value={formData.title}
-                                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>YouTube URL</label>
-                                <input
-                                    type="url"
-                                    placeholder="https://youtube.com/watch?v=..."
-                                    value={formData.video_url}
-                                    onChange={(e) => setFormData({ ...formData, video_url: e.target.value })}
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Description</label>
-                                <textarea
-                                    value={formData.description}
-                                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                    rows={3}
-                                />
-                            </div>
-                            <div className="form-row">
-                                <div className="form-group">
-                                    <label>Category</label>
-                                    <select
-                                        value={formData.category_id}
-                                        onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
-                                    >
-                                        <option value="">Select...</option>
-                                        {categories.map(cat => (
-                                            <option key={cat.id} value={cat.id}>{cat.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="form-group">
-                                    <label>Duration (min)</label>
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        max="60"
-                                        value={formData.duration_minutes}
-                                        onChange={(e) => setFormData({ ...formData, duration_minutes: parseInt(e.target.value) })}
-                                    />
-                                </div>
-                            </div>
-                            <div className="form-group checkbox-group">
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        checked={formData.is_featured}
-                                        onChange={(e) => setFormData({ ...formData, is_featured: e.target.checked })}
-                                    />
-                                    Featured Video
-                                </label>
-                            </div>
-                            <div className="modal-actions">
-                                <button type="button" className="cancel-btn" onClick={() => setShowModal(false)}>Cancel</button>
-                                <button type="submit" className="save-btn">{editingVideo ? 'Update' : 'Add Video'}</button>
-                            </div>
-                        </form>
+            {/* Mobile Search (visible only on small screens) */}
+            <div className="md:hidden">
+                <input
+                    type="text"
+                    placeholder="Search videos..."
+                    className="w-full pl-4 pr-4 py-3 bg-white rounded-xl border border-slate-200 focus:border-blue-500 outline-none"
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                />
+            </div>
+
+            {/* Content Area */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {isLoading ? (
+                    <div className="col-span-full flex justify-center p-20">
+                        <div className="animate-spin size-10 border-4 border-blue-600 border-t-transparent rounded-full"></div>
                     </div>
-                </div>
-            )}
+                ) : videos.length === 0 ? (
+                    <div className="col-span-full bg-white rounded-2xl p-20 text-center text-slate-400 border border-slate-100 shadow-sm">
+                        <span className="material-symbols-outlined text-6xl mb-4 text-slate-200">movie</span>
+                        <h3 className="text-lg font-bold text-slate-600 mb-2">No videos yet</h3>
+                        <p className="max-w-md mx-auto mb-6">Start building your library by adding your first video lesson.</p>
+                        <button
+                            onClick={openCreateModal}
+                            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20"
+                        >
+                            <span className="material-symbols-outlined">add_circle</span>
+                            Add First Video
+                        </button>
+                    </div>
+                ) : (
+                    videos.map(video => (
+                        <div key={video.id} className="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden">
+                            {/* Thumbnail Section - Click to Preview */}
+                            <div
+                                onClick={() => setPreviewVideo(video)}
+                                className="relative aspect-video bg-slate-100 overflow-hidden group-hover:brightness-95 transition-all block cursor-pointer"
+                            >
+                                {video.thumbnail_url ? (
+                                    <img src={video.thumbnail_url} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center text-slate-300 bg-slate-50">
+                                        <span className="material-symbols-outlined text-5xl opacity-50">play_circle</span>
+                                    </div>
+                                )}
+
+                                {/* Play Overlay */}
+                                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20 backdrop-blur-[2px]">
+                                    <div className="size-12 rounded-full bg-white/90 flex items-center justify-center shadow-lg transform scale-50 group-hover:scale-100 transition-transform duration-300">
+                                        <span className="material-symbols-outlined text-3xl text-blue-600 ml-1">play_arrow</span>
+                                    </div>
+                                </div>
+
+                                <div className="absolute bottom-3 right-3 bg-black/80 text-white text-[10px] font-bold px-2 py-1 rounded backdrop-blur-md shadow-sm">
+                                    {video.duration || '0:00'}
+                                </div>
+
+                                {video.is_featured && (
+                                    <div className="absolute top-3 left-3 bg-yellow-400 text-yellow-900 text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-lg">
+                                        <span className="material-symbols-outlined text-[14px] filled">star</span> Featured
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Content Section */}
+                            <div className="p-5 flex-1 flex flex-col">
+                                <div className="flex items-center justify-between mb-3">
+                                    <span className="px-2.5 py-1 rounded-md bg-blue-50 text-blue-600 text-[10px] uppercase font-black tracking-widest border border-blue-100">
+                                        {video.category || 'General'}
+                                    </span>
+                                    <span className={`text - [10px] font - bold px - 2 py - 0.5 rounded - full border ${video.level === 'Beginner' ? 'text-green-600 border-green-200 bg-green-50' :
+                                        video.level === 'Intermediate' ? 'text-yellow-600 border-yellow-200 bg-yellow-50' :
+                                            'text-red-600 border-red-200 bg-red-50'
+                                        } `}>
+                                        {video.level}
+                                    </span>
+                                </div>
+
+                                <h3 className="text-lg font-bold text-slate-800 mb-2 line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors" title={video.title}>
+                                    {video.title}
+                                </h3>
+
+                                <p className="text-slate-500 text-xs leading-relaxed line-clamp-2 mb-4 h-9">
+                                    {video.description || 'No description provided.'}
+                                </p>
+
+                                {/* Actions Footer */}
+                                <div className="pt-4 mt-auto border-t border-slate-50 flex items-center justify-between gap-2">
+                                    <div className="flex gap-1">
+                                        <button
+                                            onClick={() => openEditModal(video)}
+                                            className="size-8 rounded-lg bg-slate-50 text-slate-500 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-center transition-colors"
+                                            title="Edit"
+                                        >
+                                            <span className="material-symbols-outlined text-[18px]">edit</span>
+                                        </button>
+                                        <button
+                                            onClick={() => onDeleteClick(video)}
+                                            className="size-8 rounded-lg bg-slate-50 text-slate-500 hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-colors"
+                                            title="Delete"
+                                        >
+                                            <span className="material-symbols-outlined text-[18px]">delete</span>
+                                        </button>
+                                    </div>
+                                    <button
+                                        onClick={() => setPreviewVideo(video)}
+                                        className="text-xs font-bold text-slate-400 hover:text-blue-600 flex items-center gap-1 transition-colors"
+                                    >
+                                        PREVIEW <span className="material-symbols-outlined text-[14px]">play_circle</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+
+            <VideoFormModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSubmit={editingVideo ? handleUpdate : handleCreate}
+                initialData={editingVideo}
+            />
+
+            <VideoPreviewModal
+                isOpen={!!previewVideo}
+                onClose={() => setPreviewVideo(null)}
+                video={previewVideo}
+            />
         </div>
-    )
+    );
 }

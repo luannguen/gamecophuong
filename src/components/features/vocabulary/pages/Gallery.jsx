@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { IMAGES, VIDEO_CATEGORIES, RECOMMENDED_VIDEOS } from '../../../../data/designAssets'
+import { IMAGES, VIDEO_CATEGORIES } from '../../../../data/designAssets'
+import { videoRepository } from '../../admin/data/videoRepository' // Use shared repo or move to shared
 import './Gallery.css'
 
 export default function VideoGallery() {
     const [selectedVideo, setSelectedVideo] = useState(null)
+    const [videos, setVideos] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -12,7 +15,22 @@ export default function VideoGallery() {
         if (!student) {
             navigate('/student/login')
         }
+        loadVideos()
     }, [navigate])
+
+    const loadVideos = async () => {
+        setIsLoading(true)
+        try {
+            const result = await videoRepository.getAll()
+            if (result.success) {
+                setVideos(result.data || [])
+            }
+        } catch (error) {
+            console.error('Failed to load videos', error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     return (
         <div className="videos-page">
@@ -88,52 +106,62 @@ export default function VideoGallery() {
                     </div>
                 </section>
 
-                {/* Recommended Section */}
+                {/* Recommended Section (Dynamically Loaded) */}
                 <section className="recommended-section">
                     <h2>Recommended for You</h2>
-                    <div className="recommended-list">
-                        {RECOMMENDED_VIDEOS.map(video => (
-                            <div
-                                key={video.id}
-                                className="video-card toy-shadow"
-                                onClick={() => setSelectedVideo(video)}
-                            >
-                                <div className="video-thumbnail">
+
+                    {isLoading ? (
+                        <div className="flex justify-center py-12">
+                            <div className="animate-spin size-8 border-4 border-teal-500 border-t-transparent rounded-full"></div>
+                        </div>
+                    ) : (
+                        <div className="recommended-list">
+                            {videos.length === 0 ? (
+                                <p className="text-slate-500 text-center col-span-3">No videos available yet.</p>
+                            ) : (
+                                videos.map(video => (
                                     <div
-                                        className="thumbnail-bg"
-                                        style={{ backgroundImage: `url(${video.image})` }}
-                                    ></div>
-                                    <div className="thumbnail-overlay">
-                                        <span className="material-symbols-outlined">play_circle</span>
-                                    </div>
-                                </div>
-                                <div className="video-info">
-                                    <h4>{video.title}</h4>
-                                    <p className="video-duration">
-                                        <span className="material-symbols-outlined">schedule</span>
-                                        {video.duration}
-                                    </p>
-                                    <div className="video-meta">
-                                        <span
-                                            className="level-badge"
-                                            style={{
-                                                backgroundColor: `${video.levelColor}1A`,
-                                                color: video.levelColor
-                                            }}
-                                        >{video.level}</span>
-                                        {video.status === 'watched' ? (
-                                            <div className="status-watched">
-                                                <span className="material-symbols-outlined">check_circle</span>
-                                                <span>Watched</span>
+                                        key={video.id}
+                                        className="video-card toy-shadow cursor-pointer hover:scale-105 transition-transform"
+                                        onClick={() => setSelectedVideo(video)}
+                                    >
+                                        <div className="video-thumbnail">
+                                            <div
+                                                className="thumbnail-bg"
+                                                style={{ backgroundImage: `url(${video.thumbnail_url || IMAGES.tvPlay})` }}
+                                            ></div>
+                                            <div className="thumbnail-overlay">
+                                                <span className="material-symbols-outlined">play_circle</span>
                                             </div>
-                                        ) : (
-                                            <button className="play-now-btn">Play Now</button>
-                                        )}
+                                        </div>
+                                        <div className="video-info">
+                                            <h4>{video.title}</h4>
+                                            <p className="video-duration">
+                                                <span className="material-symbols-outlined">schedule</span>
+                                                {video.duration || 'N/A'}
+                                            </p>
+                                            <div className="video-meta">
+                                                <span
+                                                    className="level-badge"
+                                                    style={{
+                                                        backgroundColor:
+                                                            video.level === 'Beginner' ? '#F0FDF4' : // green-50
+                                                                video.level === 'Intermediate' ? '#FEFCE8' : // yellow-50
+                                                                    '#FEF2F2', // red-50
+                                                        color:
+                                                            video.level === 'Beginner' ? '#16A34A' : // green-600
+                                                                video.level === 'Intermediate' ? '#CA8A04' : // yellow-600
+                                                                    '#DC2626' // red-600
+                                                    }}
+                                                >{video.level}</span>
+                                                <button className="play-now-btn">Play Now</button>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                                ))
+                            )}
+                        </div>
+                    )}
                 </section>
             </main>
 
@@ -142,34 +170,25 @@ export default function VideoGallery() {
                 <div className="video-modal" onClick={() => setSelectedVideo(null)}>
                     <div className="modal-content" onClick={e => e.stopPropagation()}>
                         {/* Video Player */}
-                        <div className="video-player" style={{ backgroundImage: `url(${selectedVideo.image})` }}>
-                            <div className="player-overlay">
-                                <button className="settings-btn">
-                                    <span className="material-symbols-outlined">settings</span>
-                                </button>
-                                <div className="player-controls">
-                                    <button className="control-btn">
-                                        <span className="material-symbols-outlined">replay_10</span>
-                                    </button>
-                                    <button className="play-btn">
-                                        <span className="material-symbols-outlined">play_arrow</span>
-                                    </button>
-                                    <button className="control-btn">
-                                        <span className="material-symbols-outlined">forward_10</span>
-                                    </button>
-                                </div>
-                                <div className="progress-section">
-                                    <div className="progress-bar">
-                                        <div className="progress-fill" style={{ width: '35%' }}>
-                                            <div className="progress-handle"></div>
-                                        </div>
-                                    </div>
-                                    <div className="time-display">
-                                        <span>02:14</span>
-                                        <span>06:45</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <div className="video-player">
+                            {/* If it's a YouTube link, we might need an embed. For now, assuming direct or handling simple iframe if needed. 
+                                 But since we are using MP4/files generally or simple links, let's keep it simple or use an iframe for youtube.
+                                 Let's check if it is youtube. 
+                             */}
+                            {selectedVideo.video_url && (selectedVideo.video_url.includes('youtube') || selectedVideo.video_url.includes('youtu.be')) ? (
+                                <iframe
+                                    src={selectedVideo.video_url.replace('watch?v=', 'embed/').split('&')[0]}
+                                    title={selectedVideo.title}
+                                    className="w-full h-full aspect-video"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
+                            ) : (
+                                <video controls className="w-full h-full bg-black">
+                                    <source src={selectedVideo.video_url} type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                </video>
+                            )}
                         </div>
 
                         {/* Video Details */}

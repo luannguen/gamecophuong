@@ -60,6 +60,10 @@ export default function AdminLayout() {
                         <span className="material-symbols-outlined">menu_book</span>
                         <span>Vocabulary</span>
                     </Link>
+                    <Link to="/admin/videos" className={`nav-link-v2 ${isActive('/admin/videos') ? 'active' : ''}`}>
+                        <span className="material-symbols-outlined">smart_display</span>
+                        <span>Video Channel</span>
+                    </Link>
                 </nav>
 
                 <div className="sidebar-footer-v2">

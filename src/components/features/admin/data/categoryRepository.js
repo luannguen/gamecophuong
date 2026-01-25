@@ -17,7 +17,7 @@ export const categoryRepository = {
                 name: cat.name,
                 icon: cat.icon || 'category', // Fallback
                 color: cat.color_code || '#ccc',
-                image_url: cat.icon_url, // Keep access to original icon_url if needed
+                image_url: cat.image_url, // Changed from icon_url to image_url matches migration
                 slug: cat.slug
             }));
 
@@ -35,6 +35,7 @@ export const categoryRepository = {
                 name: categoryData.name,
                 icon: categoryData.icon,
                 color_code: categoryData.color,
+                image_url: categoryData.image_url, // Added image_url
                 slug: categoryData.name.toLowerCase().replace(/\s+/g, '-'),
                 sort_order: 99
             };
@@ -53,6 +54,7 @@ export const categoryRepository = {
                 name: data.name,
                 icon: data.icon,
                 color: data.color_code,
+                image_url: data.image_url,
                 slug: data.slug
             };
 

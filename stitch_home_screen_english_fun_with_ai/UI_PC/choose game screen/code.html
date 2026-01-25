@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>English Fun Games Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#00d1d1",
+                        "sidebar-active": "#e0fcfc",
+                        "background-light": "#f8fafc",
+                        "card-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        display: ["Outfit", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "2.5rem",
+                    },
+                },
+            },
+        };
+    </script>
+<style type="text/tailwindcss">
+        body {
+            font-family: 'Outfit', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .category-card:hover {
+            transform: translateY(-4px);
+            transition: all 0.3s ease;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-icon {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light text-slate-900 min-h-screen">
+<div class="flex min-h-screen">
+<aside class="w-72 bg-white border-r border-slate-100 flex flex-col py-8 px-6 fixed h-full z-20">
+<div class="flex items-center gap-3 mb-12">
+<div class="w-12 h-12 bg-[#00d1d1] rounded-full flex items-center justify-center shadow-lg shadow-[#00d1d1]/20">
+<span class="material-symbols-outlined text-white text-2xl active-icon">school</span>
+</div>
+<h1 class="text-2xl font-bold tracking-tight text-[#00d1d1]">English <span class="text-[#8b8ba7]">Fun</span></h1>
+</div>
+<nav class="flex-1 space-y-4">
+<a class="flex items-center gap-4 px-4 py-3 text-[#8b8ba7] hover:bg-slate-50 rounded-2xl transition-all group" href="#">
+<span class="material-symbols-outlined text-2xl">home</span>
+<span class="font-bold text-lg">Home</span>
+</a>
+<a class="flex items-center justify-between px-4 py-3 bg-[#e0fcfc] text-[#00d1d1] rounded-full group" href="#">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-2xl active-icon">sports_esports</span>
+<span class="font-bold text-lg">Games</span>
+</div>
+<span class="material-symbols-outlined text-yellow-400 text-xl active-icon">stars</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-[#8b8ba7] hover:bg-slate-50 rounded-2xl transition-all group" href="#">
+<span class="material-symbols-outlined text-2xl">movie</span>
+<span class="font-bold text-lg">Videos</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-[#8b8ba7] hover:bg-slate-50 rounded-2xl transition-all group" href="#">
+<span class="material-symbols-outlined text-2xl">bar_chart</span>
+<span class="font-bold text-lg">Ranking</span>
+</a>
+</nav>
+<div class="mt-auto space-y-6">
+<button class="flex items-center gap-4 px-6 py-4 bg-[#fff1f1] text-[#ff6b6b] rounded-full w-full font-bold transition-transform active:scale-95">
+<span class="material-symbols-outlined text-2xl rotate-180">logout</span>
+<span class="text-lg">Logout</span>
+</button>
+<div class="p-4 bg-white border border-slate-100 rounded-[2rem] shadow-sm">
+<div class="flex items-center gap-3 mb-4">
+<div class="relative">
+<img alt="User profile" class="w-14 h-14 rounded-full border-2 border-white shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo6VQfhTqs9PYoqN04OMfvHZfA9CHEt4CUjR_3EonYInRFS1UG8Q67LAigW_KajK7vH0TzgCsDL3ovgSgnLpQc03PMaDYbZHOuc7vHTA3ck64v29jNLK-jyjVaoY_nUHDbSdAh0_1EomB243I4YW-PuK4HItI_DGm8_JNNz-T9Ig3IjHcKPjcCEHsY1AbaCEF3FrCQLKTtJMyRSqPcMUCx40rKdeVu3e9lKQod4xOyKuzk0-OkkraQYhIzBcw-QNwmiF2C3-cGyFmL"/>
+<div class="absolute -bottom-1 -right-1 bg-yellow-400 text-white text-[10px] font-black px-2 py-0.5 rounded-full border-2 border-white">
+                            LVL 5
+                        </div>
+</div>
+<div>
+<p class="font-bold text-slate-800">Test Student 3</p>
+<div class="flex gap-2 mt-1">
+<div class="flex items-center gap-1 bg-yellow-50 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-yellow-500 text-sm active-icon">emoji_events</span>
+<span class="text-[11px] font-black text-yellow-600">150</span>
+</div>
+<div class="flex items-center gap-1 bg-pink-50 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-pink-500 text-sm active-icon">stars</span>
+<span class="text-[11px] font-black text-pink-600">320</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex-1 ml-72 p-10">
+<header class="flex items-center justify-between mb-10">
+<div class="relative flex-1 max-w-2xl">
+<span class="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full pl-14 pr-6 py-5 bg-white border-none rounded-[1.5rem] shadow-sm focus:ring-2 focus:ring-primary/20 placeholder-slate-400 text-lg" placeholder="Search for a game..." type="text"/>
+</div>
+<div class="flex items-center gap-6 ml-6">
+<button class="relative w-14 h-14 bg-white rounded-full shadow-sm flex items-center justify-center hover:shadow-md transition-shadow">
+<span class="material-symbols-outlined text-slate-600 text-2xl">notifications</span>
+<span class="absolute top-4 right-4 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full"></span>
+</button>
+</div>
+</header>
+<section class="mb-14">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-4xl font-black text-slate-800">Choose a Category</h2>
+<a class="text-[#00d1d1] text-xl font-bold hover:underline" href="#">View All</a>
+</div>
+<div class="grid grid-cols-4 gap-8">
+<div class="category-card bg-white p-5 rounded-[2.5rem] shadow-sm border border-slate-100 cursor-pointer">
+<div class="relative bg-emerald-50 rounded-[2rem] aspect-square flex items-center justify-center mb-6">
+<span class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-xs font-black flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-yellow-400 text-sm active-icon">star</span> 120
+                        </span>
+<img alt="Animals illustration" class="w-32 h-32 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6qV9tR8odP6EdfIhiYCtRIPGymFX-Ow2rh6rh5Jr7VV_hW_ew2e5HM34X4Tmm5Hn_GawDNKC1ESFJliKLxUYtu0IC892gjsMKho6tS-VA6HOAF5ZFQqnVaJy7NBjplNXmw9Qx5-qsNlkLibbodXkyOnvNKeqyKTDqWWMYXJ6CSqrA_RcwSOgm0xxDhuKu_YRqp6TPNcPaCkREMN1hNpOT2Rz6amcDVxf-pTTwSvqARHP2a5NRMnOtaAw_vl865zoGdJ1gzZOksb0A"/>
+</div>
+<div class="px-2">
+<h3 class="text-2xl font-black mb-1 text-slate-800">Animals</h3>
+<p class="text-slate-500 font-medium mb-4">Listen &amp; Click</p>
+<span class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-100/50 text-emerald-500 rounded-xl text-xs font-black uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm">headset</span> Listening
+                        </span>
+</div>
+</div>
+<div class="category-card bg-white p-5 rounded-[2.5rem] shadow-sm border border-slate-100 cursor-pointer">
+<div class="relative bg-pink-50 rounded-[2rem] aspect-square flex items-center justify-center mb-6">
+<span class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-xs font-black flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-yellow-400 text-sm active-icon">star</span> 85
+                        </span>
+<img alt="Family illustration" class="w-32 h-32 object-cover rounded-2xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAB6TANGBCPclWfHk9IGBMuYla_zLtMEc0dLs1kV_kydeeYQSvsMN7E4oPdZRuP4fcz0zAv5HC_nOvKJ6q3i4Y0CpG4mz6uC4SkHKIC8ecS9yYoWE3PfGzVpGcQzHhHcqQGjb4h193_NQEYMDqjPeWqoRbCaqscBRlFB_QJUjYqhWtTrN95yOI0Z6Pn9nkerz4Q0K_PT0RBRpupysR_avW7Yejhkh6UfcFnJ_RuzWxFK4niMb483rM4fxnQSWaxbiU9S22GFXouudII"/>
+</div>
+<div class="px-2">
+<h3 class="text-2xl font-black mb-1 text-slate-800">My Family</h3>
+<p class="text-slate-500 font-medium mb-4">Word Match</p>
+<span class="inline-flex items-center gap-2 px-4 py-2 bg-pink-100/50 text-pink-500 rounded-xl text-xs font-black uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm">book_2</span> Vocabulary
+                        </span>
+</div>
+</div>
+<div class="category-card bg-white p-5 rounded-[2.5rem] shadow-sm border border-slate-100 cursor-pointer">
+<div class="relative bg-orange-50 rounded-[2rem] aspect-square flex items-center justify-center mb-6">
+<span class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-xs font-black flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-yellow-400 text-sm active-icon">star</span> 40
+                        </span>
+<img alt="Daily routines illustration" class="w-32 h-32 object-cover rounded-2xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJWsj36WkpT8-GBDvZhrB88ROl69mn2qzyZYo5ii8C5Dph1X3nJf6xesIg5pSVLfvuvraH2HZXy1cq9IuuDCXkIyo-It4BalrqmLZfRRcpYeciwRwFg8FYPNJDX_2GTiz3wVYfOIQqB6tS4EMHfM7x0svzC8mKo9eQRi6VB030A0SuwMacYka66A7f28OzjVJKfcAanMnvuHoBICTJLsV_fOqE3LMP7Jbx49rR-4o56pqyHWyKxUkdI7FCWWnYle972WnO2dY-8WE8"/>
+</div>
+<div class="px-2">
+<h3 class="text-2xl font-black mb-1 text-slate-800">Daily Routines</h3>
+<p class="text-slate-500 font-medium mb-4">Sentence Builder</p>
+<span class="inline-flex items-center gap-2 px-4 py-2 bg-orange-100/50 text-orange-500 rounded-xl text-xs font-black uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm">edit</span> Grammar
+                        </span>
+</div>
+</div>
+<div class="category-card bg-white p-5 rounded-[2.5rem] shadow-sm border border-slate-100 cursor-pointer">
+<div class="relative bg-cyan-50 rounded-[2rem] aspect-square flex items-center justify-center mb-6">
+<span class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-xs font-black flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-yellow-400 text-sm active-icon">star</span> 210
+                        </span>
+<img alt="House illustration" class="w-32 h-32 object-cover rounded-2xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZrDG3dTA4ToJ2qZTlFXJoZQWxR1IiegRWi2VoWecrH7nCZWefTLv4t0uQ3_hFfGBagH09wWk1MU96kr8hhRbhRCFhyDd0H8rTSHBjoppqWoLPbxPymyIENyLwZ9gWjmSufJD8FyL7aoiF-g0tmyRMBwFDO5GaM6H5_U6TueLZqfmJdg2DjIGVh5V5xQg6c5ZohABWh8jpWwlOchm3d6Jm0rfsLRBb12w4D2o6SXzRkisBqj7ywzXD9EBzrY3ACE076mpl9FwHIYRD"/>
+</div>
+<div class="px-2">
+<h3 class="text-2xl font-black mb-1 text-slate-800">My House</h3>
+<p class="text-slate-500 font-medium mb-4">Speak Match</p>
+<span class="inline-flex items-center gap-2 px-4 py-2 bg-cyan-100/50 text-cyan-500 rounded-xl text-xs font-black uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm">campaign</span> Speaking
+                        </span>
+</div>
+</div>
+</div>
+</section>
+<section>
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-4xl font-black text-slate-800">Miss Phuong's Favorites</h2>
+</div>
+<div class="flex overflow-x-auto gap-8 pb-6 custom-scrollbar">
+<div class="flex-shrink-0 w-[420px] bg-emerald-50 p-6 rounded-[2.5rem] flex items-center gap-6 group cursor-pointer hover:bg-emerald-100 transition-colors">
+<div class="w-24 h-24 bg-emerald-100 rounded-[1.5rem] flex items-center justify-center text-[#00d1d1]">
+<span class="material-symbols-outlined !text-5xl group-hover:scale-110 transition-transform active-icon">rocket_launch</span>
+</div>
+<div>
+<h3 class="text-2xl font-black mb-1 text-slate-800">Space Adventure</h3>
+<p class="text-emerald-600 font-bold text-lg">AI Grammar Quest</p>
+</div>
+<div class="ml-auto">
+<button class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[#00d1d1] active-icon">play_arrow</span>
+</button>
+</div>
+</div>
+<div class="flex-shrink-0 w-[420px] bg-pink-50 p-6 rounded-[2.5rem] flex items-center gap-6 group cursor-pointer hover:bg-pink-100 transition-colors">
+<div class="w-24 h-24 bg-pink-100 rounded-[1.5rem] flex items-center justify-center text-pink-500">
+<span class="material-symbols-outlined !text-5xl group-hover:scale-110 transition-transform active-icon">auto_awesome</span>
+</div>
+<div>
+<h3 class="text-2xl font-black mb-1 text-slate-800">Magic Words</h3>
+<p class="text-pink-600 font-bold text-lg">Vocabulary Master</p>
+</div>
+<div class="ml-auto">
+<button class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-pink-500 active-icon">play_arrow</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<button class="fixed bottom-10 right-10 w-24 h-24 bg-yellow-400 rounded-full flex items-center justify-center shadow-2xl shadow-yellow-400/40 hover:scale-110 transition-transform z-30 border-[10px] border-white">
+<span class="material-symbols-outlined text-white !text-4xl active-icon">casino</span>
+</button>
+</div>
+
+</body></html>

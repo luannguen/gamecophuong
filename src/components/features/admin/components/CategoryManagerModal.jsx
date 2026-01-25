@@ -7,7 +7,7 @@ import { useConfirmDialog } from '../../../shared/hooks/useConfirmDialog';
 export default function CategoryManagerModal({ isOpen, onClose, onUpdate }) {
     const [categories, setCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [newCategory, setNewCategory] = useState({ name: '', icon: '', color: '#26d9d9' });
+    const [newCategory, setNewCategory] = useState({ name: '', icon: '', color: '#26d9d9', image_url: '' });
     const [activeTab, setActiveTab] = useState('create'); // 'create' | 'list'
     const [isIconPickerOpen, setIsIconPickerOpen] = useState(false);
     const [iconSearch, setIconSearch] = useState('');
@@ -45,7 +45,7 @@ export default function CategoryManagerModal({ isOpen, onClose, onUpdate }) {
         const result = await categoryRepository.create(newCategory);
         if (result.success) {
             showToast('Category created!', 'success');
-            setNewCategory({ name: '', icon: '', color: '#26d9d9' });
+            setNewCategory({ name: '', icon: '', color: '#26d9d9', image_url: '' });
             loadCategories();
             if (onUpdate) onUpdate();
             // setActiveTab('list'); // Optional: switch to list
@@ -155,6 +155,20 @@ export default function CategoryManagerModal({ isOpen, onClose, onUpdate }) {
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Theme Image URL</label>
+                                        <input
+                                            type="text"
+                                            placeholder="/assets/games/themes/animals.png"
+                                            className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 outline-none text-sm font-medium text-slate-700 font-mono"
+                                            value={newCategory.image_url || ''}
+                                            onChange={e => setNewCategory({ ...newCategory, image_url: e.target.value })}
+                                        />
+                                        <p className="text-[10px] text-slate-400 mt-1">
+                                            Local: /assets/games/themes/name.png
+                                        </p>
                                     </div>
                                 </div>
 
@@ -285,8 +299,8 @@ export default function CategoryManagerModal({ isOpen, onClose, onUpdate }) {
                                                         setIsIconPickerOpen(false); // Close on select
                                                     }}
                                                     className={`aspect-square rounded-xl flex items-center justify-center transition-all hover:scale-110 hover:-translate-y-1 overflow-hidden ${newCategory.icon === icon
-                                                            ? 'bg-blue-600 text-white shadow-lg ring-2 ring-blue-200'
-                                                            : 'bg-slate-50 text-slate-500 hover:bg-white hover:text-blue-600 hover:shadow-md border border-slate-100'
+                                                        ? 'bg-blue-600 text-white shadow-lg ring-2 ring-blue-200'
+                                                        : 'bg-slate-50 text-slate-500 hover:bg-white hover:text-blue-600 hover:shadow-md border border-slate-100'
                                                         }`}
                                                     title={icon}
                                                 >

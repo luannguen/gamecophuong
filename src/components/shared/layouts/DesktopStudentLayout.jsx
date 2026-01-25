@@ -79,8 +79,8 @@ export default function DesktopStudentLayout() {
                                 onClick={playClick}
                                 onMouseEnter={playHover}
                                 className={`flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group hover-pop-sm ${active
-                                        ? 'bg-cyan-50 text-cyan-600 font-bold shadow-sm ring-1 ring-cyan-100'
-                                        : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium'
+                                    ? 'bg-cyan-50 text-cyan-600 font-bold shadow-sm ring-1 ring-cyan-100'
+                                    : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium'
                                     }`}
                             >
                                 <span className={`material-symbols-outlined text-[24px] ${active ? 'text-cyan-500 fill-current animate-bounce' : 'text-slate-400 group-hover:text-slate-500'

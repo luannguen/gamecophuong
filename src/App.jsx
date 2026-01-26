@@ -18,6 +18,7 @@ import {
     AdminGamesPage,
     AdminVocabularyPage,
     AdminVideosPage,
+    LessonPreviewPage, // Import Preview Page
 } from './components/features/admin'
 
 import {
@@ -73,6 +74,9 @@ function App() {
 
                 {/* Admin Routes */}
                 <Route path="/admin/login" element={<Navigate to="/student/login" replace />} />
+
+                {/* Independent Admin Preview Route (No Layout/Sidebar) */}
+                <Route path="/admin/video/preview/:lessonId" element={<LessonPreviewPage />} />
 
                 <Route element={<AdminLayout />}>
                     <Route path="/admin/dashboard" element={<AdminDashboardPage />} />

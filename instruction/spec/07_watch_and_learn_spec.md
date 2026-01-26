@@ -429,6 +429,38 @@ H -->|Game| I[Games]
 
 ---
 
+## 19. Security & Embedding Policy (Video Safety Rules)
+
+To ensure system stability and security, the following strict rules apply to video handling:
+
+### 19.1 No Raw Iframe Storage
+- **Never** store or render raw HTML (`<iframe ...>`) provided by users/admins.
+- Store only "Clean Data": `videoSource` (e.g., 'youtube'), `videoId`, and `originalUrl`.
+
+### 19.2 Domain Whitelist
+The system only accepts video URLs from:
+- YouTube (`youtube.com`, `youtu.be`)
+- Vimeo (`vimeo.com`)
+- (Future) Internal CDN
+
+### 19.3 Player Implementation
+- Use a dedicated Player Component (e.g., `ReactPlayer`) that constructs the embed iframe internally from the `videoId`.
+- Do not use `dangerouslySetInnerHTML`.
+
+### 19.4 Playback Fallback
+- If a video is valid but typically blocked from embedding (Copyright/Privacy settings):
+    - UI must show a "Cannot Play Embedded" state.
+    - Provide a button: **"Open on YouTube"** (target="_blank") to allow learning continuity.
+
+### 19.5 Admin Preview Strategy
+- Inline preview is best-effort only.
+- System must provide a "Preview in New Tab" mode that runs in a top-level context.
+- Preview mode does not record learning progress.
+- Preview is for content validation, not for learner analytics.
+
+---
+
+
 # 🔚 KẾT LUẬN
 
 👉 **Đây là bản spec “đóng gói hoàn chỉnh”**

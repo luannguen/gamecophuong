@@ -31,6 +31,8 @@ export const Icon = {
     Translate: (props) => <BaseIcon name="translate" {...props} />,
     Circle: (props) => <BaseIcon name="circle" {...props} />,
     FileText: (props) => <BaseIcon name="description" {...props} />,
+    ExternalLink: (props) => <BaseIcon name="open_in_new" {...props} />,
+    VideoOff: (props) => <BaseIcon name="videocam_off" {...props} />,
 };
 
 export default Icon;

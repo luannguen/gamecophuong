@@ -1,181 +1,60 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import ReactPlayer from 'react-player';
 import { Icon } from '../../../ui/AnimatedIcon';
 import CheckpointTimeline from './CheckpointTimeline';
 import CheckpointTable from './CheckpointTable';
 import LessonMetadataSidebar from './LessonMetadataSidebar';
 import CheckpointEditorModal from './CheckpointEditorModal';
-import { useWatchAndLearn } from '../hooks/useWatchAndLearn';
-import { v4 as uuidv4 } from 'uuid';
 import { useVocabularyManagement } from '../hooks/useVocabularyManagement';
-
-import { useToast } from '../../../shared/hooks/useToast';
+import { useLessonEditor } from '../hooks/useLessonEditor';
 
 export default function LessonEditor({ unit, lesson, onBack, saveCheckpoints, updateLessonVersion, updateLesson, categories, onRefresh }) {
-    // const { saveCheckpoints, updateLessonVersion, updateLesson, categories } = useWatchAndLearn(); // REMOVED: Using props
     const { vocabulary } = useVocabularyManagement();
-    const { toast } = useToast();
-    // State
-    const [currentTime, setCurrentTime] = useState(0);
-    const [duration, setDuration] = useState(lesson?.durationSec || 0);
-    const [playing, setPlaying] = useState(false);
-    const [checkpoints, setCheckpoints] = useState(lesson?.version?.checkpoints || []);
 
-    // Modal State
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingCheckpoint, setEditingCheckpoint] = useState(null);
+    const {
+        // State
+        currentLesson,
+        currentTime,
+        duration,
+        playing,
+        checkpoints,
+        videoError,
+        isModalOpen,
+        editingCheckpoint,
+        checkpointToDelete,
+        isEmbedded, // New state from hook
 
-    const [currentLesson, setCurrentLesson] = useState(lesson || {});
+        // Actions
+        setPlaying,
+        setVideoError,
+        setDuration,
+        setIsModalOpen,
+        setCheckpointToDelete,
+        getCleanVideoUrl,
 
-    const playerRef = useRef(null);
+        // Handlers
+        handleProgress,
+        handleSeek,
+        handleAddCheckpoint,
+        handleEditCheckpoint,
+        handleSaveCheckpointFromModal,
+        handleDeleteCheckpoint,
+        handleConfirmDelete,
+        handleMetadataUpdate,
+        handleSave,
 
-    // Sync state internally
-    useEffect(() => {
-        if (lesson) {
-            setCheckpoints(lesson.version?.checkpoints || []);
-
-            // Hydrate Vocabulary IDs to Objects for UI
-            let hydratedVocab = [];
-            if (lesson.vocab_ids && Array.isArray(lesson.vocab_ids) && vocabulary.length > 0) {
-                hydratedVocab = lesson.vocab_ids
-                    .map(id => vocabulary.find(v => v.id === id))
-                    .filter(Boolean);
-            } else if (lesson.target_vocabulary) {
-                hydratedVocab = lesson.target_vocabulary;
-            }
-
-            setCurrentLesson({ ...lesson, target_vocabulary: hydratedVocab });
-        }
-    }, [lesson, vocabulary]);
+        // Refs
+        playerRef
+    } = useLessonEditor({
+        unit,
+        lesson,
+        saveCheckpoints,
+        updateLessonVersion,
+        updateLesson,
+        vocabulary
+    });
 
     if (!lesson) return null;
-
-    const handleProgress = (state) => {
-        setCurrentTime(state.playedSeconds);
-    };
-
-    const handleSeek = (time) => {
-        if (playerRef.current) {
-            playerRef.current.seekTo(time, 'seconds');
-            setCurrentTime(time);
-        }
-    };
-
-    const handleAddCheckpoint = (time, type) => {
-        setPlaying(false); // Pause
-        const newCp = {
-            id: `cp_${uuidv4()}`,
-            timeSec: Math.floor(time || currentTime),
-            type: type || 'vocab',
-            vocabId: '',
-            content: { question: '', options: ['', '', '', ''], answer: '', note: '' }
-        };
-        setEditingCheckpoint(newCp);
-        setIsModalOpen(true);
-    };
-
-    const handleEditCheckpoint = (cp) => {
-        setPlaying(false);
-        setEditingCheckpoint(cp);
-        setIsModalOpen(true);
-    };
-
-    const handleSaveCheckpointFromModal = (updatedCp) => {
-        // Find if exists or new
-        const exists = checkpoints.find(c => c.id === updatedCp.id);
-        let newCheckpoints;
-        if (exists) {
-            newCheckpoints = checkpoints.map(c => c.id === updatedCp.id ? updatedCp : c);
-        } else {
-            newCheckpoints = [...checkpoints, updatedCp];
-        }
-
-        newCheckpoints.sort((a, b) => a.timeSec - b.timeSec);
-        setCheckpoints(newCheckpoints);
-        setIsModalOpen(false);
-        setEditingCheckpoint(null);
-    };
-
-    // Confirm Delete State
-    const [checkpointToDelete, setCheckpointToDelete] = useState(null);
-
-    const handleConfirmDelete = () => {
-        if (checkpointToDelete) {
-            const updated = checkpoints.filter(cp => cp.id !== checkpointToDelete);
-            setCheckpoints(updated);
-            setCheckpointToDelete(null);
-        }
-    };
-
-    const handleDeleteCheckpoint = (id) => {
-        setCheckpointToDelete(id);
-    };
-
-    const getDifficultyValue = (level) => {
-        if (typeof level === 'number') return level;
-        switch (level) {
-            case 'Beginner': return 1;
-            case 'Intermediate': return 2;
-            case 'Advanced': return 3;
-            case 'Professional': return 4;
-            default: return 2; // Default to Intermediate
-        }
-    };
-
-    const handleSave = async () => {
-        let isSuccess = true;
-        console.log("Saving lesson...", { currentLesson, checkpoints });
-
-        try {
-            // 1. Save Checkpoints
-            const cpRes = await saveCheckpoints(unit.id, lesson.id, checkpoints);
-            if (!cpRes.success) {
-                console.error("Checkpoint save failed:", cpRes.error);
-                isSuccess = false;
-            }
-
-            // 2. Save Lesson Version (Video, Difficulty)
-            if (currentLesson.version?.id) {
-                const updates = {
-                    video_url: currentLesson.videoUrl,
-                    difficulty: getDifficultyValue(currentLesson.difficultyLevel),
-                    vocab_ids: currentLesson.target_vocabulary?.map(v => v.id) || []
-                };
-                console.log("Updating version:", updates);
-                const verRes = await updateLessonVersion(currentLesson.version.id, updates);
-                if (!verRes.success) {
-                    console.error("Version update failed:", verRes.error);
-                    isSuccess = false;
-                }
-            }
-
-            // 3. Save Lesson Details (Title)
-            if (currentLesson.title !== lesson.title) {
-                const lessonRes = await updateLesson(unit.id, lesson.id, {
-                    title: currentLesson.title
-                });
-                if (!lessonRes.success) {
-                    console.error("Lesson update failed:", lessonRes.error);
-                    isSuccess = false;
-                }
-            }
-
-            if (isSuccess) {
-                toast.success('Lesson saved successfully!');
-                // onRefresh(true); // Disable full refresh to avoid race conditions. Hook updates state locally.
-            } else {
-                toast.error('Check console for save errors.');
-            }
-
-        } catch (e) {
-            console.error("Unexpected error in handleSave:", e);
-            toast.error('Unexpected error saving lesson.');
-        }
-    };
-
-    const handleMetadataUpdate = (newData) => {
-        setCurrentLesson(newData);
-    };
 
     return (
         <div className="flex h-screen -m-8 w-[calc(100%+4rem)] bg-[#f5f8f8] dark:bg-[#102222] overflow-hidden font-display">
@@ -206,7 +85,18 @@ export default function LessonEditor({ unit, lesson, onBack, saveCheckpoints, up
                             <span className="text-white font-medium">{currentLesson.title}</span>
                         </div>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => {
+                                // Sync current state to local storage for preview
+                                localStorage.setItem(`preview_lesson_${lesson.id}`, JSON.stringify(currentLesson));
+                                window.open(`/admin/video/preview/${lesson.id}`, '_blank');
+                            }}
+                            className="flex items-center gap-2 text-[#90cbcb] hover:text-[#0df2f2] px-3 py-2 rounded-lg text-sm font-bold transition-colors border border-[#316868] hover:border-[#0df2f2]"
+                        >
+                            <Icon.ExternalLink className="w-4 h-4" />
+                            <span>Preview Lesson</span>
+                        </button>
                         <button
                             onClick={handleSave}
                             className="flex items-center gap-2 bg-[#0df2f2] text-[#102323] px-4 py-2 rounded-lg text-sm font-bold shadow-[0_4px_20px_rgba(13,242,242,0.4)] hover:scale-105 transition-transform"
@@ -218,27 +108,52 @@ export default function LessonEditor({ unit, lesson, onBack, saveCheckpoints, up
 
                 {/* VIDEO PLAYER SECTION (Fill remaining height above timeline) */}
                 <div className="flex-1 flex flex-col items-center justify-center bg-black p-4 relative overflow-hidden">
-                    <div className="relative w-full max-w-5xl aspect-video bg-[#0a1515] rounded-xl overflow-hidden shadow-2xl border border-[#224949] group z-0">
+                    {/* Debug Controls */}
+                    <div className="absolute top-4 right-4 z-50 flex flex-col items-end gap-2">
+                        {isEmbedded && (
+                            <div className="bg-yellow-600/90 text-white px-3 py-2 rounded shadow-lg text-xs font-bold max-w-xs text-right animate-pulse">
+                                ⚠️ Running in Iframe/Preview Mode. <br />
+                                Video playback may be restricted by browser security.
+                            </div>
+                        )}
+                    </div>
+
+                    <div
+                        id="video-container-wrapper"
+                        className="relative w-full max-w-5xl aspect-video bg-[#0a1515] rounded-xl overflow-hidden shadow-2xl border border-[#224949]"
+                        style={{ zIndex: 10, pointerEvents: 'all' }}
+                    >
                         {currentLesson.videoUrl ? (
                             <ReactPlayer
+                                key={currentLesson.videoUrl} // Force remount on URL change
                                 ref={playerRef}
-                                url={currentLesson.videoUrl}
+                                url={getCleanVideoUrl(currentLesson.videoUrl || '')}
                                 width="100%"
                                 height="100%"
                                 controls={true}
                                 playing={playing}
-                                style={{ pointerEvents: 'auto' }}
+                                onPlay={() => setPlaying(true)}
+                                onPause={() => setPlaying(false)}
                                 onProgress={handleProgress}
                                 onReady={() => {
+                                    console.log("Player Ready. Duration:", playerRef.current?.getDuration());
+                                    console.log("Internal Player:", playerRef.current?.getInternalPlayer?.()); // Debug log
                                     if (playerRef.current) {
                                         setDuration(playerRef.current.getDuration());
                                     }
                                 }}
-                                onPlay={() => setPlaying(true)}
-                                onPause={() => setPlaying(false)}
+                                onError={(e) => {
+                                    console.error("Video Load Error details:", e);
+                                    setVideoError(true);
+                                }}
                                 config={{
                                     youtube: {
-                                        playerVars: { showinfo: 0, modestbranding: 1 }
+                                        playerVars: {
+                                            showinfo: 0,
+                                            modestbranding: 1,
+                                            origin: window.location.origin, // Fix for black screen on some browsers
+                                            rel: 0 // Prevent related videos from other channels
+                                        }
                                     }
                                 }}
                             />
@@ -246,6 +161,27 @@ export default function LessonEditor({ unit, lesson, onBack, saveCheckpoints, up
                             <div className="w-full h-full flex flex-col items-center justify-center text-slate-500">
                                 <Icon.Video className="text-6xl mb-4 opacity-20" />
                                 <p className="font-bold">No Video Selected</p>
+                            </div>
+                        )}
+
+                        {/* Fallback UI for Restricted Videos */}
+                        {videoError && currentLesson.videoUrl && (
+                            <div className="absolute inset-0 z-40 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 animate-fadeIn">
+                                <Icon.VideoOff className="w-16 h-16 text-red-500 mb-4 opacity-80" />
+                                <h3 className="text-xl font-bold text-white mb-2">Video Cannot Be Played Here</h3>
+                                <p className="text-[#90cbcb] mb-6 max-w-md">
+                                    The video owner may have disabled embedding, or the URL is restricted.
+                                    You can still watch it on YouTube.
+                                </p>
+                                <a
+                                    href={getCleanVideoUrl(currentLesson.videoUrl)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-lg font-bold transition-transform hover:scale-105 shadow-xl"
+                                >
+                                    <span>Open on YouTube</span>
+                                    <Icon.ExternalLink className="w-4 h-4" />
+                                </a>
                             </div>
                         )}
                     </div>

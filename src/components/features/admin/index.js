@@ -22,4 +22,5 @@ export { default as AdminVideosPage } from './pages/Videos';
 export { default as AdminTeachersPage } from './pages/Teachers';
 export { default as AdminClassesPage } from './pages/Classes';
 export { default as AdminParentsPage } from './pages/Parents';
+export { default as LessonPreviewPage } from './video_module/LessonPreviewPage';
 

@@ -171,14 +171,21 @@ export default function LessonMetadataSidebar({ lesson, vocabulary, categories, 
                     </div>
                 </div>
 
-                {/* Navigation / Info Links */}
-                <nav className="flex flex-col gap-1 pt-4 border-t border-[#224949]">
-                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-[#0df2f2]/10 text-[#0df2f2] border border-[#0df2f2]/20">
-                        <Icon.Info className="w-5 h-5" />
-                        <p className="text-sm font-bold font-display">General Info</p>
+                {/* Lesson Description */}
+                <div className="space-y-4 pt-4 border-t border-[#224949]">
+                    <div className="flex items-center gap-2 text-white">
+                        <Icon.Info className="w-5 h-5 text-[#0df2f2]" />
+                        <p className="text-sm font-semibold font-display">General Info</p>
                     </div>
-                    {/* ... other links placeholders */}
-                </nav>
+                    <label className="block">
+                        <textarea
+                            className="w-full rounded-lg text-white focus:outline-none focus:ring-1 focus:ring-[#0df2f2] border border-[#316868] bg-[#183434] h-32 placeholder-[#90cbcb] px-3 py-2 text-xs font-display transition-all resize-none custom-scrollbar"
+                            value={lesson.description || ''}
+                            onChange={(e) => onUpdate({ ...lesson, description: e.target.value })}
+                            placeholder="Enter lesson description..."
+                        />
+                    </label>
+                </div>
             </div>
 
             {/* All Vocabulary Modal */}

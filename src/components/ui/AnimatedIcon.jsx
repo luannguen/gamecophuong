@@ -37,6 +37,12 @@ export const Icon = {
     Upload: (props) => <BaseIcon name="upload" {...props} />,
     Check: (props) => <BaseIcon name="check" {...props} />,
     Refresh: (props) => <BaseIcon name="refresh" {...props} />,
+
+    // Interaction Icons
+    Lock: (props) => <BaseIcon name="lock" {...props} />,
+    Unlock: (props) => <BaseIcon name="lock_open" {...props} />,
+    Star: (props) => <BaseIcon name="star" {...props} />,
+    Book: (props) => <BaseIcon name="menu_book" {...props} />, // Alias for BookOpen
 };
 
 export default Icon;

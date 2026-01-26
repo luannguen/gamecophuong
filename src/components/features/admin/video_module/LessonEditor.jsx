@@ -88,7 +88,11 @@ export default function LessonEditor({ unit, lesson, onBack, saveCheckpoints, up
                     <div className="flex items-center gap-3">
                         <button
                             onClick={() => {
-                                localStorage.setItem(`preview_lesson_${lesson.id}`, JSON.stringify(currentLesson));
+                                const previewData = {
+                                    ...currentLesson,
+                                    version: { ...currentLesson.version, checkpoints: checkpoints } // Inject live checkpoints
+                                };
+                                localStorage.setItem(`preview_lesson_${lesson.id}`, JSON.stringify(previewData));
                                 window.open(`/admin/video/preview/${lesson.id}?mode=video`, '_blank');
                             }}
                             className="flex items-center gap-2 text-[#90cbcb] hover:text-[#0df2f2] px-3 py-2 rounded-lg text-sm font-bold transition-colors border border-[#316868] hover:border-[#0df2f2]"
@@ -99,7 +103,11 @@ export default function LessonEditor({ unit, lesson, onBack, saveCheckpoints, up
                         </button>
                         <button
                             onClick={() => {
-                                localStorage.setItem(`preview_lesson_${lesson.id}`, JSON.stringify(currentLesson));
+                                const previewData = {
+                                    ...currentLesson,
+                                    version: { ...currentLesson.version, checkpoints: checkpoints } // Inject live checkpoints
+                                };
+                                localStorage.setItem(`preview_lesson_${lesson.id}`, JSON.stringify(previewData));
                                 window.open(`/admin/video/preview/${lesson.id}?mode=full`, '_blank');
                             }}
                             className="flex items-center gap-2 text-[#90cbcb] hover:text-[#0df2f2] px-3 py-2 rounded-lg text-sm font-bold transition-colors border border-[#316868] hover:border-[#0df2f2]"
@@ -134,46 +142,74 @@ export default function LessonEditor({ unit, lesson, onBack, saveCheckpoints, up
                         className="relative w-full max-w-5xl aspect-video bg-[#0a1515] rounded-xl overflow-hidden shadow-2xl border border-[#224949]"
                         style={{ zIndex: 10, pointerEvents: 'all' }}
                     >
-                        {currentLesson.videoUrl ? (
-                            <ReactPlayer
-                                key={currentLesson.videoUrl} // Force remount on URL change
-                                ref={playerRef}
-                                url={getCleanVideoUrl(currentLesson.videoUrl || '')}
-                                width="100%"
-                                height="100%"
-                                controls={true}
-                                playing={playing}
-                                onPlay={() => setPlaying(true)}
-                                onPause={() => setPlaying(false)}
-                                onProgress={handleProgress}
-                                onReady={() => {
-                                    console.log("Player Ready. Duration:", playerRef.current?.getDuration());
-                                    console.log("Internal Player:", playerRef.current?.getInternalPlayer?.()); // Debug log
-                                    if (playerRef.current) {
-                                        setDuration(playerRef.current.getDuration());
-                                    }
-                                }}
-                                onError={(e) => {
-                                    console.error("Video Load Error details:", e);
-                                    setVideoError(true);
-                                }}
-                                config={{
-                                    youtube: {
-                                        playerVars: {
-                                            showinfo: 0,
-                                            modestbranding: 1,
-                                            origin: window.location.origin, // Fix for black screen on some browsers
-                                            rel: 0 // Prevent related videos from other channels
+                        {(() => {
+                            const url = getCleanVideoUrl(currentLesson.videoUrl || '');
+                            const isDirectFile = url.startsWith('blob:') || url.includes('supabase.co') || url.endsWith('.mp4');
+
+                            if (isDirectFile) {
+                                return (
+                                    <video
+                                        ref={playerRef} // Native ref
+                                        src={url}
+                                        className="w-full h-full object-contain bg-black"
+                                        controls
+                                        autoPlay={false} // Don't autoplay in editor to prevent chaos
+                                        onPlay={() => setPlaying(true)}
+                                        onPause={() => setPlaying(false)}
+                                        onTimeUpdate={(e) => handleProgress({ playedSeconds: e.target.currentTime })}
+                                        onLoadedMetadata={(e) => {
+                                            const dur = e.target.duration;
+                                            console.log("Native Video Duration:", dur);
+                                            setDuration(dur);
+                                        }}
+                                        onError={(e) => {
+                                            console.error("Native Video Error:", e);
+                                            setVideoError(true);
+                                        }}
+                                    />
+                                );
+                            }
+
+                            return currentLesson.videoUrl ? (
+                                <ReactPlayer
+                                    key={currentLesson.videoUrl} // Force remount on URL change
+                                    ref={playerRef}
+                                    url={url}
+                                    width="100%"
+                                    height="100%"
+                                    controls={true}
+                                    playing={playing}
+                                    onPlay={() => setPlaying(true)}
+                                    onPause={() => setPlaying(false)}
+                                    onProgress={handleProgress}
+                                    onReady={() => {
+                                        console.log("Player Ready. Duration:", playerRef.current?.getDuration());
+                                        if (playerRef.current) {
+                                            setDuration(playerRef.current.getDuration());
                                         }
-                                    }
-                                }}
-                            />
-                        ) : (
-                            <div className="w-full h-full flex flex-col items-center justify-center text-slate-500">
-                                <Icon.Video className="text-6xl mb-4 opacity-20" />
-                                <p className="font-bold">No Video Selected</p>
-                            </div>
-                        )}
+                                    }}
+                                    onError={(e) => {
+                                        console.error("Video Load Error details:", e);
+                                        setVideoError(true);
+                                    }}
+                                    config={{
+                                        youtube: {
+                                            playerVars: {
+                                                showinfo: 0,
+                                                modestbranding: 1,
+                                                origin: window.location.origin,
+                                                rel: 0
+                                            }
+                                        }
+                                    }}
+                                />
+                            ) : (
+                                <div className="w-full h-full flex flex-col items-center justify-center text-slate-500">
+                                    <Icon.Video className="text-6xl mb-4 opacity-20" />
+                                    <p className="font-bold">No Video Selected</p>
+                                </div>
+                            );
+                        })()}
 
                         {/* Fallback UI for Restricted Videos */}
                         {videoError && currentLesson.videoUrl && (

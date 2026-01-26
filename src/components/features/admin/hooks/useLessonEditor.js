@@ -132,7 +132,13 @@ export function useLessonEditor({ unit, lesson, saveCheckpoints, updateLessonVer
 
     const handleSeek = (time) => {
         if (playerRef.current) {
-            playerRef.current.seekTo(time, 'seconds');
+            if (typeof playerRef.current.seekTo === 'function') {
+                // ReactPlayer
+                playerRef.current.seekTo(time, 'seconds');
+            } else {
+                // Native Video
+                playerRef.current.currentTime = time;
+            }
             setCurrentTime(time);
             lastProgressTime.current = time; // Reset tracker
         }

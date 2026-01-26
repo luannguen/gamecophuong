@@ -91,5 +91,36 @@ Khi làm việc với Admin Panel (ví dụ: `Watch & Learn Manager`):
 3.  **Read Schema File**:
     *   File `Data/db_schema.sql` là nguồn sự thật. Đừng đoán type. `text[]` khác `jsonb`.
 
+## 6. Media Handling & RLS (Supabase Lessons)
+
+> **MỚI CẬP NHẬT**: Rút kinh nghiệm từ Module Media Library & Video Playback (26/01/2026).
+
+1.  **Hybrid Video Player Strategy (Chiến Thuật Player Lai)**:
+    *   **Vấn đề**: `ReactPlayer` rất tốt với YouTube nhưng thường lỗi (black screen/error) với direct URL từ Supabase (MP4) hoặc Blob, đặc biệt khi user cấu hình config cho YouTube.
+    *   **Sai lầm**: Cố gắng ép `ReactPlayer` play tất cả mọi thứ -> Lỗi không đồng nhất giữa Preview và Editor.
+    *   **Giải pháp (The Fix)**: Dùng **Condition Check** để render component khác nhau:
+        ```javascript
+        const isDirectFile = url.startsWith('blob:') || url.includes('supabase.co') || url.endsWith('.mp4');
+        if (isDirectFile) {
+            // Dùng Native HTML5 Video cho file thuần -> Ổn định tuyệt đối
+            return <video src={url} ref={nativeRef} controls />;
+        }
+        // Dùng ReactPlayer cho YouTube/Vimeo -> Hỗ trợ tốt embed
+        return <ReactPlayer url={url} ref={reactPlayerRef} ... />;
+        ```
+    *   **Lưu ý**: Cần map lại API của Native Ref (`currentTime`, `duration`) để khớp với hook logic đang dùng cho `ReactPlayer`.
+
+2.  **The "Silent Delete" Trap (Bẫy RLS Policies)**:
+    *   **Triệu chứng**: Chức năng DELETE gọi API báo `200 OK` (hoặc không báo lỗi) nhưng refresh lại **file vẫn còn nguyên**.
+    *   **Nguyên nhân**: Supabase RLS mặc định chặn DELETE. Nếu chỉ thêm policy SELECT và INSERT, lệnh DELETE sẽ bị "Silent Ignore" (thất bại âm thầm).
+    *   **Action**: Luôn nhớ check **DELETE Policy** cho Storage Bucket.
+        ```sql
+        CREATE POLICY "Auth Delete Videos" ON storage.objects FOR DELETE USING ( bucket_id = 'videos' );
+        ```
+
+3.  **UseConfirmDialog Trap**:
+    *   **Lỗi**: Hook `useConfirmDialog` trả về `{ showConfirm: confirm }` nhưng component gọi `{ confirm }` -> Lỗi `confirm is not a function`.
+    *   **Action**: Luôn log hook ra xem nó return cái gì nếu gặp lỗi function undefined. Destructuring phải chính xác tên export.
+
 ---
 **GHI CHÚ**: File này là live document. Cập nhật ngay khi có quy trình mới.

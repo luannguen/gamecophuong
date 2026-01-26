@@ -22,17 +22,49 @@ export default function LessonPreviewPage() {
 
     // Checkpoint State
     const [checkpoints, setCheckpoints] = useState([]);
-    const [activeCheckpoint, setActiveCheckpoint] = useState(null);
+    const [activeCluster, setActiveCluster] = useState(null); // Array of checkpoints
+    const [clusterStep, setClusterStep] = useState(0); // Current step index
     const lastTriggeredTime = useRef(-1);
 
-    // Initialize Checkpoints
+    // Quiz State (Per Step)
+    const [quizState, setQuizState] = useState({ selected: null, isCorrect: false, submitted: false });
+
+    // Reset Quiz State on Step Change
+    useEffect(() => {
+        setQuizState({ selected: null, isCorrect: false, submitted: false });
+    }, [activeCluster, clusterStep]);
+
+    const handleQuizAnswer = (option) => {
+        if (quizState.submitted || !activeCluster) return;
+
+        const currentItem = activeCluster[clusterStep];
+        const correctAnswer = currentItem.content?.answer; // Assuming 'answer' holds the string
+        const isCorrect = option === correctAnswer;
+
+        setQuizState({
+            selected: option,
+            isCorrect,
+            submitted: true
+        });
+
+        if (isCorrect) {
+            // Optional: Auto-play sound or show celebration
+            console.log("Correct Answer!");
+        } else {
+            console.log("Wrong Answer. Correct was:", correctAnswer);
+        }
+    };
+
+    // Initialize Checkpoints & Grouping
     useEffect(() => {
         if (lesson) {
             console.log("Preview Loaded Lesson:", lesson);
-            // Robust path: Direct check -> Version check -> Empty
-            const loadedCheckpoints = lesson.version?.checkpoints || lesson.checkpoints || [];
-            console.log("Loaded Checkpoints:", loadedCheckpoints);
-            setCheckpoints(loadedCheckpoints);
+            const rawCheckpoints = lesson.version?.checkpoints || lesson.checkpoints || [];
+
+            // Sort by time, then order
+            const sorted = [...rawCheckpoints].sort((a, b) => a.timeSec - b.timeSec || (a.order || 0) - (b.order || 0));
+            console.log("Sorted Checkpoints:", sorted);
+            setCheckpoints(sorted);
         }
     }, [lesson]);
 
@@ -51,17 +83,27 @@ export default function LessonPreviewPage() {
     const checkCheckpoints = (currentTime) => {
         if (!checkpoints.length) return;
 
-        // Find checkpoint in the last processed window (prev -> current)
-        // We use a small window to avoid skipping fast seeks, but prevent double triggers
-        const cp = checkpoints.find(c =>
+        // Detect Backward Seek (Replay)
+        if (currentTime < lastTriggeredTime.current - 1) {
+            console.log("Backward seek detected. Resetting tracker.");
+            lastTriggeredTime.current = currentTime;
+            return;
+        }
+
+        // Find ALL checkpoints in the current window that haven't been triggered
+        const firstMatch = checkpoints.find(c =>
             c.timeSec <= currentTime &&
             c.timeSec > lastTriggeredTime.current &&
-            Math.abs(currentTime - c.timeSec) < 2 // 2s window
+            Math.abs(currentTime - c.timeSec) < 2
         );
 
-        if (cp) {
-            console.log("Triggering Checkpoint:", cp);
-            setActiveCheckpoint(cp);
+        if (firstMatch) {
+            // Cluster all checkpoints with roughly the same timestamp (tolerance 0.5s)
+            const cluster = checkpoints.filter(c => Math.abs(c.timeSec - firstMatch.timeSec) < 0.5);
+
+            console.log("Triggering Cluster:", cluster);
+            setActiveCluster(cluster);
+            setClusterStep(0);
 
             // LOGIC SPLIT: Only pause if Study Mode
             if (isStudyMode) {
@@ -155,6 +197,34 @@ export default function LessonPreviewPage() {
         }
     }, [playing]);
 
+    // Handle Cluster Navigation
+    const handleNextStep = () => {
+        if (!activeCluster) return;
+        if (clusterStep < activeCluster.length - 1) {
+            setClusterStep(prev => prev + 1);
+        } else {
+            // Finished Cluster
+            setActiveCluster(null);
+            setClusterStep(0);
+            setPlaying(true);
+        }
+    };
+
+    const handlePrevStep = () => {
+        if (clusterStep > 0) {
+            setClusterStep(prev => prev - 1);
+        }
+    };
+
+    const handleSkipCluster = () => {
+        setActiveCluster(null);
+        setClusterStep(0);
+        setPlaying(true);
+    };
+
+    // Current Active Item
+    const activeItem = activeCluster ? activeCluster[clusterStep] : null;
+
     // Interaction Mode State
     const [isStudyMode, setIsStudyMode] = useState(true); // Default to Study Mode (Pause) for Preview
 
@@ -169,70 +239,127 @@ export default function LessonPreviewPage() {
     return (
         <div className="min-h-screen bg-black flex flex-col items-center justify-center font-display relative">
 
-            {/* OVERLAY: Checkpoint Interaction */}
-            {activeCheckpoint && (
+            {/* OVERLAY: Cluster Interaction */}
+            {activeCluster && activeItem && (
                 isStudyMode ? (
-                    // --- STUDY MODE (Blocking) ---
+                    // --- STUDY MODE (Blocking - Multi Step) ---
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md animate-fadeIn">
-                        <div className="bg-[#102323] border border-[#0df2f2] p-8 rounded-2xl shadow-[0_0_50px_rgba(13,242,242,0.3)] max-w-lg w-full text-center relative overflow-hidden">
-                            {/* Decorative Background */}
-                            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-[#0df2f2] to-transparent"></div>
+                        <div className="bg-[#102323] border border-[#0df2f2] p-8 rounded-2xl shadow-[0_0_50px_rgba(13,242,242,0.3)] max-w-lg w-full text-center relative overflow-hidden flex flex-col">
 
-                            {activeCheckpoint.type === 'vocab' ? (
-                                // VOCAB CARD UI
-                                (() => {
-                                    const vocab = getVocabDetails(activeCheckpoint.vocabId);
-                                    return (
-                                        <div className="flex flex-col items-center">
-                                            <div className="w-20 h-20 bg-[#0a1515] rounded-full flex items-center justify-center border-2 border-[#0df2f2] mb-6 shadow-lg">
-                                                <Icon.Book className="w-8 h-8 text-[#0df2f2]" />
-                                            </div>
-                                            <h2 className="text-3xl font-bold text-white mb-1">{vocab?.term || 'Unknown Word'}</h2>
-                                            <p className="text-[#90cbcb] font-mono mb-4 text-sm">{vocab?.ipa || '/.../'}</p>
-                                            <p className="text-xl text-[#0df2f2] mb-8 font-medium">"{vocab?.definition || activeCheckpoint.content?.note || 'Definition...'}"</p>
+                            {/* Header: Progress */}
+                            <div className="flex justify-between items-center mb-6 text-[#90cbcb] text-sm font-mono uppercase tracking-wider">
+                                <span>Key Moment</span>
+                                {activeCluster.length > 1 && (
+                                    <span>Step {clusterStep + 1} / {activeCluster.length}</span>
+                                )}
+                            </div>
 
-                                            <button
-                                                onClick={() => {
-                                                    setActiveCheckpoint(null);
-                                                    setPlaying(true);
-                                                }}
-                                                className="bg-[#0df2f2] hover:bg-[#0acaca] text-[#102323] px-10 py-3 rounded-full font-bold transition-all hover:scale-105 shadow-[0_4px_15px_rgba(13,242,242,0.4)]"
-                                            >
-                                                Got it!
-                                            </button>
-                                        </div>
-                                    );
-                                })()
-                            ) : (
-                                // QUIZ UI
-                                <div className="flex flex-col items-center">
-                                    <div className="w-16 h-16 bg-[#0a1515] rounded-full flex items-center justify-center border border-[#ffb020] mb-6">
-                                        <Icon.HelpCircle className="w-8 h-8 text-[#ffb020]" />
-                                    </div>
-                                    <h3 className="text-xl font-bold text-white mb-6">
-                                        {activeCheckpoint.content?.question || "Quick Question"}
-                                    </h3>
-                                    <div className="grid grid-cols-1 gap-3 w-full mb-8">
-                                        {activeCheckpoint.content?.options?.filter(o => o).map((opt, idx) => (
-                                            <button
-                                                key={idx}
-                                                className="bg-[#0a1515] hover:bg-[#183434] border border-[#224949] hover:border-[#0df2f2] text-[#90cbcb] hover:text-white p-3 rounded-lg transition-all text-left"
-                                            >
-                                                {opt}
-                                            </button>
-                                        ))}
-                                    </div>
-                                    <button
-                                        onClick={() => {
-                                            setActiveCheckpoint(null);
-                                            setPlaying(true);
-                                        }}
-                                        className="text-[#90cbcb] hover:text-white text-sm hover:underline"
-                                    >
-                                        Skip for now
-                                    </button>
+                            {/* Progress Bar for Steps */}
+                            {activeCluster.length > 1 && (
+                                <div className="w-full bg-[#0a1515] h-1.5 rounded-full mb-8 overflow-hidden">
+                                    <div
+                                        className="h-full bg-[#0df2f2] transition-all duration-300 ease-out"
+                                        style={{ width: `${((clusterStep + 1) / activeCluster.length) * 100}%` }}
+                                    ></div>
                                 </div>
                             )}
+
+                            {/* Content */}
+                            <div className="flex-1 flex flex-col items-center justify-center min-h-[300px] animate-slideInRight" key={activeItem.id}>
+                                {activeItem.type === 'vocab' ? (
+                                    // VOCAB CARD UI
+                                    (() => {
+                                        const vocab = getVocabDetails(activeItem.vocabId);
+                                        return (
+                                            <>
+                                                <div className="w-20 h-20 bg-[#0a1515] rounded-full flex items-center justify-center border-2 border-[#0df2f2] mb-6 shadow-lg">
+                                                    <Icon.Book className="w-8 h-8 text-[#0df2f2]" />
+                                                </div>
+                                                <h2 className="text-3xl font-bold text-white mb-1">{vocab?.term || 'Unknown Word'}</h2>
+                                                <p className="text-[#90cbcb] font-mono mb-4 text-sm">{vocab?.ipa || '/.../'}</p>
+                                                <p className="text-xl text-[#0df2f2] mb-8 font-medium">"{vocab?.definition || activeItem.content?.note || 'Definition...'}"</p>
+                                            </>
+                                        );
+                                    })()
+                                ) : (
+                                    // QUIZ UI
+                                    <>
+                                        <div className="w-16 h-16 bg-[#0a1515] rounded-full flex items-center justify-center border border-[#ffb020] mb-6">
+                                            <Icon.HelpCircle className="w-8 h-8 text-[#ffb020]" />
+                                        </div>
+                                        <h3 className="text-xl font-bold text-white mb-6">
+                                            {activeItem.content?.question || "Quick Question"}
+                                        </h3>
+                                        <div className="grid grid-cols-1 gap-3 w-full mb-8">
+                                            {activeItem.content?.options?.filter(o => o).map((opt, idx) => {
+                                                const isSelected = quizState.selected === opt;
+                                                const isCorrectAnswer = opt === activeItem.content?.answer;
+
+                                                let btnClass = "bg-[#0a1515] border border-[#224949] text-[#90cbcb] p-3 rounded-lg transition-all text-left relative overflow-hidden group";
+
+                                                if (quizState.submitted) {
+                                                    if (isCorrectAnswer) {
+                                                        btnClass = "bg-[#064e3b] border-[#10b981] text-white p-3 rounded-lg shadow-[0_0_15px_rgba(16,185,129,0.3)] font-bold";
+                                                    } else if (isSelected && !quizState.isCorrect) {
+                                                        btnClass = "bg-[#450a0a] border-[#ef4444] text-white p-3 rounded-lg shake";
+                                                    } else {
+                                                        btnClass = "bg-[#0a1515] border-[#224949] text-[#555] p-3 rounded-lg opacity-50";
+                                                    }
+                                                } else {
+                                                    btnClass += " hover:bg-[#183434] hover:border-[#0df2f2] hover:text-white cursor-pointer";
+                                                }
+
+                                                return (
+                                                    <button
+                                                        key={idx}
+                                                        onClick={() => handleQuizAnswer(opt)}
+                                                        disabled={quizState.submitted}
+                                                        className={btnClass}
+                                                    >
+                                                        <div className="flex items-center justify-between z-10 relative">
+                                                            <span>{opt}</span>
+                                                            {quizState.submitted && isCorrectAnswer && (
+                                                                <Icon.Check className="w-5 h-5 text-[#10b981] animate-bounce" />
+                                                            )}
+                                                            {quizState.submitted && isSelected && !isCorrectAnswer && (
+                                                                <Icon.X className="w-5 h-5 text-[#ef4444]" />
+                                                            )}
+                                                        </div>
+                                                        {!quizState.submitted && (
+                                                            <div className="absolute inset-0 bg-[#0df2f2]/5 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300 pointer-events-none"></div>
+                                                        )}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+
+                            {/* Footer: Navigation */}
+                            <div className="flex items-center justify-between mt-4">
+                                <button
+                                    onClick={handlePrevStep}
+                                    disabled={clusterStep === 0}
+                                    className={`text-[#90cbcb] text-sm hover:text-white px-4 py-2 ${clusterStep === 0 ? 'opacity-0 pointer-events-none' : ''}`}
+                                >
+                                    Back
+                                </button>
+
+                                <button
+                                    onClick={handleNextStep}
+                                    className="bg-[#0df2f2] hover:bg-[#0acaca] text-[#102323] px-10 py-3 rounded-full font-bold transition-all hover:scale-105 shadow-[0_4px_15px_rgba(13,242,242,0.4)]"
+                                >
+                                    {clusterStep < activeCluster.length - 1 ? 'Next' : 'Continue'}
+                                </button>
+
+                                <button
+                                    onClick={handleSkipCluster}
+                                    className="text-[#90cbcb] text-sm hover:text-white px-4 py-2 opacity-50 hover:opacity-100"
+                                >
+                                    Skip
+                                </button>
+                            </div>
                         </div>
                     </div>
                 ) : (
@@ -240,24 +367,36 @@ export default function LessonPreviewPage() {
                     <div className="absolute top-8 right-8 z-50 animate-slideInRight">
                         <div className="bg-[#102323]/90 backdrop-blur border-l-4 border-[#0df2f2] p-4 rounded-r shadow-2xl max-w-sm flex items-start gap-3">
                             <div className="bg-[#0df2f2]/20 p-2 rounded-full shrink-0">
-                                {activeCheckpoint.type === 'vocab' ? <Icon.Book className="w-5 h-5 text-[#0df2f2]" /> : <Icon.HelpCircle className="w-5 h-5 text-[#ffb020]" />}
+                                {activeItem.type === 'vocab' ? <Icon.Book className="w-5 h-5 text-[#0df2f2]" /> : <Icon.HelpCircle className="w-5 h-5 text-[#ffb020]" />}
                             </div>
                             <div>
                                 <h4 className="font-bold text-white text-sm mb-1 uppercase tracking-wider">
-                                    {activeCheckpoint.type === 'vocab' ? 'New Word' : 'Quick Quiz'}
+                                    {activeItem.type === 'vocab' ? 'New Word' : 'Quick Quiz'}
                                 </h4>
                                 <p className="text-[#90cbcb] text-sm mb-3 line-clamp-2">
-                                    {activeCheckpoint.type === 'vocab'
-                                        ? (getVocabDetails(activeCheckpoint.vocabId)?.term || "Vocabulary Item")
-                                        : (activeCheckpoint.content?.question || "Question Checkpoint")
+                                    {activeItem.type === 'vocab'
+                                        ? (getVocabDetails(activeItem.vocabId)?.term || "Vocabulary Item")
+                                        : (activeItem.content?.question || "Question Checkpoint")
                                     }
                                 </p>
-                                <button
-                                    onClick={() => setActiveCheckpoint(null)}
-                                    className="text-xs bg-[#224949] hover:bg-[#316868] text-white px-3 py-1.5 rounded transition-colors"
-                                >
-                                    Dismiss
-                                </button>
+
+                                <div className="flex gap-2">
+                                    {clusterStep < activeCluster.length - 1 ? (
+                                        <button
+                                            onClick={handleNextStep}
+                                            className="text-xs bg-[#0df2f2] text-[#102323] px-3 py-1.5 rounded font-bold hover:bg-[#0acaca] transition-colors"
+                                        >
+                                            Next Item
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={handleNextStep}
+                                            className="text-xs bg-[#224949] hover:bg-[#316868] text-white px-3 py-1.5 rounded transition-colors"
+                                        >
+                                            Dismiss
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -366,6 +505,10 @@ export default function LessonPreviewPage() {
                                             onTimeUpdate={(e) => {
                                                 checkCheckpoints(e.target.currentTime);
                                             }}
+                                            onSeeked={(e) => {
+                                                console.log("Seeked to:", e.target.currentTime);
+                                                lastTriggeredTime.current = e.target.currentTime;
+                                            }}
                                             onError={(e) => {
                                                 console.error("Native Video Error:", e);
                                                 setVideoError(true);
@@ -386,6 +529,10 @@ export default function LessonPreviewPage() {
                                         onPause={() => setPlaying(false)}
                                         onProgress={(state) => {
                                             checkCheckpoints(state.playedSeconds);
+                                        }}
+                                        onSeek={(seconds) => {
+                                            console.log("Seeked to:", seconds);
+                                            lastTriggeredTime.current = seconds;
                                         }}
                                         onReady={() => {
                                             console.log('Preview Ready');

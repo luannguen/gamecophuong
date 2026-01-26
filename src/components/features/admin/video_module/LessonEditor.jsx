@@ -11,8 +11,8 @@ import { useVocabularyManagement } from '../hooks/useVocabularyManagement';
 
 import { useToast } from '../../../shared/hooks/useToast';
 
-export default function LessonEditor({ unit, lesson, onBack }) {
-    const { saveCheckpoints, updateLessonVersion, updateLesson, categories } = useWatchAndLearn();
+export default function LessonEditor({ unit, lesson, onBack, saveCheckpoints, updateLessonVersion, updateLesson, categories, onRefresh }) {
+    // const { saveCheckpoints, updateLessonVersion, updateLesson, categories } = useWatchAndLearn(); // REMOVED: Using props
     const { vocabulary } = useVocabularyManagement();
     const { toast } = useToast();
     // State
@@ -160,8 +160,12 @@ export default function LessonEditor({ unit, lesson, onBack }) {
                 }
             }
 
-            if (isSuccess) toast.success('Lesson saved successfully!');
-            else toast.error('Check console for save errors.');
+            if (isSuccess) {
+                toast.success('Lesson saved successfully!');
+                // onRefresh(true); // Disable full refresh to avoid race conditions. Hook updates state locally.
+            } else {
+                toast.error('Check console for save errors.');
+            }
 
         } catch (e) {
             console.error("Unexpected error in handleSave:", e);
@@ -214,7 +218,7 @@ export default function LessonEditor({ unit, lesson, onBack }) {
 
                 {/* VIDEO PLAYER SECTION (Fill remaining height above timeline) */}
                 <div className="flex-1 flex flex-col items-center justify-center bg-black p-4 relative overflow-hidden">
-                    <div className="relative w-full max-w-5xl aspect-video bg-[#0a1515] rounded-xl overflow-hidden shadow-2xl border border-[#224949] group">
+                    <div className="relative w-full max-w-5xl aspect-video bg-[#0a1515] rounded-xl overflow-hidden shadow-2xl border border-[#224949] group z-0">
                         {currentLesson.videoUrl ? (
                             <ReactPlayer
                                 ref={playerRef}
@@ -223,6 +227,7 @@ export default function LessonEditor({ unit, lesson, onBack }) {
                                 height="100%"
                                 controls={true}
                                 playing={playing}
+                                style={{ pointerEvents: 'auto' }}
                                 onProgress={handleProgress}
                                 onReady={() => {
                                     if (playerRef.current) {
@@ -231,6 +236,11 @@ export default function LessonEditor({ unit, lesson, onBack }) {
                                 }}
                                 onPlay={() => setPlaying(true)}
                                 onPause={() => setPlaying(false)}
+                                config={{
+                                    youtube: {
+                                        playerVars: { showinfo: 0, modestbranding: 1 }
+                                    }
+                                }}
                             />
                         ) : (
                             <div className="w-full h-full flex flex-col items-center justify-center text-slate-500">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useWatchAndLearn } from '../hooks/useWatchAndLearn';
 import { Icon } from '../../../ui/AnimatedIcon';
 import UnitList from './UnitList';
@@ -7,7 +7,7 @@ import LessonEditor from './LessonEditor';
 import EnhancedModal from '../../../shared/ui/EnhancedModal';
 
 export default function AdminVideoManager() {
-    const { units, categories, isLoading, createUnit, updateUnit, deleteUnit, addLesson, updateLesson, deleteLesson } = useWatchAndLearn();
+    const { units, categories, isLoading, createUnit, updateUnit, deleteUnit, addLesson, updateLesson, deleteLesson, updateLessonVersion, saveCheckpoints, refreshData } = useWatchAndLearn();
     const [view, setView] = useState('list'); // 'list', 'editor'
     const [subView, setSubView] = useState('lessons'); // 'lessons', 'units'
     const [selectedUnit, setSelectedUnit] = useState(null);
@@ -20,6 +20,26 @@ export default function AdminVideoManager() {
     // Modal State
     const [modalConfig, setModalConfig] = useState({ isOpen: false, type: null, data: null });
     const [formData, setFormData] = useState({ title: '', description: '', unitId: '', category_id: '' });
+
+    // Sync state with fresh data when units update (e.g. after save)
+    useEffect(() => {
+        if (selectedUnit) {
+            const freshUnit = units.find(u => u.id === selectedUnit.id);
+            if (freshUnit) {
+                // Only update if reference changed to avoid loop (though units change implies new ref)
+                if (freshUnit !== selectedUnit) {
+                    setSelectedUnit(freshUnit);
+                }
+
+                if (selectedLesson) {
+                    const freshLesson = freshUnit.lessons?.find(l => l.id === selectedLesson.id);
+                    if (freshLesson && freshLesson !== selectedLesson) {
+                        setSelectedLesson(freshLesson);
+                    }
+                }
+            }
+        }
+    }, [units]);
 
     // --- Modal Handlers ---
     const openModal = (type, data = null) => {
@@ -150,17 +170,11 @@ export default function AdminVideoManager() {
                 unit={selectedUnit}
                 lesson={selectedLesson}
                 onBack={handleBack}
-            />
-        );
-    }
-
-    // If in Editor view, render LessonEditor directly for full screen override
-    if (view === 'editor' && selectedLesson) {
-        return (
-            <LessonEditor
-                unit={selectedUnit}
-                lesson={selectedLesson}
-                onBack={handleBack}
+                saveCheckpoints={saveCheckpoints}
+                updateLessonVersion={updateLessonVersion}
+                updateLesson={updateLesson}
+                categories={categories}
+                onRefresh={refreshData}
             />
         );
     }

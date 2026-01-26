@@ -7,8 +7,8 @@ export function useWatchAndLearn() {
     const [categories, setCategories] = useState([]); // Add categories state
     const [isLoading, setIsLoading] = useState(true);
 
-    const loadData = useCallback(async () => {
-        setIsLoading(true);
+    const loadData = useCallback(async (silent = false) => {
+        if (!silent) setIsLoading(true);
         try {
             // Fetch Units
             const { data: unitsData, error: unitError } = await supabase
@@ -302,7 +302,7 @@ export function useWatchAndLearn() {
             }
 
             // Reload data to sync state
-            await loadData();
+            await loadData(true);
             return { success: true };
         } catch (error) {
             console.error("Save checkpoints error:", error);
@@ -319,8 +319,10 @@ export function useWatchAndLearn() {
         addLesson,
         updateLesson,
         updateLessonVersion,
+        updateLessonVersion,
         deleteLesson,
         saveCheckpoints,
-        categories // Export categories
+        categories, // Export categories
+        refreshData: loadData // Export refresh capability
     };
 }

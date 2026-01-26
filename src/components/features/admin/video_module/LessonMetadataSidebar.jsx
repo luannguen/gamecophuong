@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { Icon } from '../../../ui/AnimatedIcon';
+import EnhancedModal from '../../../shared/ui/EnhancedModal';
 
 export default function LessonMetadataSidebar({ lesson, vocabulary, categories, onUpdate }) {
     const [isVocabSearchOpen, setIsVocabSearchOpen] = useState(false);
     const [vocabSearchQuery, setVocabSearchQuery] = useState('');
+    const [isAllVocabModalOpen, setIsAllVocabModalOpen] = useState(false);
 
     // Fallback if lesson.target_vocabulary is undefined
     const lessonVocabs = lesson.target_vocabulary || [];
+    const VISIBLE_LIMIT = 5;
+    const visibleVocabs = lessonVocabs.slice(0, VISIBLE_LIMIT);
+    const hiddenCount = lessonVocabs.length - VISIBLE_LIMIT;
 
     const handleChangeTitle = (e) => {
         onUpdate({ ...lesson, title: e.target.value });
@@ -38,6 +43,18 @@ export default function LessonMetadataSidebar({ lesson, vocabulary, categories, 
             return acc;
         }, {});
 
+    const renderVocabChip = (v, compact = false) => (
+        <div key={v.id} className={`group flex items-center justify-between gap-2.5 rounded-full bg-[#1e3a3a] pl-3 pr-1 border border-[#316868] hover:border-[#0df2f2]/60 transition-all select-none shadow-sm ${compact ? 'h-7' : 'h-8'}`}>
+            <span className={`text-white font-bold font-display pt-0.5 ${compact ? 'text-xs' : 'text-sm'}`}>{v.word}</span>
+            <button
+                onClick={(e) => { e.stopPropagation(); handleRemoveVocab(v.id); }}
+                className={`flex items-center justify-center rounded-full hover:bg-[#0df2f2] group-hover:bg-[#224949] hover:text-[#102323] text-[#90cbcb] transition-all ${compact ? 'w-5 h-5' : 'w-6 h-6'}`}
+            >
+                <Icon.X className={compact ? "text-[14px]" : "text-[16px]"} />
+            </button>
+        </div>
+    );
+
     return (
         <aside className="w-80 border-r border-[#224949] flex flex-col bg-[#102323] overflow-y-auto custom-scrollbar h-full shrink-0">
             <div className="p-6 space-y-8">
@@ -51,7 +68,7 @@ export default function LessonMetadataSidebar({ lesson, vocabulary, categories, 
                     <label className="flex flex-col gap-2">
                         <p className="text-white text-sm font-semibold font-display">Lesson Title</p>
                         <input
-                            className="w-full rounded-lg text-white focus:outline-none focus:ring-1 focus:ring-[#0df2f2] border border-[#316868] bg-[#183434] h-11 placeholder-[#90cbcb] px-3 text-sm font-display transition-all"
+                            className="w-full rounded-lg text-white focus:outline-none focus:ring-1 focus:ring-[#0df2f2] border border-[#316868] bg-[#183434] h-10 placeholder-[#90cbcb] px-3 text-xs font-display transition-all"
                             value={lesson.title || ''}
                             onChange={handleChangeTitle}
                             placeholder="Enter lesson title..."
@@ -63,7 +80,7 @@ export default function LessonMetadataSidebar({ lesson, vocabulary, categories, 
                         <p className="text-white text-sm font-semibold font-display">Video URL</p>
                         <div className="relative">
                             <input
-                                className="w-full rounded-lg text-white focus:outline-none focus:ring-1 focus:ring-[#0df2f2] border border-[#316868] bg-[#183434] h-11 placeholder-[#90cbcb] pl-9 pr-3 text-sm font-display transition-all truncate"
+                                className="w-full rounded-lg text-white focus:outline-none focus:ring-1 focus:ring-[#0df2f2] border border-[#316868] bg-[#183434] h-10 placeholder-[#90cbcb] pl-9 pr-3 text-xs font-display transition-all truncate"
                                 value={lesson.videoUrl || ''}
                                 onChange={(e) => onUpdate({ ...lesson, videoUrl: e.target.value })}
                                 placeholder="https://youtube.com/..."
@@ -76,7 +93,7 @@ export default function LessonMetadataSidebar({ lesson, vocabulary, categories, 
                     <label className="flex flex-col gap-2">
                         <p className="text-white text-sm font-semibold font-display">Difficulty Level</p>
                         <select
-                            className="w-full rounded-lg text-white focus:outline-none focus:ring-1 focus:ring-[#0df2f2] border border-[#316868] bg-[#183434] h-11 px-3 text-sm font-display appearance-none cursor-pointer transition-all"
+                            className="w-full rounded-lg text-white focus:outline-none focus:ring-1 focus:ring-[#0df2f2] border border-[#316868] bg-[#183434] h-10 px-3 text-xs font-display appearance-none cursor-pointer transition-all"
                             value={lesson.difficultyLevel || 'Intermediate'}
                             onChange={handleChangeLevel}
                         >
@@ -91,7 +108,7 @@ export default function LessonMetadataSidebar({ lesson, vocabulary, categories, 
                 {/* Target Vocabulary */}
                 <div className="space-y-3 relative">
                     <div className="flex items-center justify-between">
-                        <p className="text-white text-sm font-semibold font-display">Target Vocabulary</p>
+                        <p className="text-white text-sm font-semibold font-display">Target Vocabulary <span className="text-[#90cbcb] font-normal text-xs ml-1">({lessonVocabs.length})</span></p>
                         <button
                             onClick={handleAddVocabClick}
                             className="text-[#0df2f2] text-xs font-bold hover:underline transition-all font-display"
@@ -102,7 +119,7 @@ export default function LessonMetadataSidebar({ lesson, vocabulary, categories, 
 
                     {/* Vocabulary Search/Picker */}
                     {isVocabSearchOpen && (
-                        <div className="absolute top-8 left-0 w-full z-30 bg-[#183434] border border-[#316868] rounded-lg shadow-xl max-h-80 overflow-y-auto custom-scrollbar p-2">
+                        <div className="absolute top-8 left-0 w-full z-30 bg-[#183434] border border-[#316868] rounded-lg shadow-xl max-h-80 overflow-y-auto custom-scrollbar p-2 animate-fadeIn">
                             <input
                                 className="w-full bg-[#102323] border border-[#224949] rounded px-2 py-1.5 text-xs text-white mb-2 focus:outline-none focus:border-[#0df2f2]"
                                 placeholder="Search..."
@@ -123,8 +140,6 @@ export default function LessonMetadataSidebar({ lesson, vocabulary, categories, 
                                                     key={v.id}
                                                     onClick={() => {
                                                         onUpdate({ ...lesson, target_vocabulary: [...lessonVocabs, v] });
-                                                        // Option: Keep open to add more? Or close.
-                                                        // setIsVocabSearchOpen(false); 
                                                     }}
                                                     className="flex items-center gap-2 p-1.5 hover:bg-[#224949] rounded cursor-pointer group"
                                                 >
@@ -143,36 +158,46 @@ export default function LessonMetadataSidebar({ lesson, vocabulary, categories, 
                         {lessonVocabs.length === 0 && (
                             <p className="text-[#90cbcb] text-xs italic">No vocabulary added.</p>
                         )}
-                        {lessonVocabs.map(v => (
-                            <div key={v.id} className="group flex items-center gap-2 rounded-full bg-[#1e3a3a] px-3 py-1.5 border border-[#316868] hover:border-[#0df2f2]/40 transition-all">
-                                <span className="text-white text-xs font-bold font-display leading-none pb-[1px]">{v.word}</span>
-                                <button
-                                    onClick={() => handleRemoveVocab(v.id)}
-                                    className="flex items-center justify-center w-4 h-4 rounded-full hover:bg-[#0df2f2]/20 text-[#90cbcb] hover:text-[#0df2f2] transition-colors"
-                                >
-                                    <Icon.X className="w-3 h-3" />
-                                </button>
-                            </div>
-                        ))}
+                        {visibleVocabs.map(v => renderVocabChip(v, true))}
+
+                        {hiddenCount > 0 && (
+                            <button
+                                onClick={() => setIsAllVocabModalOpen(true)}
+                                className="h-7 px-3 rounded-full bg-[#183434] border border-[#316868] text-xs text-[#0df2f2] font-bold hover:bg-[#224949] transition-colors"
+                            >
+                                +{hiddenCount} more
+                            </button>
+                        )}
                     </div>
                 </div>
 
-                {/* Navigation / Info Links (Static for now as per design) */}
+                {/* Navigation / Info Links */}
                 <nav className="flex flex-col gap-1 pt-4 border-t border-[#224949]">
                     <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-[#0df2f2]/10 text-[#0df2f2] border border-[#0df2f2]/20">
                         <Icon.Info className="w-5 h-5" />
                         <p className="text-sm font-bold font-display">General Info</p>
                     </div>
-                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#90cbcb] hover:bg-[#224949] hover:text-white transition-all cursor-pointer">
-                        <Icon.BookOpen className="w-5 h-5" />
-                        <p className="text-sm font-medium font-display">Vocabulary Library</p>
-                    </div>
-                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#90cbcb] hover:bg-[#224949] hover:text-white transition-all cursor-pointer">
-                        <Icon.HelpCircle className="w-5 h-5" />
-                        <p className="text-sm font-medium font-display">Question Bank</p>
-                    </div>
+                    {/* ... other links placeholders */}
                 </nav>
             </div>
+
+            {/* All Vocabulary Modal */}
+            <EnhancedModal
+                isOpen={isAllVocabModalOpen}
+                onClose={() => setIsAllVocabModalOpen(false)}
+                title={`All Target Vocabulary (${lessonVocabs.length})`}
+                maxWidth="md"
+                showControls={false}
+                footer={
+                    <div className="flex justify-end pt-4">
+                        <button onClick={() => setIsAllVocabModalOpen(false)} className="px-4 py-2 bg-[#183434] text-white rounded-lg hover:bg-[#224949] transition-colors font-bold text-sm">Close</button>
+                    </div>
+                }
+            >
+                <div className="flex flex-wrap gap-2 p-2 max-h-[60vh] overflow-y-auto custom-scrollbar">
+                    {lessonVocabs.map(v => renderVocabChip(v, false))}
+                </div>
+            </EnhancedModal>
         </aside>
     );
 }

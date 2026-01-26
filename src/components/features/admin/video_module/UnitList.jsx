@@ -22,9 +22,18 @@ export default function UnitList({ units, categories, onCreateUnit, onUpdateUnit
 
     // --- Modal Handlers ---
     const openModal = (type, data = null) => {
+        let title = data?.title || '';
+        let description = data?.description || '';
+
+        // Extract from nested lesson object if available
+        if (type === 'edit_lesson' && data?.lesson) {
+            title = data.lesson.title;
+            description = data.lesson.description;
+        }
+
         setFormData({
-            title: data?.title || '',
-            description: data?.description || '',
+            title,
+            description,
             categoryId: data?.category_id || (categories?.[0]?.id || '')
         });
         setModalConfig({ isOpen: true, type, data });

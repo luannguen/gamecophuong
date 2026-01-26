@@ -65,7 +65,8 @@ export function useWatchAndLearn() {
                             .filter(cp => cp.lesson_version_id === version.id)
                             .map(cp => ({
                                 ...cp,
-                                timeSec: cp.time_sec // Map snake_case to camelCase
+                                timeSec: cp.time_sec, // Map snake_case to camelCase
+                                vocabId: cp.vocab_id   // Map snake_case to camelCase
                             }));
                     }
 
@@ -217,9 +218,17 @@ export function useWatchAndLearn() {
 
     const updateLessonVersion = async (versionId, updates) => {
         // updates: { video_url, difficulty, duration_sec, status, vocab_ids }
-        const { error } = await supabase.from('lesson_versions').update(updates).eq('id', versionId);
+        console.log(`[useWatchAndLearn] Updating version ${versionId}:`, updates);
+        const { data, error } = await supabase
+            .from('lesson_versions')
+            .update(updates)
+            .eq('id', versionId)
+            .select();
 
-        if (!error) {
+        if (error) {
+            console.error("[useWatchAndLearn] Update version FAILED:", error);
+        } else {
+            console.log("[useWatchAndLearn] Update version SUCCESS:", data);
             // Update local state by finding the unit > lesson > version
             setUnits(prev => prev.map(u => ({
                 ...u,
@@ -243,7 +252,7 @@ export function useWatchAndLearn() {
                 })
             })));
         }
-        return { success: !error, error };
+        return { success: !error, error, data };
     };
 
     const deleteLesson = async (unitId, lessonId) => {
@@ -265,33 +274,40 @@ export function useWatchAndLearn() {
 
     // --- CHECKPOINT ACTIONS ---
     const saveCheckpoints = async (unitId, lessonId, checkpoints) => {
-        // Find version ID first
-        // In real app, we might want to create a NEW version here.
-        // For MVP, update current version.
-        const unit = units.find(u => u.id === unitId);
-        const lesson = unit?.lessons.find(l => l.id === lessonId);
-        const versionId = lesson?.version?.id;
+        try {
+            // Find version ID first
+            const unit = units.find(u => u.id === unitId);
+            const lesson = unit?.lessons.find(l => l.id === lessonId);
+            const versionId = lesson?.version?.id;
 
-        if (!versionId) return;
+            if (!versionId) throw new Error("No version ID found");
 
-        // 1. Delete existing (simple replace strategy for MVP)
-        await supabase.from('checkpoints').delete().eq('lesson_version_id', versionId);
+            // 1. Delete existing (simple replace strategy for MVP)
+            const { error: delError } = await supabase.from('checkpoints').delete().eq('lesson_version_id', versionId);
+            if (delError) throw delError;
 
-        // 2. Insert new
-        const toInsert = checkpoints.map(cp => ({
-            id: cp.id.includes('cp_') ? uuidv4() : cp.id, // Generate real UUID if it was temp
-            lesson_version_id: versionId,
-            time_sec: cp.timeSec,
-            type: cp.type,
-            vocab_id: cp.vocabId || null,
-            content: cp.content
-        }));
+            // 2. Insert new
+            const toInsert = checkpoints.map(cp => ({
+                id: cp.id.includes('cp_') ? uuidv4() : cp.id, // Generate real UUID if it was temp
+                lesson_version_id: versionId,
+                time_sec: cp.timeSec,
+                type: cp.type,
+                vocab_id: cp.vocabId || null,
+                content: cp.content
+            }));
 
-        if (toInsert.length > 0) {
-            await supabase.from('checkpoints').insert(toInsert);
+            if (toInsert.length > 0) {
+                const { error: insError } = await supabase.from('checkpoints').insert(toInsert);
+                if (insError) throw insError;
+            }
+
+            // Reload data to sync state
+            await loadData();
+            return { success: true };
+        } catch (error) {
+            console.error("Save checkpoints error:", error);
+            return { success: false, error };
         }
-
-        loadData();
     };
 
     return {

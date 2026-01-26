@@ -133,6 +133,7 @@ CREATE TABLE public.lesson_versions (
   duration_sec integer,
   difficulty integer DEFAULT 1,
   created_at timestamp with time zone DEFAULT now(),
+  vocab_ids ARRAY DEFAULT '{}'::text[],
   CONSTRAINT lesson_versions_pkey PRIMARY KEY (id),
   CONSTRAINT lesson_versions_lesson_id_fkey FOREIGN KEY (lesson_id) REFERENCES public.lessons(id)
 );

@@ -77,5 +77,19 @@ Khi làm việc với Admin Panel (ví dụ: `Watch & Learn Manager`):
     *   **Lỗi thường gặp**: Xóa `fixed` nhưng lỡ tay để lại `flex-col` cho container chính -> Sidebar và Content đè lên nhau hoặc xếp dọc thay vì ngang.
     *   **Check**: Nếu có Sidebar bên trái + Content bên phải -> Luôn là `flex-row`.
 
+## 5. Data Persistence & Schema Lessons (Mới Thêm)
+
+> **MỚI CẬP NHẬT**: Rút kinh nghiệm từ lỗi save dữ liệu Admin Vocab.
+
+1.  **Schema is The Law (Tôn Trọng DB)**:
+    *   **LỖI**: Front-end dùng `vocabId` (camelCase) nhưng Database trả về field `vocab_id` (snake_case). AI không thêm mapping -> Dữ liệu vào UI bị null -> Tưởng mất data.
+    *   **Action**: Khi viết `loadData()`, phải **Mapping rõ ràng** từng field. Không được tin vào `...cp` spread operator nếu convention khác nhau.
+2.  **Persistence Blind Spot (Điểm Mù Khi Lưu)**:
+    *   **LỖI**: Chỉ check `error === null` khi Update -> Báo "Save Success". Nhưng nếu cột trong DB là `text[]` mà gửi lên object phức tạp không casting được, DB có thể silent ignore hoặc không commit như ý.
+    *   **Action**: Luôn dùng `.select()` ngay sau lệnh `.update()` để lấy về dữ liệu **THỰC TẾ** Database đang lưu. Log ra console để verify ngay.
+    *   *Ví dụ*: `const { data } = await supabase.from('table').update(payload).select();`
+3.  **Read Schema File**:
+    *   File `Data/db_schema.sql` là nguồn sự thật. Đừng đoán type. `text[]` khác `jsonb`.
+
 ---
 **GHI CHÚ**: File này là live document. Cập nhật ngay khi có quy trình mới.

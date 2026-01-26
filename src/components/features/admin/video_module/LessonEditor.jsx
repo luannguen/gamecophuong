@@ -96,11 +96,19 @@ export default function LessonEditor({ unit, lesson, onBack }) {
         setEditingCheckpoint(null);
     };
 
-    const handleDeleteCheckpoint = (id) => {
-        if (confirm('Delete this checkpoint?')) {
-            const updated = checkpoints.filter(cp => cp.id !== id);
+    // Confirm Delete State
+    const [checkpointToDelete, setCheckpointToDelete] = useState(null);
+
+    const handleConfirmDelete = () => {
+        if (checkpointToDelete) {
+            const updated = checkpoints.filter(cp => cp.id !== checkpointToDelete);
             setCheckpoints(updated);
+            setCheckpointToDelete(null);
         }
+    };
+
+    const handleDeleteCheckpoint = (id) => {
+        setCheckpointToDelete(id);
     };
 
     const getDifficultyValue = (level) => {
@@ -120,7 +128,11 @@ export default function LessonEditor({ unit, lesson, onBack }) {
 
         try {
             // 1. Save Checkpoints
-            await saveCheckpoints(unit.id, lesson.id, checkpoints);
+            const cpRes = await saveCheckpoints(unit.id, lesson.id, checkpoints);
+            if (!cpRes.success) {
+                console.error("Checkpoint save failed:", cpRes.error);
+                isSuccess = false;
+            }
 
             // 2. Save Lesson Version (Video, Difficulty)
             if (currentLesson.version?.id) {
@@ -131,34 +143,25 @@ export default function LessonEditor({ unit, lesson, onBack }) {
                 };
                 console.log("Updating version:", updates);
                 const verRes = await updateLessonVersion(currentLesson.version.id, updates);
-                console.log("Version update result:", verRes);
-
-                if (!verRes || !verRes.success) {
-                    console.error("Version update failed:", verRes);
+                if (!verRes.success) {
+                    console.error("Version update failed:", verRes.error);
                     isSuccess = false;
                 }
             }
 
             // 3. Save Lesson Details (Title)
             if (currentLesson.title !== lesson.title) {
-                console.log("Updating lesson title:", currentLesson.title);
                 const lessonRes = await updateLesson(unit.id, lesson.id, {
                     title: currentLesson.title
                 });
-                console.log("Lesson update result:", lessonRes);
-
-                if (!lessonRes || !lessonRes.success) {
-                    console.error("Lesson update failed:", lessonRes);
+                if (!lessonRes.success) {
+                    console.error("Lesson update failed:", lessonRes.error);
                     isSuccess = false;
                 }
             }
 
-            // 4. Save Vocabulary (Extract IDs)
-            const vocabIds = currentLesson.target_vocabulary?.map(v => v.id) || [];
-            console.log("Vocabulary IDs saved with Version:", vocabIds);
-
             if (isSuccess) toast.success('Lesson saved successfully!');
-            else toast.error('Error saving lesson. Check console.');
+            else toast.error('Check console for save errors.');
 
         } catch (e) {
             console.error("Unexpected error in handleSave:", e);
@@ -192,9 +195,9 @@ export default function LessonEditor({ unit, lesson, onBack }) {
                         </button>
                         <div className="h-6 w-px bg-[#224949] mx-2"></div>
                         <div className="flex flex-wrap gap-2 items-center text-sm">
-                            <span className="text-[#90cbcb]">Lessons</span>
+                            <button onClick={onBack} className="text-[#90cbcb] hover:text-[#0df2f2] transition-colors">Lessons</button>
                             <span className="text-[#316868]">/</span>
-                            <span className="text-[#90cbcb] font-bold">{unit.title}</span>
+                            <button onClick={onBack} className="text-[#90cbcb] font-bold hover:text-[#0df2f2] transition-colors">{unit.title}</button>
                             <span className="text-[#316868]">/</span>
                             <span className="text-white font-medium">{currentLesson.title}</span>
                         </div>
@@ -206,7 +209,6 @@ export default function LessonEditor({ unit, lesson, onBack }) {
                         >
                             <span>Save Changes</span>
                         </button>
-                        <div className="hidden lg:flex bg-center bg-no-repeat bg-cover rounded-full w-9 h-9 border-2 border-[#224949]" style={{ backgroundImage: 'url("https://i.pravatar.cc/150?img=12")' }} />
                     </div>
                 </header>
 
@@ -215,7 +217,6 @@ export default function LessonEditor({ unit, lesson, onBack }) {
                     <div className="relative w-full max-w-5xl aspect-video bg-[#0a1515] rounded-xl overflow-hidden shadow-2xl border border-[#224949] group">
                         {currentLesson.videoUrl ? (
                             <ReactPlayer
-                                key={currentLesson.videoUrl}
                                 ref={playerRef}
                                 url={currentLesson.videoUrl}
                                 width="100%"
@@ -230,9 +231,6 @@ export default function LessonEditor({ unit, lesson, onBack }) {
                                 }}
                                 onPlay={() => setPlaying(true)}
                                 onPause={() => setPlaying(false)}
-                                config={{
-                                    youtube: { playerVars: { showinfo: 0, origin: window.location.origin } }
-                                }}
                             />
                         ) : (
                             <div className="w-full h-full flex flex-col items-center justify-center text-slate-500">
@@ -263,7 +261,7 @@ export default function LessonEditor({ unit, lesson, onBack }) {
                     />
                 </div>
 
-                {/* MODAL */}
+                {/* EDIT MODAL */}
                 <CheckpointEditorModal
                     isOpen={isModalOpen}
                     initialData={editingCheckpoint}
@@ -272,6 +270,29 @@ export default function LessonEditor({ unit, lesson, onBack }) {
                     onSave={handleSaveCheckpointFromModal}
                 />
 
+                {/* DELETE CONFIRMATION MODAL */}
+                {checkpointToDelete && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-fadeIn">
+                        <div className="bg-[#102323] border border-[#224949] p-6 rounded-xl shadow-2xl max-w-sm w-full animate-scaleIn">
+                            <h3 className="text-lg font-bold text-white mb-2">Delete Checkpoint?</h3>
+                            <p className="text-[#90cbcb] text-sm mb-6">Are you sure you want to delete this checkpoint? This action cannot be undone.</p>
+                            <div className="flex justify-end gap-3">
+                                <button
+                                    onClick={() => setCheckpointToDelete(null)}
+                                    className="px-4 py-2 rounded-lg text-[#90cbcb] hover:bg-[#183434] transition-colors text-sm font-medium"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleConfirmDelete}
+                                    className="px-4 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/20 transition-all text-sm font-bold shadow-[0_2px_10px_rgba(239,68,68,0.2)]"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </main>
         </div>
     );

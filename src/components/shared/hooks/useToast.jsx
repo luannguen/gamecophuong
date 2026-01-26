@@ -16,8 +16,15 @@ export const ToastProvider = ({ children }) => {
         setToasts(prev => prev.filter(t => t.id !== id));
     }, []);
 
+    const toastHelpers = {
+        success: (msg, duration) => addToast(msg, 'success', duration),
+        error: (msg, duration) => addToast(msg, 'error', duration),
+        info: (msg, duration) => addToast(msg, 'info', duration),
+        warning: (msg, duration) => addToast(msg, 'warning', duration)
+    };
+
     return (
-        <ToastContext.Provider value={{ addToast, showToast: addToast, removeToast }}>
+        <ToastContext.Provider value={{ addToast, showToast: addToast, removeToast, toast: toastHelpers }}>
             {children}
             {createPortal(
                 <div className="toast-container">

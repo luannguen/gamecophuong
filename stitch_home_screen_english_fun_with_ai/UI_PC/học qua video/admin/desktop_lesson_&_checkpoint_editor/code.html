@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lesson &amp; Checkpoint Editor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0df2f2",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#102222",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #316868;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-white h-screen overflow-hidden flex flex-col font-display">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between border-b border-solid border-[#224949] px-6 py-3 bg-background-light dark:bg-background-dark shrink-0">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_6_535)">
+<path clip-rule="evenodd" d="M47.2426 24L24 47.2426L0.757355 24L24 0.757355L47.2426 24ZM12.2426 21H35.7574L24 9.24264L12.2426 21Z" fill="currentColor" fill-rule="evenodd"></path>
+</g>
+<defs><clippath id="clip0_6_535"><rect fill="white" height="48" width="48"></rect></clippath></defs>
+</svg>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] hidden md:block">Lesson Editor</h2>
+<div class="h-6 w-px bg-[#224949] mx-2"></div>
+<!-- Breadcrumbs Integrated -->
+<div class="flex flex-wrap gap-2 items-center">
+<a class="text-[#90cbcb] text-sm font-medium hover:text-white transition-colors" href="#">Lessons</a>
+<span class="text-[#316868] text-sm">/</span>
+<a class="text-[#90cbcb] text-sm font-medium hover:text-white transition-colors" href="#">Intermediate Business English</a>
+<span class="text-[#316868] text-sm">/</span>
+<span class="text-white text-sm font-medium">v2.4 Draft</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center gap-6 mr-4">
+<a class="text-[#90cbcb] text-sm font-medium hover:text-white" href="#">Preview</a>
+<a class="text-[#90cbcb] text-sm font-medium hover:text-white" href="#">Analytics</a>
+</div>
+<button class="flex min-w-[140px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-[#102323] text-sm font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity">
+<span>Create New Version</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-9 border-2 border-[#224949]" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBD3dNTJlinThyuNn6cEmwkjQZEwDLozXVXqt28kceW5scTcDl5R15q06W5oFQchnTR1tgw3CPeW87ww3Yq1g4dEY4BYw5R0ZIGA0glf0CR8Z6vdWs4NJ3Q63Bd60bwyu-pXpA6R9WTzZy0Pj7akm6MmsOjyr8XR2OT5Z8hPKXddbqytYgx8B2Hpc5Ke7in6PDn_pSm_oNGry3d9mQPeCSabpA8HM_DspojlT51-52Nulaw7KcqU_wav2E8cVUjmRHWVCZ4ro_yI1vb");'></div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar / Metadata Pane -->
+<aside class="w-80 border-r border-[#224949] flex flex-col bg-[#102323] overflow-y-auto custom-scrollbar">
+<div class="p-6 space-y-8">
+<div class="space-y-1">
+<h1 class="text-white text-lg font-bold">Lesson Metadata</h1>
+<p class="text-[#90cbcb] text-sm font-normal">Manage settings and assets</p>
+</div>
+<!-- TextField: Lesson Title -->
+<div class="space-y-4">
+<label class="flex flex-col gap-2">
+<p class="text-white text-sm font-semibold">Lesson Title</p>
+<input class="form-input w-full rounded-lg text-white focus:outline-0 focus:ring-1 focus:ring-primary border border-[#316868] bg-[#183434] h-11 placeholder:text-[#90cbcb] px-3 text-sm" value="Advanced Business Synergy"/>
+</label>
+<label class="flex flex-col gap-2">
+<p class="text-white text-sm font-semibold">Difficulty Level</p>
+<select class="form-select w-full rounded-lg text-white focus:ring-1 focus:ring-primary border border-[#316868] bg-[#183434] h-11 px-3 text-sm">
+<option>Beginner</option>
+<option>Intermediate</option>
+<option selected="">Advanced</option>
+<option>Professional</option>
+</select>
+</label>
+</div>
+<!-- Chips: Vocabulary -->
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<p class="text-white text-sm font-semibold">Target Vocabulary</p>
+<button class="text-primary text-xs font-bold hover:underline">+ Add</button>
+</div>
+<div class="flex gap-2 flex-wrap">
+<div class="flex h-7 items-center justify-center gap-x-2 rounded bg-[#224949] px-3">
+<p class="text-white text-xs font-medium">Synergy</p>
+<span class="material-symbols-outlined text-[14px] cursor-pointer text-[#90cbcb]">close</span>
+</div>
+<div class="flex h-7 items-center justify-center gap-x-2 rounded bg-[#224949] px-3">
+<p class="text-white text-xs font-medium">Exacerbate</p>
+<span class="material-symbols-outlined text-[14px] cursor-pointer text-[#90cbcb]">close</span>
+</div>
+<div class="flex h-7 items-center justify-center gap-x-2 rounded bg-[#224949] px-3">
+<p class="text-white text-xs font-medium">Leverage</p>
+<span class="material-symbols-outlined text-[14px] cursor-pointer text-[#90cbcb]">close</span>
+</div>
+</div>
+</div>
+<!-- Navigation List -->
+<nav class="flex flex-col gap-1 pt-4 border-t border-[#224949]">
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary border border-primary/20">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">info</span>
+<p class="text-sm font-bold">General Info</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#90cbcb] hover:bg-[#224949] hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined">translate</span>
+<p class="text-sm font-medium">Vocabulary Library</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#90cbcb] hover:bg-[#224949] hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined">quiz</span>
+<p class="text-sm font-medium">Question Bank</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#90cbcb] hover:bg-[#224949] hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium">Export Settings</p>
+</div>
+</nav>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col bg-black overflow-hidden relative">
+<!-- Video Player Section -->
+<div class="flex-1 flex flex-col items-center justify-center bg-black p-4">
+<div class="relative w-full max-w-5xl aspect-video bg-[#0a1515] rounded-xl overflow-hidden shadow-2xl border border-[#224949] group">
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="bg-center bg-no-repeat bg-cover absolute inset-0 opacity-40" data-alt="Corporate office video scene preview" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC1gkgakzeBGVorxgUlr_wZNXQambFDnMTK68eIwKn9og8ayVElmL-ZCYyiBYZktjDgn6kTZoU01qAR8HgQBxf4F85jd0YAfW_DyDrw9nct_Qh-K30efC845mazuBze78goRIvyp4eL4HTkFMN8pCmQXz8Tbr-drQHzcmEoRJ41o8DamkJ-5f8XbG_ZJiVf0JM-ows4xFmsWIFxkcTmR8PRHo3nVu6Hn22HgB1WExmEkyKuw3Q6rliMrTJ6fcWB-J9__I03kAFCgWT5");'></div>
+<button class="z-10 bg-primary text-background-dark rounded-full p-6 shadow-xl hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1">play_arrow</span>
+</button>
+</div>
+<!-- Overlay Controls -->
+<div class="absolute bottom-0 inset-x-0 h-20 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+<div class="w-full flex items-center gap-4">
+<span class="material-symbols-outlined cursor-pointer">play_arrow</span>
+<span class="material-symbols-outlined cursor-pointer">volume_up</span>
+<div class="flex-1 h-1 bg-white/20 rounded-full">
+<div class="h-full bg-primary w-1/3 rounded-full relative">
+<div class="absolute right-0 top-1/2 -translate-y-1/2 size-3 bg-white rounded-full shadow"></div>
+</div>
+</div>
+<span class="text-xs font-mono">03:12 / 08:45</span>
+<span class="material-symbols-outlined cursor-pointer">fullscreen</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Checkpoint Timeline Area -->
+<div class="h-auto bg-[#102323] border-t border-[#224949] flex flex-col">
+<!-- Timeline Rulers & Markers -->
+<div class="h-16 relative border-b border-[#224949] px-6 flex items-center">
+<div class="w-full h-2 bg-[#183434] rounded-full relative">
+<!-- Playhead -->
+<div class="absolute h-12 w-0.5 bg-primary top-1/2 -translate-y-1/2 left-[36%] z-20">
+<div class="absolute -top-1 -left-1.5 size-3 bg-primary rounded-full"></div>
+</div>
+<!-- Markers (Checkpoints) -->
+<!-- Vocab Marker -->
+<div class="absolute top-1/2 -translate-y-1/2 left-[10%] group cursor-pointer">
+<div class="size-4 bg-primary rounded-full border-2 border-[#102323] shadow-lg"></div>
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-[#224949] p-2 rounded text-[10px] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Vocab: Synergy (00:45)</div>
+</div>
+<!-- Quiz Marker -->
+<div class="absolute top-1/2 -translate-y-1/2 left-[25%] group cursor-pointer">
+<div class="size-4 bg-purple-500 rounded-full border-2 border-[#102323] shadow-lg"></div>
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-[#224949] p-2 rounded text-[10px] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Quiz: Reading Comprehension (01:50)</div>
+</div>
+<!-- Note Marker -->
+<div class="absolute top-1/2 -translate-y-1/2 left-[60%] group cursor-pointer">
+<div class="size-4 bg-amber-500 rounded-full border-2 border-[#102323] shadow-lg"></div>
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-[#224949] p-2 rounded text-[10px] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Note: Contextual Usage (04:15)</div>
+</div>
+</div>
+<button class="ml-6 flex items-center gap-2 bg-primary/20 text-primary border border-primary/40 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-primary/30">
+<span class="material-symbols-outlined text-sm">add</span>
+                        Checkpoint
+                    </button>
+</div>
+<!-- Checkpoint List Table -->
+<div class="h-64 overflow-y-auto custom-scrollbar px-6 py-2 bg-[#102323]">
+<table class="w-full text-left text-sm">
+<thead class="sticky top-0 bg-[#102323] z-10 border-b border-[#224949]">
+<tr>
+<th class="py-3 font-semibold text-[#90cbcb] w-24">Time</th>
+<th class="py-3 font-semibold text-[#90cbcb] w-32">Type</th>
+<th class="py-3 font-semibold text-[#90cbcb]">Content Preview</th>
+<th class="py-3 font-semibold text-[#90cbcb] text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#224949]">
+<tr class="hover:bg-primary/5 group">
+<td class="py-4 font-mono text-primary">00:45</td>
+<td class="py-4">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-[18px]">translate</span>
+<span class="text-xs font-bold">Vocab</span>
+</div>
+</td>
+<td class="py-4 text-white">Target Word: <span class="text-primary font-medium">"Synergy"</span> - The combined power of a group...</td>
+<td class="py-4 text-right">
+<div class="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-[#90cbcb] hover:text-white"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="text-[#90cbcb] hover:text-red-400"><span class="material-symbols-outlined text-lg">delete</span></button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 group">
+<td class="py-4 font-mono text-primary">01:50</td>
+<td class="py-4">
+<div class="flex items-center gap-2 text-purple-400">
+<span class="material-symbols-outlined text-[18px]">quiz</span>
+<span class="text-xs font-bold">Quiz</span>
+</div>
+</td>
+<td class="py-4 text-white">Question: <span class="italic">"How does the speaker define market leverage?"</span></td>
+<td class="py-4 text-right">
+<div class="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-[#90cbcb] hover:text-white"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="text-[#90cbcb] hover:text-red-400"><span class="material-symbols-outlined text-lg">delete</span></button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 group">
+<td class="py-4 font-mono text-primary">04:15</td>
+<td class="py-4">
+<div class="flex items-center gap-2 text-amber-400">
+<span class="material-symbols-outlined text-[18px]">sticky_note_2</span>
+<span class="text-xs font-bold">Note</span>
+</div>
+</td>
+<td class="py-4 text-white">Instructor Note: Mention cultural nuances of the term 'Efficiency'.</td>
+<td class="py-4 text-right">
+<div class="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-[#90cbcb] hover:text-white"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="text-[#90cbcb] hover:text-red-400"><span class="material-symbols-outlined text-lg">delete</span></button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 group">
+<td class="py-4 font-mono text-primary">06:22</td>
+<td class="py-4">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-[18px]">translate</span>
+<span class="text-xs font-bold">Vocab</span>
+</div>
+</td>
+<td class="py-4 text-white">Target Word: <span class="text-primary font-medium">"Exacerbate"</span> - To make a problem worse...</td>
+<td class="py-4 text-right">
+<div class="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-[#90cbcb] hover:text-white"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="text-[#90cbcb] hover:text-red-400"><span class="material-symbols-outlined text-lg">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+</body></html>

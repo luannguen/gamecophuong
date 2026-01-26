@@ -1,0 +1,170 @@
+-- =============================================
+-- MIGRATION & SEED: Watch & Learn - Daily Routine
+-- =============================================
+
+-- =============================================
+-- 1. DDL: Create Missing Tables (if not exist)
+-- =============================================
+
+-- Units Table
+CREATE TABLE IF NOT EXISTS units (
+    id VARCHAR(50) PRIMARY KEY, -- Using VARCHAR to match seed IDs like 'unit_daily_routine_01'
+    title VARCHAR(200) NOT NULL,
+    description TEXT,
+    "order" INTEGER DEFAULT 0, -- Quoted "order" is valid in Postgres if created this way
+    status VARCHAR(50) DEFAULT 'draft',
+    category_id UUID REFERENCES categories(id) ON DELETE SET NULL, -- Linking to existing categories
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Lessons Table
+CREATE TABLE IF NOT EXISTS lessons (
+    id VARCHAR(50) PRIMARY KEY,
+    unit_id VARCHAR(50) REFERENCES units(id) ON DELETE CASCADE,
+    title VARCHAR(200) NOT NULL,
+    description TEXT,
+    "order" INTEGER DEFAULT 0,
+    current_version_id VARCHAR(50), -- Circular reference handling needed or defer constraint
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Lesson Versions Table
+CREATE TABLE IF NOT EXISTS lesson_versions (
+    id VARCHAR(50) PRIMARY KEY,
+    lesson_id VARCHAR(50) REFERENCES lessons(id) ON DELETE CASCADE,
+    version_number INTEGER NOT NULL,
+    status VARCHAR(50) DEFAULT 'draft',
+    video_source VARCHAR(50) DEFAULT 'youtube',
+    video_url TEXT,
+    duration_sec INTEGER,
+    difficulty INTEGER DEFAULT 1,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Checkpoints Table
+CREATE TABLE IF NOT EXISTS checkpoints (
+    id VARCHAR(50) PRIMARY KEY,
+    lesson_version_id VARCHAR(50) REFERENCES lesson_versions(id) ON DELETE CASCADE,
+    time_sec INTEGER NOT NULL,
+    type VARCHAR(50) NOT NULL, -- vocab, question
+    vocab_id UUID REFERENCES vocabulary(id) ON DELETE SET NULL, -- Linking to existing vocabulary table
+    content JSONB -- Store question/options as JSON
+);
+
+-- =============================================
+-- 2. SEED DATA
+-- =============================================
+
+-- 2.1 Insert Category (Fixed: 'order' -> 'sort_order')
+-- Assumption: categories.id is UUID. My seed uses 'cat_daily_life' which is not a UUID.
+-- If database requires UUID, we must use a valid UUID or existing category.
+-- Checking schema.txt: id UUID PRIMARY KEY DEFAULT uuid_generate_v4()
+-- I cannot insert 'cat_daily_life' into a UUID column.
+-- I must fetch the UUID of 'Daily Life' or create one with a specific UUID if allowed, 
+-- or let it generate and subquery. 
+-- For this script to be copy-paste run, I will generate a specific UUID for consistency or use a placeholder.
+-- Let's use a known UUID for seed data to avoid subquery complexity in simple scripts, 
+-- OR use a subquery if the category might exist.
+
+-- Strategy: Try to find existing 'Daily Life' or insert. 
+-- Since I can't easily capture ID in valid SQL script variables without PL/pgSQL, 
+-- I will use a specific UUID: '11111111-1111-1111-1111-111111111111' for Daily Life.
+
+INSERT INTO categories (id, name, sort_order, slug)
+VALUES (
+    '11111111-1111-1111-1111-111111111111', 
+    'Daily Life', 
+    1,
+    'daily-life'
+)
+ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name; -- id conflict
+-- Note: schema says slug is unique too.
+
+-- 2.2 Insert Unit
+-- category_id must match the UUID above.
+INSERT INTO units (id, title, description, "order", status, category_id)
+VALUES (
+    'unit_daily_routine_01', 
+    'Daily Routines', 
+    'Learn about daily activities like brushing teeth, having breakfast, and going to school.', 
+    1, 
+    'published',
+    '11111111-1111-1111-1111-111111111111'
+)
+ON CONFLICT (id) DO NOTHING;
+
+-- 2.3 Insert Lessons
+INSERT INTO lessons (id, unit_id, title, description, "order")
+VALUES (
+    'lesson_morning_routine_01', 
+    'unit_daily_routine_01', 
+    'Morning Routine', 
+    'Start your day with energy!', 
+    1
+)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO lessons (id, unit_id, title, description, "order")
+VALUES (
+    'lesson_school_time_01', 
+    'unit_daily_routine_01', 
+    'School Time', 
+    'Getting ready for school.', 
+    2
+)
+ON CONFLICT (id) DO NOTHING;
+
+-- 2.4 Insert Vocabularies
+-- vocabulary.id is UUID. Need valid UUIDs.
+-- I'll use arbitrary UUIDs for these seed vocabs.
+INSERT INTO vocabulary (id, word, meaning, image_url, audio_url, category_id)
+VALUES 
+    ('a0000000-0000-0000-0000-000000000001', 'Wake up', 'Thức dậy', 'wakeup.png', 'wakeup.mp3', '11111111-1111-1111-1111-111111111111'),
+    ('a0000000-0000-0000-0000-000000000002', 'Brush teeth', 'Đánh răng', 'brush_teeth.png', 'brush_teeth.mp3', '11111111-1111-1111-1111-111111111111'),
+    ('a0000000-0000-0000-0000-000000000003', 'Breakfast', 'Bữa sáng', 'breakfast.png', 'breakfast.mp3', '11111111-1111-1111-1111-111111111111'),
+    ('a0000000-0000-0000-0000-000000000004', 'Backpack', 'Cặp sách', 'backpack.png', 'backpack.mp3', '11111111-1111-1111-1111-111111111111')
+ON CONFLICT (id) DO NOTHING;
+
+-- 2.5 Insert Lesson Versions
+INSERT INTO lesson_versions (
+    id, lesson_id, version_number, status, 
+    video_source, video_url, duration_sec, 
+    difficulty
+)
+VALUES (
+    'ver_morning_01', 
+    'lesson_morning_routine_01', 
+    1, 
+    'published', 
+    'youtube', 
+    'https://www.youtube.com/embed/example1', 
+    120, 
+    1
+),
+(
+    'ver_school_01', 
+    'lesson_school_time_01', 
+    1, 
+    'published', 
+    'youtube', 
+    'https://www.youtube.com/embed/example2', 
+    150, 
+    1
+)
+ON CONFLICT (id) DO NOTHING;
+
+-- Update lessons with current version
+UPDATE lessons SET current_version_id = 'ver_morning_01' WHERE id = 'lesson_morning_routine_01';
+UPDATE lessons SET current_version_id = 'ver_school_01' WHERE id = 'lesson_school_time_01';
+
+-- 2.6 Insert Checkpoints
+INSERT INTO checkpoints (id, lesson_version_id, time_sec, type, vocab_id, content)
+VALUES
+    ('cp_01', 'ver_morning_01', 15, 'vocab', 'a0000000-0000-0000-0000-000000000001', NULL),
+    ('cp_02', 'ver_morning_01', 45, 'vocab', 'a0000000-0000-0000-0000-000000000002', NULL),
+    ('cp_03', 'ver_morning_01', 90, 'question', NULL, '{"question": "What do we do after waking up?", "options": ["Sleep", "Brush Teeth", "Play"], "answer": "Brush Teeth"}'),
+    ('cp_04', 'ver_school_01', 20, 'vocab', 'a0000000-0000-0000-0000-000000000004', NULL)
+ON CONFLICT (id) DO NOTHING;
+

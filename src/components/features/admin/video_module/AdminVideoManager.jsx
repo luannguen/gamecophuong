@@ -143,6 +143,28 @@ export default function AdminVideoManager() {
             }
         });
 
+    // If in Editor view, render LessonEditor directly for full screen override
+    if (view === 'editor' && selectedLesson) {
+        return (
+            <LessonEditor
+                unit={selectedUnit}
+                lesson={selectedLesson}
+                onBack={handleBack}
+            />
+        );
+    }
+
+    // If in Editor view, render LessonEditor directly for full screen override
+    if (view === 'editor' && selectedLesson) {
+        return (
+            <LessonEditor
+                unit={selectedUnit}
+                lesson={selectedLesson}
+                onBack={handleBack}
+            />
+        );
+    }
+
     return (
         <div className="flex flex-col h-full bg-[#f5f8f8] dark:bg-[#102222] min-h-screen font-display">
             {view === 'list' && (
@@ -259,29 +281,12 @@ export default function AdminVideoManager() {
                 </>
             )}
 
-            {view === 'editor' && selectedUnit && selectedLesson && (
-                <div className="space-y-6 p-6 max-w-7xl mx-auto w-full">
-                    <div className="bg-white dark:bg-[#152a2a] p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex justify-between items-center">
-                        <div>
-                            <h1 className="text-2xl font-black text-[#0d1c1c] dark:text-white flex items-center gap-2">
-                                <Icon.Edit className="text-[#0df2f2]" />
-                                Edit Lesson
-                            </h1>
-                            <p className="text-slate-500 dark:text-slate-400 font-medium mt-1">
-                                {selectedLesson.title}
-                            </p>
-                        </div>
-                        <button onClick={handleBack} className="px-5 py-2.5 bg-slate-100 dark:bg-slate-800 rounded-xl font-bold hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center gap-2 transition-all">
-                            <Icon.ArrowLeft /> Back to Units
-                        </button>
-                    </div>
-                    <LessonEditor
-                        unit={selectedUnit}
-                        lesson={selectedLesson}
-                        onBack={handleBack}
-                    />
-                </div>
-            )}
+
+            <LessonEditor
+                unit={selectedUnit}
+                lesson={selectedLesson}
+                onBack={handleBack}
+            />
 
             {/* Centralized Modal */}
             <EnhancedModal

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mobile Watch &amp; Learn View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0df2f2",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#102222",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-200 dark:bg-slate-900 font-display flex justify-center items-center min-h-screen">
+<!-- Mobile Container Emulator -->
+<div class="relative flex h-[844px] w-[390px] flex-col bg-background-light dark:bg-background-dark overflow-hidden shadow-2xl rounded-[3rem] border-[8px] border-slate-800 dark:border-slate-700">
+<!-- Status Bar Sim -->
+<div class="flex justify-between px-8 pt-4 pb-2 text-xs font-semibold text-slate-800 dark:text-slate-200">
+<span>9:41</span>
+<div class="flex gap-1">
+<span class="material-symbols-outlined text-[14px]">signal_cellular_alt</span>
+<span class="material-symbols-outlined text-[14px]">wifi</span>
+<span class="material-symbols-outlined text-[14px]">battery_full</span>
+</div>
+</div>
+<!-- Header Component -->
+<header class="flex items-center justify-between border-b border-solid border-[#e7f4f4] dark:border-slate-800 px-6 py-4 bg-background-light dark:bg-background-dark">
+<div class="flex items-center gap-3">
+<div class="text-primary">
+<span class="material-symbols-outlined text-2xl">school</span>
+</div>
+<h2 class="text-[#0d1c1c] dark:text-slate-100 text-lg font-bold leading-tight">Lessons</h2>
+</div>
+<div class="flex gap-2">
+<button class="flex size-10 items-center justify-center rounded-lg bg-[#e7f4f4] dark:bg-slate-800 text-[#0d1c1c] dark:text-slate-200">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-lg bg-[#e7f4f4] dark:bg-slate-800 text-[#0d1c1c] dark:text-slate-200">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+</header>
+<!-- Tabs Component -->
+<div class="bg-background-light dark:bg-background-dark">
+<div class="flex border-b border-[#cee8e8] dark:border-slate-800 px-6 gap-6">
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-primary text-[#0d1c1c] dark:text-slate-100 pb-3 pt-3" href="#">
+<p class="text-xs font-bold uppercase tracking-wider">All</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#499c9c] dark:text-slate-400 pb-3 pt-3" href="#">
+<p class="text-xs font-bold uppercase tracking-wider">Drafts</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#499c9c] dark:text-slate-400 pb-3 pt-3" href="#">
+<p class="text-xs font-bold uppercase tracking-wider">Archived</p>
+</a>
+</div>
+</div>
+<!-- Scrollable Content List -->
+<div class="flex-1 overflow-y-auto no-scrollbar p-4 space-y-3 pb-32">
+<!-- List Item 1 -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800/50 p-3 rounded-xl border border-[#e7f4f4] dark:border-slate-800 shadow-sm">
+<div class="bg-center bg-no-repeat aspect-video bg-cover rounded-lg w-20 h-14 shrink-0" data-alt="Video thumbnail showing a clean UI dashboard interface" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBiJZclPCIeTDdM2E1oue_z2eChp-L7766ySjaW_a_o-JU-emGfTfmXtlCEE-NfSecg2EtTVpECMpq5TexF40bzchisW_2YcyAWG9IBMtIrdYVYs4L_3xgmfSPWcdofTHtO3TegO6OXSFpdbHO1Vs1ZJJrpCETSOh6TyRfWU-Zis-XJ5XjCFQNfIpIkm8-bPiz_VNyC-3BPm85ukzthPksJhrZQ7JPMwXE89_hk-RtykqjJ_EvH1e6hfCs-FejdXMPJc7GN3FqKK8DS");'>
+</div>
+<div class="flex flex-1 flex-col justify-center overflow-hidden">
+<div class="flex justify-between items-start">
+<p class="text-[#0d1c1c] dark:text-slate-100 text-sm font-bold truncate">Intro to UI Design</p>
+<span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase">Published</span>
+</div>
+<p class="text-[#499c9c] dark:text-slate-400 text-xs mt-0.5">Version 1.2 • 12m 30s</p>
+</div>
+<button class="text-slate-400">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- List Item 2 -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800/50 p-3 rounded-xl border border-[#e7f4f4] dark:border-slate-800 shadow-sm border-l-4 border-l-orange-400">
+<div class="bg-center bg-no-repeat aspect-video bg-cover rounded-lg w-20 h-14 shrink-0" data-alt="Video thumbnail showing typography characters and fonts" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCwPeeFycROnpVHr3xyNqzFCYNbgU5T64K76C1gPdE4biGjjKUfEQ4xhppVqAtlKDWEgEl4LD_5XISH2C7Buu4ufnL8ucO1bzts636Zx4nBExEA-K04SOdHtkz5PpUQDb0KYmSiQ13VRZMUgLWtFw7yM8qT7yvH7OmXbtAMp0kxU5WMVLnhnGOXuYqfUJjAxeKF69C5SbmPYUPU8sH9pvNsLl_jzuSn_F11ZtmMnpena06-kf4GLl07f5Wvyt2vdWCJWsl83tYzUg7p");'>
+</div>
+<div class="flex flex-1 flex-col justify-center overflow-hidden">
+<div class="flex justify-between items-start">
+<p class="text-[#0d1c1c] dark:text-slate-100 text-sm font-bold truncate">Advanced Typography</p>
+<span class="bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase">Draft</span>
+</div>
+<p class="text-[#499c9c] dark:text-slate-400 text-xs mt-0.5">Version 2.1 • 18m 45s</p>
+</div>
+<button class="text-slate-400">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- List Item 3 -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800/50 p-3 rounded-xl border border-[#e7f4f4] dark:border-slate-800 shadow-sm">
+<div class="bg-center bg-no-repeat aspect-video bg-cover rounded-lg w-20 h-14 shrink-0" data-alt="Video thumbnail showing a colorful color wheel" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAaGt1D-MJKlrsMWrt7P6ukUv6ya4CBF3syrd2x5cZDA0B9iRIrFJy6AcEkZIzY1VaTAmwqtIB7hwCCYqJghHBq4yl1EMeGcJN-7tFwrA_KZfFISgk7-jpVArdIWyT0x68gnkOwzCf-7D2RGppOqnFIB8f92wieSvRumNhv6lidSa-73LtIkV6mlNxdhN6N1-siLG_tw0p0AFgQsvUqrTGRWOifIqUiqh6BWnW_TMMqTYPW7c_YxaOmCy-6XWEGiNKCTTByS0-4-Mgj");'>
+</div>
+<div class="flex flex-1 flex-col justify-center overflow-hidden">
+<div class="flex justify-between items-start">
+<p class="text-[#0d1c1c] dark:text-slate-100 text-sm font-bold truncate">Color Theory Basics</p>
+<span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase">Published</span>
+</div>
+<p class="text-[#499c9c] dark:text-slate-400 text-xs mt-0.5">Version 1.0 • 08m 15s</p>
+</div>
+<button class="text-slate-400">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- List Item 4 -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800/50 p-3 rounded-xl border border-[#e7f4f4] dark:border-slate-800 shadow-sm">
+<div class="bg-center bg-no-repeat aspect-video bg-cover rounded-lg w-20 h-14 shrink-0" data-alt="Video thumbnail showing a abstract digital wireframe" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBdrQT3QIqq7b0Bxb1JUYnfee5M1v-6SUOZ4pY1rbj5KjVmnlwgBDtE_ZAPCLbmXnDOeg9Rm4rjwS3mUuqqFW2TyXJoPh97PLEFWWgtldz3wcy_wWwVLBan9SWe0qyiRPfrIyoS-G_uYWQwrCgz123iljuvyDCwZ1mmhfsSLZmXHOvo_FlRL8jyyxFhMavgDz0ZavkLYdJmXchFnqQQ6KpCqZozjYHuD4SYrNgjIVj7jPzVCp1xbaxeDvVb4DBlHyZL-MdYQfsPHquY");'>
+</div>
+<div class="flex flex-1 flex-col justify-center overflow-hidden">
+<div class="flex justify-between items-start">
+<p class="text-[#0d1c1c] dark:text-slate-100 text-sm font-bold truncate">Layout &amp; Grids</p>
+<span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase">Published</span>
+</div>
+<p class="text-[#499c9c] dark:text-slate-400 text-xs mt-0.5">Version 1.3 • 15m 00s</p>
+</div>
+<button class="text-slate-400">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- List Item 5 -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800/50 p-3 rounded-xl border border-[#e7f4f4] dark:border-slate-800 shadow-sm">
+<div class="bg-center bg-no-repeat aspect-video bg-cover rounded-lg w-20 h-14 shrink-0" data-alt="Video thumbnail showing abstract glowing nodes and links" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB1GuhURpFsCQ2t0xfZb-Dqp1FYt6wsyjNBGKoEhvJhdIOpq2aZrFUuaiIXH-_ysjVU0tMmtkWQzt0cMm8Z-YrEsGt6iW83Vut57c5zXy0L7tsMeZzNMim_b04KpekmzDc3ar5ii7bklLHtxaO-FTAbGzVSr8TFbSD-pqdu-AJKTYQ_5E_BSRTkDDsENi3iROSy-dqtkSG6LvB1lh5K_rafIm-cvcd3dkXq0PfRGW0yCsEAIBGX7P2Iz2ZtG0hprZLFXwWQdoM9MDyQ");'>
+</div>
+<div class="flex flex-1 flex-col justify-center overflow-hidden">
+<div class="flex justify-between items-start">
+<p class="text-[#0d1c1c] dark:text-slate-100 text-sm font-bold truncate">Visual Hierarchy</p>
+<span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase">Published</span>
+</div>
+<p class="text-[#499c9c] dark:text-slate-400 text-xs mt-0.5">Version 1.1 • 10m 20s</p>
+</div>
+<button class="text-slate-400">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Floating Action Button -->
+<button class="absolute bottom-24 right-6 flex size-14 items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-primary/40 active:scale-95 transition-transform z-20">
+<span class="material-symbols-outlined text-3xl font-bold">add</span>
+</button>
+<!-- Quick Action Menu (Bottom Sheet Simulation - Partially Visible) -->
+<div class="absolute bottom-0 left-0 right-0 bg-white dark:bg-slate-900 rounded-t-3xl shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.3)] border-t border-slate-100 dark:border-slate-800 translate-y-[calc(100%-80px)] hover:translate-y-0 transition-transform duration-300 z-30">
+<!-- Drag Handle -->
+<div class="flex justify-center py-3">
+<div class="w-12 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+</div>
+<div class="px-6 pb-10">
+<div class="flex items-center gap-4 mb-6 pt-2">
+<div class="bg-primary/20 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary">edit_square</span>
+</div>
+<div>
+<h3 class="font-bold text-[#0d1c1c] dark:text-slate-100">Intro to UI Design</h3>
+<p class="text-xs text-slate-500">Quick Actions</p>
+</div>
+</div>
+<div class="grid grid-cols-1 gap-2">
+<button class="flex items-center gap-4 w-full p-4 rounded-xl bg-background-light dark:bg-slate-800 text-[#0d1c1c] dark:text-slate-200 font-medium hover:bg-primary/10 transition-colors text-sm">
+<span class="material-symbols-outlined text-slate-400">edit</span>
+                        Edit Lesson Details
+                    </button>
+<button class="flex items-center gap-4 w-full p-4 rounded-xl bg-background-light dark:bg-slate-800 text-[#0d1c1c] dark:text-slate-200 font-medium hover:bg-primary/10 transition-colors text-sm">
+<span class="material-symbols-outlined text-slate-400">history</span>
+                        Version History
+                    </button>
+<button class="flex items-center gap-4 w-full p-4 rounded-xl bg-background-light dark:bg-slate-800 text-[#0d1c1c] dark:text-slate-200 font-medium hover:bg-primary/10 transition-colors text-sm">
+<span class="material-symbols-outlined text-slate-400">account_tree</span>
+                        View Dependencies
+                    </button>
+<button class="flex items-center gap-4 w-full p-4 rounded-xl bg-red-50 dark:bg-red-900/10 text-red-600 font-medium hover:bg-red-100 transition-colors text-sm mt-2">
+<span class="material-symbols-outlined">delete</span>
+                        Delete Lesson
+                    </button>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar Component -->
+<nav class="absolute bottom-0 left-0 right-0 flex justify-around items-center border-t border-solid border-[#e7f4f4] dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-4 pt-3 pb-8 z-10">
+<a class="flex flex-col items-center gap-1 text-[#499c9c] dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">folder</span>
+<span class="text-[10px] font-bold uppercase tracking-tight">Units</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">play_circle</span>
+<span class="text-[10px] font-bold uppercase tracking-tight">Lessons</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#499c9c] dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">quiz</span>
+<span class="text-[10px] font-bold uppercase tracking-tight">Quizzes</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#499c9c] dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-bold uppercase tracking-tight">Settings</span>
+</a>
+</nav>
+<!-- Home Indicator Sim -->
+<div class="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-32 h-1 bg-slate-300 dark:bg-slate-700 rounded-full z-20"></div>
+</div>
+</body></html>

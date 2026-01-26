@@ -2,12 +2,8 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { categoryRepository } from '../../admin/data/categoryRepository';
 import { gameRepository } from '../../game/data/gameRepository';
-import { IMAGES } from '../../../../data/designAssets';
 import { useSoundEffects } from '../hooks/useSoundEffects';
-
-// Mock Videos until we update repository - or fetch all and filter
-// Ideally, videoRepository should support getByCategory(topicId)
-const MOCK_VIDEOS = [];
+import GameIntroModal from '../../game/components/GameIntroModal';
 
 export default function TopicDetailPage() {
     const { topicId } = useParams();
@@ -15,8 +11,9 @@ export default function TopicDetailPage() {
     const { playHover, playClick } = useSoundEffects();
 
     const [topic, setTopic] = useState(null);
-    const [items, setItems] = useState([]); // Mixed games and videos
+    const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [selectedGame, setSelectedGame] = useState(null);
 
     useEffect(() => {
         loadData();
@@ -29,28 +26,37 @@ export default function TopicDetailPage() {
             gameRepository.getAll(topicId)
         ]);
 
-        // Fetch videos (Placeholder logic: in real app, fetch from videoRepository filtered by category name or id)
-        // For now, only showing games from the database as requested
-
         if (topicRes) {
             setTopic(topicRes);
         }
 
         if (gamesRes.success) {
-            // Map games to unified item structure
             const gameItems = gamesRes.data.map(g => ({
                 id: g.id,
                 type: 'game',
-                gameType: g.type, // 'listening', 'speaking', etc.
+                gameType: g.type,
+                subtype: g.subtype || 'default',
                 title: g.title,
                 subtitle: g.subtitle || getDescriptionForType(g.type),
                 icon: getIconForType(g.type),
                 color: getColorForType(g.type),
-                stars: g.star_reward
+                stars: g.star_reward || 10
             }));
             setItems(gameItems);
         }
         setIsLoading(false);
+    };
+
+    const handleGameClick = (game) => {
+        playClick();
+        setSelectedGame(game);
+    };
+
+    const handlePlayGame = () => {
+        if (selectedGame) {
+            // Navigate to generic runner or specific if needed
+            navigate(`/student/game/${selectedGame.id}`);
+        }
     };
 
     const getIconForType = (type) => {
@@ -58,18 +64,20 @@ export default function TopicDetailPage() {
             case 'listening': return 'hearing';
             case 'speaking': return 'record_voice_over';
             case 'vocabulary': return 'menu_book';
-            case 'video': return 'play_circle';
+            case 'reading': return 'visibility';
+            case 'writing': return 'edit';
             default: return 'extension';
         }
     };
 
     const getColorForType = (type) => {
         switch (type) {
-            case 'listening': return 'text-indigo-500 bg-indigo-50';
-            case 'speaking': return 'text-rose-500 bg-rose-50';
-            case 'vocabulary': return 'text-emerald-500 bg-emerald-50';
-            case 'video': return 'text-pink-500 bg-pink-50';
-            default: return 'text-amber-500 bg-amber-50';
+            case 'listening': return 'text-indigo-500 bg-indigo-50 border-indigo-100';
+            case 'speaking': return 'text-rose-500 bg-rose-50 border-rose-100';
+            case 'vocabulary': return 'text-emerald-500 bg-emerald-50 border-emerald-100';
+            case 'reading': return 'text-sky-500 bg-sky-50 border-sky-100';
+            case 'writing': return 'text-amber-500 bg-amber-50 border-amber-100';
+            default: return 'text-slate-500 bg-slate-50 border-slate-100';
         }
     };
 
@@ -77,89 +85,110 @@ export default function TopicDetailPage() {
         switch (type) {
             case 'listening': return 'Listen carefully';
             case 'speaking': return 'Say it loud';
-            case 'vocabulary': return 'Learn new words';
+            case 'vocabulary': return 'New Words';
             default: return 'Play & Learn';
         }
     };
 
-    if (isLoading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin size-10 border-4 border-teal-500 border-t-transparent rounded-full"></div></div>;
+    if (isLoading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin size-10 border-4 border-indigo-500 border-t-transparent rounded-full"></div></div>;
     if (!topic) return <div className="text-center py-20 text-slate-400">Topic not found</div>;
 
     return (
-        <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
-            {/* Header */}
-            <header className="relative h-[200px] rounded-[3rem] overflow-hidden shadow-lg flex items-center p-10 mb-8" style={{ backgroundColor: topic.color }}>
-                <div className="absolute inset-0 bg-white/10 opacity-50 bg-[url('/pattern-grid.svg')]"></div>
-                <div className="absolute -right-20 -bottom-20 size-64 rounded-full bg-white/20 blur-3xl"></div>
+        <div className="min-h-screen pb-20 relative overflow-hidden">
+            {/* Background Blob */}
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-100/50 rounded-full blur-3xl -z-10 translate-x-1/3 -translate-y-1/3"></div>
 
-                <div className="relative z-10 flex items-center gap-6">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in duration-500">
+                {/* Header */}
+                <header className="mb-12">
                     <button
                         onClick={() => navigate('/student/home')}
-                        className="size-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-slate-800 transition-all shadow-lg"
+                        onMouseEnter={playHover}
+                        onClickCapture={playClick}
+                        className="mb-8 flex items-center gap-2 text-slate-500 hover:text-indigo-600 font-bold transition-colors group"
                     >
-                        <span className="material-symbols-outlined">arrow_back</span>
+                        <div className="size-10 rounded-full bg-white shadow-sm border border-slate-200 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <span className="material-symbols-outlined">arrow_back</span>
+                        </div>
+                        <span>Back to Home</span>
                     </button>
-                    <div className="size-24 rounded-3xl bg-white text-slate-800 shadow-xl flex items-center justify-center text-5xl">
-                        <span className="material-symbols-outlined filled" style={{ color: topic.color }}>{topic.icon}</span>
-                    </div>
-                    <div className="text-white">
-                        <h1 className="text-5xl font-black drop-shadow-md">{topic.name}</h1>
-                        <p className="text-white/90 font-bold text-lg opacity-90">{items.length} Activities Available</p>
-                    </div>
-                </div>
-            </header>
 
-            {/* Content List */}
-            <div className="space-y-4">
-                {items.length > 0 ? (
-                    items.map((item, index) => (
-                        <div
-                            key={item.id}
-                            onMouseEnter={playHover}
-                            onClick={() => {
-                                playClick();
-                                if (item.type === 'game') {
-                                    // TODO: Navigate to specific game runner based on type
-                                    // For now pointing to generic game detail to handle logic
-                                    navigate(`/student/game/${item.id}`);
-                                }
-                            }}
-                            className="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 flex items-center gap-6 hover:scale-[1.02] hover:shadow-xl transition-all cursor-pointer group hover-pop relative overflow-hidden"
-                        >
-                            {/* Number Badge */}
-                            <div className="absolute left-0 top-0 bottom-0 w-2 bg-slate-100 group-hover:bg-teal-400 transition-colors"></div>
-
-                            {/* Icon */}
-                            <div className={`size-16 rounded-2xl flex items-center justify-center text-3xl shrink-0 ${item.color} shadow-sm group-hover:scale-110 transition-transform`}>
-                                <span className="material-symbols-outlined filled">{item.icon}</span>
+                    <div className="flex flex-col md:flex-row items-center md:items-start gap-8 text-center md:text-left">
+                        <div className="size-32 md:size-40 rounded-[2.5rem] bg-white shadow-2xl flex items-center justify-center text-8xl shrink-0 border-4 border-white rotate-3 relative z-10">
+                            <span className="material-symbols-outlined filled" style={{ color: topic.color }}>{topic.icon}</span>
+                            {/* Decorative badge */}
+                            <div className="absolute -bottom-4 -right-4 bg-yellow-400 text-yellow-900 px-4 py-1 rounded-full text-sm font-black border-4 border-white shadow-sm">
+                                {items.length} GAMES
                             </div>
+                        </div>
+                        <div className="flex-1 pt-4">
+                            <h1 className="text-4xl md:text-6xl font-black text-slate-800 tracking-tight leading-none mb-4 drop-shadow-sm">
+                                {topic.name}
+                            </h1>
+                            <p className="text-xl text-slate-500 font-medium max-w-2xl">
+                                Explore fun games and activities to master this topic!
+                            </p>
+                        </div>
+                    </div>
+                </header>
 
-                            {/* Content Info */}
-                            <div className="flex-1">
-                                <h3 className="text-2xl font-black text-slate-800 leading-tight group-hover:text-teal-600 transition-colors">{item.title}</h3>
-                                <p className="text-slate-400 font-bold text-sm uppercase tracking-wider">{item.subtitle}</p>
-                            </div>
+                {/* Game Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {items.length > 0 ? (
+                        items.map((item) => (
+                            <div
+                                key={item.id}
+                                onClick={() => handleGameClick(item)}
+                                onMouseEnter={playHover}
+                                className="group relative bg-white rounded-[2rem] p-6 shadow-sm border-2 border-transparent hover:border-indigo-100 hover:shadow-xl transition-all cursor-pointer hover:-translate-y-1 overflow-hidden"
+                            >
+                                {/* Hover Effect BG */}
+                                <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity ${item.color.split(' ')[1]}`}></div>
 
-                            {/* Type Badge */}
-                            <div className="hidden sm:flex flex-col items-end gap-1 text-right">
-                                <span className="text-xs font-black text-slate-300 uppercase tracking-widest">{item.gameType}</span>
-                                <div className="flex items-center gap-1 bg-yellow-400/10 px-3 py-1 rounded-full border border-yellow-400/20 text-yellow-600 font-black">
-                                    <span className="material-symbols-outlined filled text-lg">star</span>
-                                    <span>{item.stars}</span>
+                                <div className="flex items-start justify-between mb-6 relative z-10">
+                                    <div className={`size-16 rounded-2xl flex items-center justify-center text-3xl shadow-sm ${item.color}`}>
+                                        <span className="material-symbols-outlined filled">{item.icon}</span>
+                                    </div>
+                                    <div className="bg-yellow-50 text-yellow-700 px-3 py-1 rounded-full text-xs font-black flex items-center gap-1 border border-yellow-100">
+                                        <span className="material-symbols-outlined text-base">star</span>
+                                        {item.stars}
+                                    </div>
+                                </div>
+
+                                <div className="relative z-10">
+                                    <h3 className="text-2xl font-black text-slate-800 mb-1 leading-tight group-hover:text-indigo-600 transition-colors">
+                                        {item.title}
+                                    </h3>
+                                    <p className="text-slate-400 font-medium text-sm">
+                                        {item.subtitle}
+                                    </p>
+                                </div>
+
+                                <div className="mt-6 flex items-center justify-between relative z-10">
+                                    <span className="text-xs font-bold text-slate-300 uppercase tracking-widest">{item.gameType}</span>
+                                    <div className="size-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-300 group-hover:bg-indigo-600 group-hover:text-white transition-all transform group-hover:rotate-12">
+                                        <span className="material-symbols-outlined">play_arrow</span>
+                                    </div>
                                 </div>
                             </div>
-
-                            <span className="material-symbols-outlined text-slate-300 transform group-hover:translate-x-2 transition-transform text-3xl">chevron_right</span>
+                        ))
+                    ) : (
+                        <div className="col-span-full py-20 text-center bg-white/50 rounded-[3rem] border-4 border-dashed border-slate-200">
+                            <span className="material-symbols-outlined text-6xl text-slate-300 mb-4">sports_esports</span>
+                            <h3 className="text-xl font-bold text-slate-500">No games added yet</h3>
+                            <p className="text-slate-400">Ask your teacher to add some games!</p>
                         </div>
-                    ))
-                ) : (
-                    <div className="text-center py-20 bg-slate-50 rounded-[3rem] border-2 border-dashed border-slate-200">
-                        <span className="material-symbols-outlined text-6xl text-slate-300 mb-4">sentiment_content</span>
-                        <h3 className="text-xl font-bold text-slate-600">No activities yet</h3>
-                        <p className="text-slate-400">Check back later for new games!</p>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
+
+            {/* Modal */}
+            <GameIntroModal
+                isOpen={!!selectedGame}
+                onClose={() => setSelectedGame(null)}
+                game={selectedGame || {}}
+                onPlay={handlePlayGame}
+            />
         </div>
     );
 }

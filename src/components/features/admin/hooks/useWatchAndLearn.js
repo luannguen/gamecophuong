@@ -69,10 +69,22 @@ export function useWatchAndLearn() {
                             }));
                     }
 
+                    const getDifficultyLevel = (val) => {
+                        switch (val) {
+                            case 1: return 'Beginner';
+                            case 2: return 'Intermediate';
+                            case 3: return 'Advanced';
+                            case 4: return 'Professional';
+                            default: return 'Intermediate';
+                        }
+                    };
+
                     return {
                         ...lesson,
                         durationSec: version?.duration_sec || 0,
                         videoUrl: version?.video_url || '',
+                        difficultyLevel: getDifficultyLevel(version?.difficulty), // Map Int -> String
+                        vocab_ids: version?.vocab_ids || [], // Pass IDs
                         version: version || { checkpoints: [] }
                     };
                 });
@@ -110,9 +122,6 @@ export function useWatchAndLearn() {
             description: unitData.description,
             order: units.length + 1,
             status: 'draft',
-            description: unitData.description,
-            order: units.length + 1,
-            status: 'draft',
             category_id: unitData.category_id // Dynamic Category ID
         };
 
@@ -146,8 +155,6 @@ export function useWatchAndLearn() {
         const { error: lError } = await supabase.from('lessons').insert([{
             id: lessonId,
             unit_id: unitId,
-            title: lessonData.title,
-            description: lessonData.description,
             title: lessonData.title,
             description: lessonData.description,
             order: (units.find(u => u.id === unitId)?.lessons?.length || 0) + 1, // Dynamic Order
@@ -208,6 +215,37 @@ export function useWatchAndLearn() {
         return { success: !error, error };
     };
 
+    const updateLessonVersion = async (versionId, updates) => {
+        // updates: { video_url, difficulty, duration_sec, status, vocab_ids }
+        const { error } = await supabase.from('lesson_versions').update(updates).eq('id', versionId);
+
+        if (!error) {
+            // Update local state by finding the unit > lesson > version
+            setUnits(prev => prev.map(u => ({
+                ...u,
+                lessons: u.lessons.map(l => {
+                    if (l.version?.id === versionId) {
+                        return {
+                            ...l,
+                            videoUrl: updates.video_url !== undefined ? updates.video_url : l.videoUrl,
+                            durationSec: updates.duration_sec !== undefined ? updates.duration_sec : l.durationSec,
+                            // If difficulty update, also update difficultyLevel (optional optimization, or let reload handle it)
+                            difficultyLevel: updates.difficulty ? (
+                                updates.difficulty === 1 ? 'Beginner' :
+                                    updates.difficulty === 2 ? 'Intermediate' :
+                                        updates.difficulty === 3 ? 'Advanced' : 'Professional'
+                            ) : l.difficultyLevel,
+                            vocab_ids: updates.vocab_ids !== undefined ? updates.vocab_ids : l.vocab_ids,
+                            version: { ...l.version, ...updates }
+                        };
+                    }
+                    return l;
+                })
+            })));
+        }
+        return { success: !error, error };
+    };
+
     const deleteLesson = async (unitId, lessonId) => {
         // Cascade delete should handle children if configured in DB.
         // If not, we typically blindly delete lesson and trust DB or delete children first.
@@ -245,7 +283,7 @@ export function useWatchAndLearn() {
             lesson_version_id: versionId,
             time_sec: cp.timeSec,
             type: cp.type,
-            vocab_id: cp.vocabId,
+            vocab_id: cp.vocabId || null,
             content: cp.content
         }));
 
@@ -264,7 +302,7 @@ export function useWatchAndLearn() {
         deleteUnit,
         addLesson,
         updateLesson,
-        deleteLesson,
+        updateLessonVersion,
         deleteLesson,
         saveCheckpoints,
         categories // Export categories

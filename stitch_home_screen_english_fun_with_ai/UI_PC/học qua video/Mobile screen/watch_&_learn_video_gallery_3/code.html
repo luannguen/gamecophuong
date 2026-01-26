@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Video Lesson Completion Reward</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,FILL@0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#26d9d9",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#122020",
+                        "accent-yellow": "#FCCD2B",
+                        "accent-pink": "#FF8CBE",
+                        "success-green": "#4ADE80"
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: "Spline Sans", sans-serif;
+            min-height: 100dvh;
+        }
+        .confetti-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-[#0f1a1a] dark:text-white transition-colors duration-300">
+<div class="relative flex min-h-screen w-full flex-col max-w-[430px] mx-auto shadow-2xl overflow-hidden pb-24">
+<div class="absolute inset-0 pointer-events-none overflow-hidden opacity-50">
+<div class="confetti-dot bg-primary top-10 left-10 rotate-12"></div>
+<div class="confetti-dot bg-accent-yellow top-40 left-20 rotate-45"></div>
+<div class="confetti-dot bg-accent-pink top-20 right-10 rotate-[30deg]"></div>
+<div class="confetti-dot bg-success-green top-60 right-20 rotate-12"></div>
+<div class="confetti-dot bg-primary bottom-80 left-5 -rotate-12"></div>
+<div class="confetti-dot bg-accent-yellow top-1/2 left-1/3 rotate-45"></div>
+<div class="confetti-dot bg-accent-pink bottom-1/3 right-10 -rotate-12"></div>
+</div>
+<div class="flex items-center p-4 justify-between sticky top-0 z-50">
+<button class="flex h-10 w-10 items-center justify-center rounded-full bg-white dark:bg-slate-800 shadow-sm">
+<span class="material-symbols-outlined">close</span>
+</button>
+<div class="flex items-center gap-2 bg-white/80 dark:bg-slate-800/80 px-4 py-1.5 rounded-full shadow-sm">
+<span class="material-symbols-outlined text-accent-yellow">stars</span>
+<span class="font-bold text-sm">1,250 XP</span>
+</div>
+</div>
+<div class="flex-1 flex flex-col items-center justify-center px-6 relative z-10 -mt-10">
+<div class="relative mb-8">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-accent-yellow text-slate-900 font-black text-xl px-8 py-2 rounded-full shadow-lg transform -rotate-3 border-4 border-white whitespace-nowrap z-20 uppercase tracking-tighter">
+                    Good Job!
+                </div>
+<div class="size-48 bg-white dark:bg-slate-800 rounded-full border-8 border-primary/20 flex items-center justify-center p-4 relative">
+<div class="size-full bg-center bg-no-repeat bg-cover rounded-full" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBXERfhV0Y0wUiIMU2NZ-9qMC_jWst0-fBa9gKmr5vH_inLYiV0sKYaQtYcoOX3WIv4Jh8M4wLlT2gPYJmby0pbk0pTzf2DUuIOELOdavjIi4igQvHMLodq5JPwUW0iMecfpNpKkN1ooD-zGVUs9djh7szx1rsnDZQalSDIBuoUI8-_ofzryZ2fvub71mc9Uzbkq22ioVkPZnkBReOlHxNe98ZTU_Rl3vkCSHLoMdVfNAJLKrdk1AkyGagXYKhniTOEorH4xhoZ4XM");'></div>
+</div>
+</div>
+<div class="flex gap-2 mb-8">
+<span class="material-symbols-outlined text-5xl text-accent-yellow">star</span>
+<span class="material-symbols-outlined text-6xl text-accent-yellow -mt-4">star</span>
+<span class="material-symbols-outlined text-5xl text-accent-yellow">star</span>
+</div>
+<div class="w-full bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-xl border-2 border-primary/10 flex flex-col items-center mb-8">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest mb-4">New Sticker Collected!</p>
+<div class="size-32 bg-background-light dark:bg-slate-700 rounded-2xl flex items-center justify-center mb-3 shadow-inner">
+<img alt="Tiger Sticker" class="size-24 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxZTi4Zhsg3smtbF-Tn7f0XYj3BElQquty3YjOTQdwRrWvhoxqNHUHh2VANBVDa99bEXDf0uya_nfS-xIf5BH4dkaM1atU_pQ-fHMulRkMHjSjvmRPrkTGj61MBJDLDqR5k7i8NxB8WEsW4e7HnSWEelsz8-kPKZiO5EuoeOSPD6oh-cqv54LRQZeqNiqRYVAhXVfeUBPgf344nH7qFyVBRxJzL5k4C2zEMMmbCEZ9niVAWb9scSlLsHC_tIEiYKsahciiR7VC180"/>
+</div>
+<p class="text-xl font-bold text-[#0f1a1a] dark:text-white">Tony the Tiger</p>
+<p class="text-primary text-sm font-medium">Unit 1: Wild Animals</p>
+</div>
+<div class="w-full flex flex-col gap-3">
+<button class="w-full bg-primary hover:bg-opacity-90 text-white font-bold py-4 rounded-2xl shadow-lg shadow-primary/30 flex items-center justify-center gap-2 transition-transform active:scale-95">
+<span class="text-lg">Next Lesson</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="w-full bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-200 font-bold py-4 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-2 transition-transform active:scale-95">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="text-lg">Review Vocabulary</span>
+</button>
+</div>
+</div>
+<div class="absolute bottom-32 left-8 pointer-events-none opacity-20">
+<span class="material-symbols-outlined text-4xl">emoji_events</span>
+</div>
+<div class="absolute bottom-40 right-8 pointer-events-none opacity-20">
+<span class="material-symbols-outlined text-4xl text-accent-pink">celebration</span>
+</div>
+<div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[380px] h-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.15)] flex items-center justify-around px-2 border border-white/20 z-[100]">
+<button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-2xl">home</span>
+<span class="text-[10px] font-bold">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-2xl">play_circle</span>
+<span class="text-[10px] font-bold">Videos</span>
+</button>
+<button class="flex items-center justify-center size-14 bg-primary text-white rounded-full shadow-lg shadow-primary/40 -mt-10 border-4 border-background-light dark:border-background-dark">
+<span class="material-symbols-outlined text-3xl">sports_esports</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-2xl">leaderboard</span>
+<span class="text-[10px] font-bold">Ranks</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-2xl">person</span>
+<span class="text-[10px] font-bold">Profile</span>
+</button>
+</div>
+</div>
+
+</body></html>

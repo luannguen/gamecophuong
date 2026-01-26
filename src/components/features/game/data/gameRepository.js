@@ -57,6 +57,28 @@ export const gameRepository = {
     },
 
     /**
+     * Update an existing game
+     * @param {string} id
+     * @param {Object} updates
+     */
+    async update(id, updates) {
+        try {
+            const { data, error } = await supabase
+                .from('mini_games')
+                .update(updates)
+                .eq('id', id)
+                .select()
+                .single();
+
+            if (error) throw error;
+            return success(data);
+        } catch (error) {
+            console.error('Error updating game:', error);
+            return failure(ErrorCodes.DATABASE_ERROR, error.message);
+        }
+    },
+
+    /**
     * Delete a game
     * @param {string} id 
     */

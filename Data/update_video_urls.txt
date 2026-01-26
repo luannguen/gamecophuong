@@ -1,0 +1,6 @@
+-- Update video URLs to working educational videos (Big Buck Bunny MP4 for guaranteed playback)
+-- User confirmed this link works.
+
+UPDATE lesson_versions
+SET video_url = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
+WHERE lesson_id IN ('lesson_morning_routine_01', 'lesson_school_time_01');

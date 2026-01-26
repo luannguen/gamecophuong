@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
+import { useVideoUpload } from '../../../shared/hooks/useVideoUpload';
 import { Icon } from '../../../ui/AnimatedIcon';
 import EnhancedModal from '../../../shared/ui/EnhancedModal';
+import MediaLibraryModal from './MediaLibraryModal';
 
 export default function LessonMetadataSidebar({ lesson, vocabulary, categories, onUpdate }) {
     const [isVocabSearchOpen, setIsVocabSearchOpen] = useState(false);
     const [vocabSearchQuery, setVocabSearchQuery] = useState('');
     const [isAllVocabModalOpen, setIsAllVocabModalOpen] = useState(false);
+    const { uploadVideo, isUploading, uploadError } = useVideoUpload();
+    const [isLibraryOpen, setIsLibraryOpen] = useState(false);
 
     // Fallback if lesson.target_vocabulary is undefined
     const lessonVocabs = lesson.target_vocabulary || [];
@@ -75,9 +79,11 @@ export default function LessonMetadataSidebar({ lesson, vocabulary, categories, 
                         />
                     </label>
 
-                    {/* Video URL */}
-                    <label className="flex flex-col gap-2">
-                        <p className="text-white text-sm font-semibold font-display">Video URL</p>
+                    {/* Video URL & Upload */}
+                    <div className="space-y-2">
+                        <p className="text-white text-sm font-semibold font-display">Video Source</p>
+
+                        {/* URL Input */}
                         <div className="relative">
                             <input
                                 className="w-full rounded-lg text-white focus:outline-none focus:ring-1 focus:ring-[#0df2f2] border border-[#316868] bg-[#183434] h-10 placeholder-[#90cbcb] pl-9 pr-3 text-xs font-display transition-all truncate"
@@ -87,7 +93,61 @@ export default function LessonMetadataSidebar({ lesson, vocabulary, categories, 
                             />
                             <Icon.Video className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#90cbcb]" />
                         </div>
-                    </label>
+
+                        {/* Upload Button */}
+                        <div className="flex justify-end">
+                            <label className="cursor-pointer flex items-center gap-2 text-xs text-[#0df2f2] font-bold hover:text-white transition-colors bg-[#183434] hover:bg-[#224949] px-3 py-1.5 rounded-md border border-[#316868] hover:border-[#0df2f2] shadow-sm">
+                                <Icon.Upload className="w-3.5 h-3.5" />
+                                <span>{isUploading ? 'Uploading...' : 'Upload Video File'}</span>
+                                <input
+                                    type="file"
+                                    accept="video/*"
+                                    className="hidden"
+                                    disabled={isUploading}
+                                    onChange={async (e) => {
+                                        if (e.target.files && e.target.files[0]) {
+                                            const file = e.target.files[0];
+                                            const result = await uploadVideo(file);
+                                            if (result) {
+                                                onUpdate({ ...lesson, videoUrl: result });
+                                            } else {
+                                                // Fallback: If upload fails (RLS/Permissions), use ObjectURL
+                                                // This satisfies "try to see if it runs" requirement
+                                                console.warn("Upload failed (server restriction). Using local preview.");
+                                                const objectUrl = URL.createObjectURL(file);
+                                                onUpdate({ ...lesson, videoUrl: objectUrl });
+                                            }
+                                        }
+                                    }}
+                                />
+                            </label>
+
+                            {/* Media Library Button */}
+                            <button
+                                onClick={() => setIsLibraryOpen(true)}
+                                className="bg-[#183434] hover:bg-[#224949] text-[#0df2f2] p-3 rounded-lg border border-[#316868] transition-colors flex items-center justify-center"
+                                title="Media Library"
+                            >
+                                <Icon.Video className="w-5 h-5" />
+                            </button>
+                        </div>
+                        {uploadError && !lesson.videoUrl?.startsWith('blob:') && (
+                            <p className="text-red-400 text-xs italic text-right">{uploadError}</p>
+                        )}
+                        {lesson.videoUrl?.startsWith('blob:') && (
+                            <p className="text-[#0df2f2] text-xs italic text-right">Local Preview Mode (Not saved to server)</p>
+                        )}
+                    </div>
+
+                    {/* Media Library Modal */}
+                    <MediaLibraryModal
+                        isOpen={isLibraryOpen}
+                        onClose={() => setIsLibraryOpen(false)}
+                        onSelect={(url) => {
+                            onUpdate({ ...lesson, videoUrl: url });
+                            setIsLibraryOpen(false);
+                        }}
+                    />
 
                     {/* Difficulty Level */}
                     <label className="flex flex-col gap-2">

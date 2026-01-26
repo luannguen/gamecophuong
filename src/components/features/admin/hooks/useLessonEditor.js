@@ -64,18 +64,29 @@ export function useLessonEditor({ unit, lesson, saveCheckpoints, updateLessonVer
         if (!url) return '';
         let input = url.trim();
 
+        // 0. Pass through Blob or Supabase URLs (or likely direct files)
+        if (input.startsWith('blob:') || input.includes('supabase.co') || input.endsWith('.mp4')) {
+            return input;
+        }
+
         // 1. Handle Iframe Paste
         if (input.includes('<iframe')) {
             const srcMatch = input.match(/src=["'](.*?)["']/);
             if (srcMatch && srcMatch[1]) input = srcMatch[1];
         }
 
-        // 2. Extract Video ID
-        const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+        // 2. Extract Video ID (Robust)
+        const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/)([^"&?\/\s]{11})/;
         const match = input.match(youtubeRegex);
 
         if (match && match[1]) {
             return `https://www.youtube.com/watch?v=${match[1]}`;
+        }
+
+        // 3. Handle raw ID (11 chars, only if NOT a URL)
+        // If it looks like a URL (has / or .), don't treat as ID
+        if (!input.includes('/') && !input.includes('.') && /^[a-zA-Z0-9_-]{11}$/.test(input)) {
+            return `https://www.youtube.com/watch?v=${input}`;
         }
 
         return input;

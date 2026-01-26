@@ -88,14 +88,25 @@ export default function LessonEditor({ unit, lesson, onBack, saveCheckpoints, up
                     <div className="flex items-center gap-3">
                         <button
                             onClick={() => {
-                                // Sync current state to local storage for preview
                                 localStorage.setItem(`preview_lesson_${lesson.id}`, JSON.stringify(currentLesson));
-                                window.open(`/admin/video/preview/${lesson.id}`, '_blank');
+                                window.open(`/admin/video/preview/${lesson.id}?mode=video`, '_blank');
                             }}
                             className="flex items-center gap-2 text-[#90cbcb] hover:text-[#0df2f2] px-3 py-2 rounded-lg text-sm font-bold transition-colors border border-[#316868] hover:border-[#0df2f2]"
+                            title="Preview video playback only"
                         >
-                            <Icon.ExternalLink className="w-4 h-4" />
-                            <span>Preview Lesson</span>
+                            <Icon.Video className="w-4 h-4" />
+                            <span className="hidden xl:inline">Check Video</span>
+                        </button>
+                        <button
+                            onClick={() => {
+                                localStorage.setItem(`preview_lesson_${lesson.id}`, JSON.stringify(currentLesson));
+                                window.open(`/admin/video/preview/${lesson.id}?mode=full`, '_blank');
+                            }}
+                            className="flex items-center gap-2 text-[#90cbcb] hover:text-[#0df2f2] px-3 py-2 rounded-lg text-sm font-bold transition-colors border border-[#316868] hover:border-[#0df2f2]"
+                            title="Preview with checkpoints and simulation"
+                        >
+                            <Icon.Play className="w-4 h-4" />
+                            <span>Preview Logic</span>
                         </button>
                         <button
                             onClick={handleSave}

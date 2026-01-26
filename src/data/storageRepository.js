@@ -74,5 +74,105 @@ export const storageRepository = {
             console.error('Delete error:', error);
             return failure(error.message, ErrorCodes.SERVER_ERROR);
         }
+    },
+
+    /**
+     * Upload lesson video to Supabase Storage (videos bucket)
+     * @param {File} file
+     * @returns {Promise<Result<string>>} - Public URL
+     */
+    uploadLessonVideo: async (file) => {
+        try {
+            if (!file) return failure('No file provided', ErrorCodes.VALIDATION_ERROR);
+
+            if (!file.type.startsWith('video/')) {
+                return failure('Invalid file type. Only video files are allowed.', ErrorCodes.VALIDATION_ERROR);
+            }
+
+            // Max 100MB for now (Supabase free tier limits)
+            if (file.size > 100 * 1024 * 1024) {
+                return failure('File size too large. Max 100MB.', ErrorCodes.VALIDATION_ERROR);
+            }
+
+            const fileExt = file.name.split('.').pop();
+            const filePath = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
+
+            // Upload to 'videos' bucket
+            const { error } = await supabase.storage
+                .from('videos')
+                .upload(filePath, file, {
+                    cacheControl: '3600',
+                    upsert: false
+                });
+
+            if (error) {
+                // Specific helpful error for RLS/Bucket issues
+                if (error.message.includes('Bucket not found')) throw new Error('System Error: "videos" bucket is missing. Please create it in Supabase.');
+                if (error.message.includes('row-level security')) throw new Error('Permission Denied: You do not have permission to upload videos.');
+                throw error;
+            }
+
+            const { data: { publicUrl } } = supabase.storage
+                .from('videos')
+                .getPublicUrl(filePath);
+
+            return success(publicUrl);
+        } catch (error) {
+            console.error('Video upload error:', error);
+            return failure(error.message || 'Failed to upload video', ErrorCodes.SERVER_ERROR);
+        }
+    },
+
+    /**
+     * List all videos in the videos bucket
+     * @returns {Promise<Result<Array>>}
+     */
+    listVideos: async () => {
+        try {
+            const { data, error } = await supabase.storage
+                .from('videos')
+                .list('', {
+                    limit: 100,
+                    offset: 0,
+                    sortBy: { column: 'created_at', order: 'desc' },
+                });
+
+            if (error) {
+                // If bucket doesn't exist, return empty array instead of error
+                if (error.message.includes('Bucket not found')) return success([]);
+                throw error;
+            }
+
+            // Map to full URLs
+            const files = data.map(file => {
+                const { data: { publicUrl } } = supabase.storage
+                    .from('videos')
+                    .getPublicUrl(file.name);
+                return { ...file, publicUrl };
+            });
+
+            return success(files);
+        } catch (error) {
+            console.error('List videos error:', error);
+            return failure(error.message, ErrorCodes.SERVER_ERROR);
+        }
+    },
+
+    /**
+     * Delete a video from the videos bucket
+     * @param {string} fileName
+     */
+    deleteVideo: async (fileName) => {
+        try {
+            const { error } = await supabase.storage
+                .from('videos')
+                .remove([fileName]);
+
+            if (error) throw error;
+            return success(true);
+        } catch (error) {
+            console.error('Delete video error:', error);
+            return failure(error.message, ErrorCodes.SERVER_ERROR);
+        }
     }
 };

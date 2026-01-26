@@ -33,6 +33,10 @@ export const Icon = {
     FileText: (props) => <BaseIcon name="description" {...props} />,
     ExternalLink: (props) => <BaseIcon name="open_in_new" {...props} />,
     VideoOff: (props) => <BaseIcon name="videocam_off" {...props} />,
+    Settings: (props) => <BaseIcon name="settings" {...props} />,
+    Upload: (props) => <BaseIcon name="upload" {...props} />,
+    Check: (props) => <BaseIcon name="check" {...props} />,
+    Refresh: (props) => <BaseIcon name="refresh" {...props} />,
 };
 
 export default Icon;

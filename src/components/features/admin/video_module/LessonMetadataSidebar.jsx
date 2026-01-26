@@ -144,11 +144,11 @@ export default function LessonMetadataSidebar({ lesson, vocabulary, categories, 
                             <p className="text-[#90cbcb] text-xs italic">No vocabulary added.</p>
                         )}
                         {lessonVocabs.map(v => (
-                            <div key={v.id} className="flex h-7 items-center justify-center gap-x-2 rounded bg-[#224949] px-3 border border-transparent hover:border-[#316868] transition-all">
-                                <p className="text-white text-xs font-medium font-display">{v.word}</p>
+                            <div key={v.id} className="group flex items-center gap-2 rounded-full bg-[#1e3a3a] px-3 py-1.5 border border-[#316868] hover:border-[#0df2f2]/40 transition-all">
+                                <span className="text-white text-xs font-bold font-display leading-none pb-[1px]">{v.word}</span>
                                 <button
                                     onClick={() => handleRemoveVocab(v.id)}
-                                    className="text-[#90cbcb] hover:text-white transition-colors"
+                                    className="flex items-center justify-center w-4 h-4 rounded-full hover:bg-[#0df2f2]/20 text-[#90cbcb] hover:text-[#0df2f2] transition-colors"
                                 >
                                     <Icon.X className="w-3 h-3" />
                                 </button>
